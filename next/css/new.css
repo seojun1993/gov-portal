@@ -69,5 +69,196 @@
 }
 
 .popup-box .pop-close button{
-    background: url(../images/contens/i_pop_close_w.svg) center center no-repeat;
+    background: url(../images/contents/i_pop_close_w.svg) center center no-repeat;
 }
+
+.input-period .box-inputbox{
+    padding: 0 14px;
+}
+
+.btn.new_brown{
+    background-color: #4A2E26;
+    color: #fff;
+    border-radius: 4px;
+}
+
+.btn.new_brown_border{
+    background-color: #fff;
+    color: #4A2E26;
+    border: 1px solid #4A2E26;
+    border-radius: 4px;
+}
+
+.sub-contents{
+    margin: 32px auto 100px;
+}
+.conTab2 li{
+    height: auto;
+}
+
+.conTab2 .active a{
+    background: none;
+}
+
+.tab-wrap.search-detail-form .conTab2 li a{
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.tab-wrap.search-detail-form .conTab2 li a > span{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    background-color: #F8F8F8;
+    column-gap: 4px;
+}
+
+.tab-wrap.search-detail-form .conTab2 li a > .img_box{
+    padding: 20px 0;
+}
+.tab-wrap.search-detail-form .conTab2 li a > .img_box img{
+    height: 145px;
+}
+
+.whole-search-inner{
+    display: block;
+    margin-bottom: 24px;
+}
+
+.whole-search-inner .search-wrap{
+    width: 100%;
+    background: none;
+    padding: 0;
+}
+
+.whole-search-inner .search_box{
+    width: 100%;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.whole-search-inner .search_box .search_box_inner{
+    width: 510px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #DEDEDE;
+    height: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.whole-search-inner .search_box select{
+    width: 100%;
+    max-width: 100px;
+    max-width: max-content;
+    height: 100%;
+    border: none;
+    padding: 0 30px 0 24px;
+    
+}
+
+.whole-search-inner .search-wrap .f-inputs{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.whole-search-inner .search-wrap .f-inputs input[type="submit"]{
+    width: 46px;
+    height: 100%;
+    text-align: left;
+    text-indent: -9999px;
+    border-radius: 50%;
+    background: url(../images/new/search.svg) center center no-repeat;
+    background-size: 18px;
+}
+
+.whole-search-inner .search-wrap .f-inputs .keyword{
+    
+    height: 100%;
+    padding-left: 16px;
+    box-sizing: border-box;
+}
+
+.whole-search-inner .search-wrap .f-cmd{
+    height: 100%;
+    margin-left: 10px;
+}
+
+.whole-search-inner .search-wrap .btn-submit{
+    max-width: 100px;
+    height: 100%;
+    font-size: 16px;
+    border-radius: 6px;
+}
+
+.whole-search-inner .search-wrap .help-wrap{
+    margin-left: 8px;
+    vertical-align:bottom;
+}
+
+.whole-search-inner .search-wrap .search-wrap-inner{
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.whole-search-inner .search-wrap .search-wrap-inner .related-keywords-search{
+    display: flex;
+    align-items: flex-start;
+    column-gap: 16px;
+    width: 100%;
+    max-width: 510px;
+}
+
+.whole-search-inner .search-wrap .search-wrap-inner .related-keywords-search .related-keywords-title{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+
+.whole-search-inner .search-wrap .search-wrap-inner .related-keywords-search .related-keywords-title span{
+    font-size: 16px;
+    font-weight: 500;
+    color: #2B2B2B;
+}
+.whole-search-inner .search-wrap .search-wrap-inner .related-keywords-search ul{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex: 1; /* 남은 공간을 모두 차지 */
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.whole-search-inner .search-wrap .search-wrap-inner .related-keywords-search ul li{
+    margin: 0;
+}
+
+.whole-search-inner .search-wrap .search-wrap-inner .related-keywords-search ul li a{
+    display: inline-block;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.recommand-research{
+    width: 100%;
+    max-width: 150px;
+}
+
+
