@@ -1,4 +1,36 @@
 @charset "utf-8";
+
+.paging .active{
+    background-color: #1B1B1B;
+}
+
+.search-result-top{
+    margin-top: 24px;
+}
+
+.feedback-form{
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.feedback-form-title{
+    margin-right: 20px;
+}
+
+.feedback-form-radio{
+    display: flex;
+    align-items: center;
+}
+
+.feedback-form-checkbox{
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+
 /* 검색창 */
 .list_control_item{display:flex;align-items:center;column-gap:10px;}
 .list_control_item>span{font-size:15px;}

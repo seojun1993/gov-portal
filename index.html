@@ -3446,64 +3446,6 @@ function isOpenChange(){
 					</div> -->
 				</div>
 			</form>
-			<div class="search-result-top resulttxt" style="margin-bottom: 30px;">
-				<div class="search-result-wrap" style="display: flex; justify-content: space-between; align-items: center;">
-					<h3 class="search_list_total" style="margin-bottom: 0px;">
-						
-										검색어 <em class="keyword">
-										공고</em>의 검색 결과입니다.
-								</h3>
-					<!-- <div id="srchfbForm" style="display:flex; justify-content: flex-end; align-items: center;">
-				        <div style="margin-right: 20px;"><span>검색결과에 만족하십니까?</span></div>
-				    	<div class="radio-group" style="display:flex; align-items:center;">
-				    		<label class="item">
-				    			<input type="radio" id="fbAnNo" name="fbAnNo" value="1" onclick="showDsntRsn(false);"> 매우 만족
-				    		</label>
-				    		<label class="item">
-				    			<input type="radio" id="fbAnNo" name="fbAnNo" value="2" onclick="showDsntRsn(false);"> 만족
-				    		</label>
-				    		<label class="item">
-				    			<input type="radio" id="fbAnNo" name="fbAnNo" value="3" onclick="showDsntRsn(false);"> 보통
-				    		</label>
-				    		<label class="item">
-				    			<input type="radio" id="fbAnNo" name="fbAnNo" value="4" onclick="showDsntRsn(true);"> 불만족
-				    		</label>
-				    		<label class="item">
-				    			<input type="radio" id="fbAnNo" name="fbAnNo" value="5" onclick="showDsntRsn(true);"> 매우 불만족
-				    		</label>
-				    		<input type="button" id="btnSubmit" value="제출" class="btn gold" onclick="onFeedbackSubmit();">
-				    	</div>
-				    </div> -->
-				</div>
-				<div id="fbAnDsntNoList" style="display:none; margin-top: 10px; flex-direction: column; align-items: flex-end;">
-					<div style="display: flex; flex-direction: column;">
-					    <div><span>불만족/매우 불만족을 선택하신 이유가 무엇입니까?</span></div>
-					    <div class="checkbox-group type-block">
-					        <label>
-					        	<input type="radio" id="fbAnDsntNo" name="fbAnDsntNo" value="1" onclick="showDsntComm(false);"> 관련성 부족
-					        </label>
-					        <label>
-					        	<input type="radio" id="fbAnDsntNo" name="fbAnDsntNo" value="2" onclick="showDsntComm(false);"> 검색 결과의 수가 너무 적거나 많음
-					        </label>
-					        <label>
-					        	<input type="radio" id="fbAnDsntNo" name="fbAnDsntNo" value="3" onclick="showDsntComm(false);"> 검색 필터 또는 정렬 기준 부족
-					        </label>
-					        <label>
-					        	<input type="radio" id="fbAnDsntNo" name="fbAnDsntNo" value="4" onclick="showDsntComm(false);"> 검색 페이지의 UI/UX 불편
-					        </label>
-					        <label>
-					        	<input type="radio" id="fbAnDsntNo" name="fbAnDsntNo" value="5" onclick="showDsntComm(false);"> 특정 자료의 검색 불가
-					        </label>
-					        <label>
-					        	<input type="radio" id="fbAnDsntNo" name="fbAnDsntNo" value="6" onclick="showDsntComm(true);"> 기타의견
-					        	<span class="item-input" style="display: none;" id="dsntCommForm">
-					        	   &nbsp;:&nbsp;<input type="text" id="fbAnDsntComm" name="fbAnDsntComm" class="w150" style="height: 40px;">
-					        	</span>
-					        </label>
-					    </div>
-					</div>
-				</div>
-			</div>
 			<div  class="search-result-top">
 				<div class="result-category">
 					<ul>
@@ -3992,8 +3934,9 @@ function isOpenChange(){
 </script>
 </div> 
 			<!-- subcon1 -->
-			<div id="divGraph" class="search-result-chart" style="height:140px;width:100%;margin-bottom:20px;overflow: auto;">
-			</div><!-- divGraph -->
+			<!-- <div id="divGraph" class="search-result-chart" style="height:140px;width:100%;margin-bottom:20px;overflow: auto;">
+			</div> -->
+      <!-- divGraph -->
 		
 			<div>
 				<form name="search_total">
@@ -5485,6 +5428,66 @@ function isOpenChange(){
 			</ul>						
 </div>
 </div>
+
+<div class="search-result-top resulttxt">
+  <div class="search-result-wrap">
+    <!-- <h3 class="search_list_total" style="margin-bottom: 0px;">
+              검색어 <em class="keyword">
+              공고</em>의 검색 결과입니다.
+          </h3> -->
+    <div id="srchfbForm" class="feedback-form feedback-form-radio">
+          <div class="feedback-form-title"><span>검색결과에 만족하십니까?</span></div>
+        <div class="radio-group" class="feedback-form-radio" style="display:flex; align-items:center;">
+          <label class="item">
+            <input type="radio" id="fbAnNo" name="fbAnNo" value="1" onclick="showDsntRsn(false);"> 매우 만족
+          </label>
+          <label class="item">
+            <input type="radio" id="fbAnNo" name="fbAnNo" value="2" onclick="showDsntRsn(false);"> 만족
+          </label>
+          <label class="item">
+            <input type="radio" id="fbAnNo" name="fbAnNo" value="3" onclick="showDsntRsn(false);"> 보통
+          </label>
+          <label class="item">
+            <input type="radio" id="fbAnNo" name="fbAnNo" value="4" onclick="showDsntRsn(true);"> 불만족
+          </label>
+          <label class="item">
+            <input type="radio" id="fbAnNo" name="fbAnNo" value="5" onclick="showDsntRsn(true);"> 매우 불만족
+          </label>
+          <input type="button" id="btnSubmit" value="제출" class="btn gold" onclick="onFeedbackSubmit();">
+        </div>
+      </div>
+  </div>
+  <div id="fbAnDsntNoList" class="feedback-form feedback-form-checkbox">
+    <div>
+    <div class="feedback-form-title"><span>불만족/매우 불만족을 선택하신 이유가 무엇입니까?</span></div>
+    <div class="checkbox-group type-block feedback-form-checkbox">
+            <label>
+              <input type="radio" id="fbAnDsntNo" name="fbAnDsntNo" value="1" onclick="showDsntComm(false);"> 관련성 부족
+            </label>
+            <label>
+              <input type="radio" id="fbAnDsntNo" name="fbAnDsntNo" value="2" onclick="showDsntComm(false);"> 검색 결과의 수가 너무 적거나 많음
+            </label>
+            <label>
+              <input type="radio" id="fbAnDsntNo" name="fbAnDsntNo" value="3" onclick="showDsntComm(false);"> 검색 필터 또는 정렬 기준 부족
+            </label>
+            <label>
+              <input type="radio" id="fbAnDsntNo" name="fbAnDsntNo" value="4" onclick="showDsntComm(false);"> 검색 페이지의 UI/UX 불편
+            </label>
+            <label>
+              <input type="radio" id="fbAnDsntNo" name="fbAnDsntNo" value="5" onclick="showDsntComm(false);"> 특정 자료의 검색 불가
+            </label>
+            <label>
+              <input type="radio" id="fbAnDsntNo" name="fbAnDsntNo" value="6" onclick="showDsntComm(true);"> 기타의견
+              <span class="item-input" style="display: none;" id="dsntCommForm">
+                 &nbsp;:&nbsp;<input type="text" id="fbAnDsntComm" name="fbAnDsntComm" class="w150" style="height: 40px;">
+              </span>
+            </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <input type="hidden" name="rtype" value="ritem">
 <input type="hidden" name="inflow" value="Y">
 <input type="hidden" name="pageMoveFlag" value="">
