@@ -40,7 +40,8 @@
 
 	<script src="https://openapi.map.naver.com/openapi/v3/maps.js?govClientId=hcueqhxq95"></script>
 
-	<!--ArchivesPortal :  hcueqhxq95 --><title>국가기록원&gt;기록물열람&gt;통합검색 &gt;통합검색 &gt;검색결과</title>
+	<!--ArchivesPortal :  hcueqhxq95 -->
+	<title>국가기록원&gt;기록물열람&gt;통합검색 &gt;통합검색 &gt;검색결과</title>
 
 	<link rel="stylesheet" type="text/css" href="/next/css/jquery.jqplot.min.css">
 	<script type="text/javascript" src="/next/js/jquery.jqplot.min.js"></script>
@@ -61,11 +62,11 @@
 		var prod_data = [];
 		var ticks = [];
 		var line1 = [];
-		var options = [];      		  
+		var options = [];
 		
 		$(document).ready(function () {
 			line1 = [1,2,3];
-			plot= $.jqplot('divGraph',  [line1], CreateBarChartOptions(options)).replot();
+			plot = $.jqplot('divGraph', [line1], CreateBarChartOptions(options)).replot();
 			//웹페이지인경우는 그래프 숨기기
 			if("1" == "4") {
 				$("#divGraph").css("height","0px");
@@ -82,38 +83,37 @@
 				$(".search-data-util-wrap").hide();
 			}
 			
-			$('#againtext').on("keydown",function(key){
-				if(key.keyCode == 13){
-					totalSearch();
-					return false;
-				}
-			});
+					$('#againtext').on("keydown", function(key) {
+			if (key.keyCode == 13) {
+				totalSearch();
+				return false;
+			}
 		});
-	$(document).keydown(
-	function(e) {
-			if (typeof (document.activeElement) != 'null') {
-				var activeNodeName = document.activeElement.nodeName;
-				var activeElType = document.activeElement.type;
+	});
+	
+	$(document).keydown(function(e) {
+		if (typeof (document.activeElement) != 'null') {
+			var activeNodeName = document.activeElement.nodeName;
+			var activeElType = document.activeElement.type;
 			if (e.keyCode == 8 && activeNodeName != 'INPUT'
-					&& activeNodeName != 'TEXTAREA') {
-					document.search_total.action = window.location.href;
-					document.search_total.submit();
-					return false;
-				} else {
-				if (e.keyCode == 8 && activeNodeName == 'INPUT'
-						&& activeElType != 'TEXT'
-						&& activeElType != 'text') {
-						document.search_total.action = window.location.href;
-						document.search_total.submit();
-						return false;
-					}
-				}
-			} else {
+				&& activeNodeName != 'TEXTAREA') {
 				document.search_total.action = window.location.href;
 				document.search_total.submit();
 				return false;
+			} else {
+				if (e.keyCode == 8 && activeNodeName == 'INPUT'
+					&& activeElType != 'TEXT'
+					&& activeElType != 'text') {
+					document.search_total.action = window.location.href;
+					document.search_total.submit();
+					return false;
+				}
+			}
+		} else {
+			document.search_total.action = window.location.href;
+			document.search_total.submit();
+			return false;
 		}
-
 	});
 
 	var searchBaseParamForm;
@@ -200,8 +200,8 @@
 				suburl = '/next/newsearch/portalContents.do';
 				$("#divBottomArea").hide();
 			} 
-         //  if(tabId != 'portal') {      	 
-        	   $("#subcon1").show();
+		//  if(tabId != 'portal') {
+		$("#subcon1").show();
 				$.ajax({
 					type : 'POST',
 					cache : false,
@@ -223,16 +223,15 @@
 						$("div.loading_mask").css("display", "none");
 					}
 				}); 
-          // } else {
-        //	   $("#subcon1").hide();
-        //	   $("#divGraph").html('');
-         //  }
+		// } else {
+		//	   $("#subcon1").hide();
+		//	   $("#divGraph").html('');
+		// }
          
 			if(tabId == 'portal'){
 				$("#divGraph").css("height","0px");
 				$("#divGraph").hide();
-			}
-			else  {
+			} else {
 				$("#divGraph").css("height","140px");
 				$("#divGraph").show();
 			}
@@ -472,43 +471,43 @@
 			data : $('form[name=' + formName + ']').serialize(),
 			success : function(data, textStatus, jqXHR) {
 				 // console.log("data" + data);
-				 var list =data.substring(data.indexOf("divProdYear"));
+				var list = data.substring(data.indexOf("divProdYear"));
 				 
 				 list = list.replaceAll("\r\n"," ");
 				 list = list.substring(13, list.indexOf("</div>"));
 				
-				 if (plot) {
-		               plot.destroy();
-		         }
+				if (plot) {
+					plot.destroy();
+				}
 				 //연도별 데이터 집계
 				 
 				 list = list.substring(list.indexOf(">")+1).trim();
 				
-				 var jbSplit = list.trim().split(' ');
-				 var line1 = [];
-				 var options = [];
-				 var num = "";
-				 var prod_data = '';
-				 var yearTitle = '';
-				 var numdata = '';
-	   			 for ( var i in jbSplit ) {
-   					var t_num_data =  jbSplit[i].trim();
-   					if(t_num_data.length >0){
-   						num = t_num_data.substring(0, t_num_data.indexOf("#"));
-   						yearTitle =  t_num_data.substring(t_num_data.indexOf("#"));
-   						numdata  = numdata + "," +  num;
+				var jbSplit = list.trim().split(' ');
+				var line1 = [];
+				var options = [];
+				var num = "";
+				var prod_data = '';
+				var yearTitle = '';
+				var numdata = '';
+				for (var i in jbSplit) {
+					var t_num_data = jbSplit[i].trim();
+					if (t_num_data.length > 0) {
+						num = t_num_data.substring(0, t_num_data.indexOf("#"));
+						yearTitle = t_num_data.substring(t_num_data.indexOf("#"));
+						numdata = numdata + "," + num;
    						//console.log("yearTitle" + yearTitle);
-   						if(yearTitle=="#미상")
-   							options.push("미상");
-   						else
-   							options.push(yearTitle.substring(yearTitle.indexOf("~")));
-   					}
-	     		}
-	   			line1 =  eval("[" + numdata.substring(1) + "]");
-     			plot = $.jqplot ('divGraph', [line1], CreateBarChartOptions(options)).replot();   
-     			
-     		    // var sch_cate2 = $(data).find('#divSchCate2');
-     			// alert(sch_cate2.html());
+						if (yearTitle == "#미상")
+							options.push("미상");
+						else
+							options.push(yearTitle.substring(yearTitle.indexOf("~")));
+					}
+				}
+				line1 = eval("[" + numdata.substring(1) + "]");
+				plot = $.jqplot('divGraph', [line1], CreateBarChartOptions(options)).replot();
+				
+				// var sch_cate2 = $(data).find('#divSchCate2');
+				// alert(sch_cate2.html());
      		
 				$("#limit").html(data);
 				
@@ -1056,13 +1055,13 @@
 		var form = 'search_base';
 		//document.search_simple.p_current_page.value = page;
 		//document.search_simple.p_count_per_page.value = $("#listnum_list").val();
-		document.search_base.rc_code.value=rcCode;
-		document.search_base.rc_rfile_no.value=rcRFileNo;
-		document.search_base.rc_ritem_no.value=rcRItemNo;
-		document.search_base.ocr_file_yn.value=ocrFileYn;
-		document.search_base.p_current_page.value=page;
-		document.search_base.s_p_current_page.value=1;
-		document.search_base.p_jemok.value="";
+		document.search_base.rc_code.value = rcCode;
+		document.search_base.rc_rfile_no.value = rcRFileNo;
+		document.search_base.rc_ritem_no.value = rcRItemNo;
+		document.search_base.ocr_file_yn.value = ocrFileYn;
+		document.search_base.p_current_page.value = page;
+		document.search_base.s_p_current_page.value = 1;
+		document.search_base.p_jemok.value = "";
 		$.ajax({
 			type : 'POST',
 			cache : false,
@@ -1091,8 +1090,8 @@
 	function reItemPage(page) {
 		$("div.loading_mask").css("display", "block");
 		var form = 'search_base';
-		document.search_base.s_p_current_page.value=page;
-		document.search_base.p_jemok.value=document.listForm1.p_jemok.value;
+		document.search_base.s_p_current_page.value = page;
+		document.search_base.p_jemok.value = document.listForm1.p_jemok.value;
 		$.ajax({
 			type : 'POST',
 			cache : false,
@@ -1569,10 +1568,10 @@
 	var open_popup = null;	
 	window.onload = function() {
 		//default가 잘 안되는것으로 보임 해석이 잘못되어 =3 p_service_type=; 이렇게 변환됨 
-		p_service_type=0;
+		p_service_type = 0;
 		
 	  		
-		if(p_service_type == 2) {		
+		if (p_service_type == 2) {
 			oepnFile();
 			window.close();
 			try {
@@ -1582,8 +1581,7 @@
 			} catch(e) {
 				alert(e);
 			}
-		}
-		else if(10<p_service_type && p_service_type<20) {
+		} else if (10 < p_service_type && p_service_type < 20) {
 			goMyArchive_open(p_service_type-10,"","","");
 			window.close();
 			try {
@@ -1593,8 +1591,7 @@
 			} catch(e) {
 				alert(e);
 			}
-		}
-		else if(20<p_service_type && p_service_type<30) {
+		} else if (20 < p_service_type && p_service_type < 30) {
 			goMyArchiveEx_open(p_service_type-20,"","","");
 			window.close();
 			try {
@@ -2834,7 +2831,6 @@ function isOpenChange(){
 	}
 	
  function switchTit(li){
-		
 	 if(li == li3){
 			$("#li3").attr("title","선택됨");
 			$("#li4").attr("title","미선택");
@@ -3456,39 +3452,8 @@ function isOpenChange(){
 					</ul>
 				</div><!-- result-category -->
 			</div>
-			
 			<div id="subcon1">
-				
-
- 
-
-
-
-
 <!--좌측 시작-->
-	
-		 
-		
-	
-	
-		
-		
-	
-	
-	
-		
-		
-	
-	
-	
-		
-		
-	
-	
-	
-		
-		 
-	
 	
 	<form name="search_simple" method="post" onsubmit="reSearch('arc'); return false;">	
 		<input type="hidden" name="selectSearch" value="1">
@@ -3536,87 +3501,18 @@ function isOpenChange(){
 		<input type="hidden" id="againtext" name="query" value="결과 내 재검색" title="검색어를 입력해주세요" alt="결과내 재검색" >
 	</form>
 	<div class="search-result-catetogy">
-	
-	
 		<div class="sch-cate1">
-		<select id="selAllDataList" onChange="javascript:resultReLoad(this,'', '', '', '', this); return false;" >
-			
-				
-					
-					
-						<option value="ALL">전체 (344,342)
-					
-					
-				
-			
-				
-					
-					
-						<option 
-							value="A">일반문서류(344,225)
-						</option>
-					
-				
-			
-				
-					
-					
-						<option 
-							value="B">도면류(4)
-						</option>
-					
-				
-			
-				
-					
-					
-						<option 
-							value="C">사진,필름류(77)
-						</option>
-					
-				
-			
-				
-					
-					
-						<option 
-							value="D">녹음,동영상류(14)
-						</option>
-					
-				
-			
-				
-					
-					
-						<option 
-							value="E">카드류(3)
-						</option>
-					
-				
-			
-				
-					
-					
-						<option 
-							value="G">국무회의록(3)
-						</option>
-					
-				
-			
-				
-					
-					
-						<option 
-							value="M">정부간행물(16)
-						</option>
-					
-				
-			
-		</select>
+			<select id="selAllDataList" onChange="javascript:resultReLoad(this, '', '', '', '', this); return false;">
+				<option value="ALL">전체 (344,342)</option>
+				<option value="A">일반문서류(344,225)</option>
+				<option value="B">도면류(4)</option>
+				<option value="C">사진,필름류(77)</option>
+				<option value="D">녹음,동영상류(14)</option>
+				<option value="E">카드류(3)</option>
+				<option value="G">국무회의록(3)</option>
+				<option value="M">정부간행물(16)</option>
+			</select>
 		</div>
-	
-	
-	
 	<div id="limit"  class="opt-change" >
 		<!-- 검색결과 재분류 -->	
 		<form name="search_base" method="post">
@@ -3683,79 +3579,68 @@ function isOpenChange(){
 			
 		</form>
 		<!-- 2018.11.07 철 공개구분값 사용안함****** -->
-		
-			<select onChange="resultReLoad('', this, '', '', '',''); return false;">
-				<option value=""> 공개여부
-					
-						
-							<option  value="1"> 공개  (267,547)</option>
-						
-					
-						
-							<option  value="2"> 부분공개  (44,215)</option>
-						
-					
-						
-							<option  value="3"> 비공개  (32,580)</option>
-						
-					
+			<select 
+				onChange="resultReLoad('', this, '', '', '', ''); return false;"
+			>
+				<option value="">
+					공개여부
+				</option>
+				<option value="1">
+					공개 (267,547)
+				</option>
+				<option value="2">
+					부분공개 (44,215)
+				</option>
+				<option value="3">
+					비공개 (32,580)
+				</option>
 			</select>
-		
-		
-			<select onChange="resultReLoad('', '', this, '', '', ''); return false;">
-				<option value=""> 원문서비스
-					
-						<option  value="N">온라인 미제공 (141,409)</option>
-					
-						<option  value="Y">온라인 제공 (202,933)</option>
-					
+
+			<select 
+				onChange="resultReLoad('', '', this, '', '', ''); return false;"
+			>
+				<option value="">
+					원문서비스
+				</option>
+				<option value="N">
+					온라인 미제공 (141,409)
+				</option>
+				<option value="Y">
+					온라인 제공 (202,933)
+				</option>
 			</select>
-		
-		
-			
-			<select onChange="resultReLoad('', '',  '', this,'', ''); return false;">
-				<option value="">생산연도
-				
-					
-						<option value="2011~2020">2011~2020(14,674)</option>
-					
-					
-				
-					
-						<option value="2001~2010">2001~2010(76,548)</option>
-					
-					
-				
-					
-						<option value="1991~2000">1991~2000(138,164)</option>
-					
-					
-				
-					
-						<option value="1981~1990">1981~1990(47,224)</option>
-					
-					
-				
-					
-						<option value="1971~1980">1971~1980(17,858)</option>
-					
-					
-				
-					
-						<option value="1961~1970">1961~1970(13,795)</option>
-					
-					
-				
-					
-						<option value="1951~1960">1951~1960(27,751)</option>
-					
-					
-				
-					
-						<option value="1941~1950">1941~1950(2,961)</option>
-					
-					
-				
+
+			<select 
+				onChange="resultReLoad('', '', '', this, '', ''); return false;"
+			>
+				<option value="">
+					생산연도
+				</option>
+				<option value="2011~2020">
+					2011~2020 (14,674)
+				</option>
+				<option value="2001~2010">
+					2001~2010 (76,548)
+				</option>
+				<option value="1991~2000">
+					1991~2000 (138,164)
+				</option>
+				<option value="1981~1990">
+					1981~1990 (47,224)
+				</option>
+				<option value="1971~1980">
+					1971~1980 (17,858)
+				</option>
+				<option value="1961~1970">
+					1961~1970 (13,795)
+				</option>
+				<option value="1951~1960">
+					1951~1960 (27,751)
+				</option>
+				<option value="1941~1950">
+					1941~1950 (2,961)
+				</option>
+			</select>
 			</select>
 			<button type="button" class="btn-org btn-toggle on" data-target="sch-cate2" id="divCmore">생산기관 <i class="i-more"></i></button>
 		
@@ -3763,69 +3648,45 @@ function isOpenChange(){
 	
 	<div class="sch-cate2" id="divProd">
 		<div class="checkbox-group col2">
-			
-				
 					<label class="item"><input type="checkbox"  onclick="resultReLoad('', '', '', '', '1310016', ''); return false;">
 					<span>행정자치부 기획관리실 법무담당관
 					<span class="acount">(125,675)</span></span></label>
-				
-			
-				
+
 					<label class="item"><input type="checkbox"  onclick="resultReLoad('', '', '', '', '9900868', ''); return false;">
 					<span>총무처 법무담당관
 					<span class="acount">(89,673)</span></span></label>
-				
-			
-				
+
 					<label class="item"><input type="checkbox"  onclick="resultReLoad('', '', '', '', '1500432', ''); return false;">
 					<span>건설교통부 중앙토지수용위원회 사무국
 					<span class="acount">(15,383)</span></span></label>
-				
-			
-				
+
 					<label class="item"><input type="checkbox"  onclick="resultReLoad('', '', '', '', '1611547', ''); return false;">
 					<span>국토해양부 중앙토지수용위원회 사무국
 					<span class="acount">(10,935)</span></span></label>
-				
-			
-				
+
 					<label class="item"><input type="checkbox"  onclick="resultReLoad('', '', '', '', '1211237', ''); return false;">
 					<span>국세청 광주지방국세청
 					<span class="acount">(7,980)</span></span></label>
-				
-			
-				
+
 					<label class="item"><input type="checkbox"  onclick="resultReLoad('', '', '', '', '1210559', ''); return false;">
 					<span>국세청 중부지방국세청
 					<span class="acount">(4,389)</span></span></label>
-				
-			
-				
+
 					<label class="item"><input type="checkbox"  onclick="resultReLoad('', '', '', '', '1210246', ''); return false;">
 					<span>국세청 서울지방국세청 용산세무서
 					<span class="acount">(4,237)</span></span></label>
-				
-			
-				
+
 					<label class="item"><input type="checkbox"  onclick="resultReLoad('', '', '', '', '1210263', ''); return false;">
 					<span>국세청 서울지방국세청 영등포세무서
 					<span class="acount">(4,158)</span></span></label>
-				
-			
-				
+
 					<label class="item"><input type="checkbox"  onclick="resultReLoad('', '', '', '', '1550070', ''); return false;">
 					<span>문화재청 문화유산국 동산문화재과
 					<span class="acount">(3,845)</span></span></label>
-				
-			
-				
+
 					<label class="item"><input type="checkbox"  onclick="resultReLoad('', '', '', '', '1210661', ''); return false;">
 					<span>국세청 중부지방국세청 성동세무서
 					<span class="acount">(3,311)</span></span></label>
-				
-			
-				
-			
 		</div>
 		<div class="sch-cate3">
 			<div class="sch-cate3-filter">
@@ -3842,84 +3703,44 @@ function isOpenChange(){
 </div>
 <!--좌측 끝//-->
 
-
-
-
-
-
 <script>
 	$(document).ready(function () {
 		var line1 =  [];  
 		var options =  [];  
 		var numdata = "";
 		var cod_nm = "";
-		
-			
 			numdata = numdata +  ',14674';
-			
-			
 			cod_nm = '2011~2020';
 			cod_nm = cod_nm.substring(cod_nm.indexOf("~"));
 				options.push(cod_nm);
-			
-			
 			numdata = numdata +  ',76548';
-			
-			
 			cod_nm = '2001~2010';
 			cod_nm = cod_nm.substring(cod_nm.indexOf("~"));
 				options.push(cod_nm);
-			
-			
 			numdata = numdata +  ',138164';
-			
-			
 			cod_nm = '1991~2000';
 			cod_nm = cod_nm.substring(cod_nm.indexOf("~"));
 				options.push(cod_nm);
-			
-			
 			numdata = numdata +  ',47224';
-			
-			
 			cod_nm = '1981~1990';
 			cod_nm = cod_nm.substring(cod_nm.indexOf("~"));
 				options.push(cod_nm);
-			
-			
 			numdata = numdata +  ',17858';
-			
-			
 			cod_nm = '1971~1980';
 			cod_nm = cod_nm.substring(cod_nm.indexOf("~"));
 				options.push(cod_nm);
-			
-			
 			numdata = numdata +  ',13795';
-			
-			
 			cod_nm = '1961~1970';
 			cod_nm = cod_nm.substring(cod_nm.indexOf("~"));
 				options.push(cod_nm);
-			
-			
 			numdata = numdata +  ',27751';
-			
-			
 			cod_nm = '1951~1960';
 			cod_nm = cod_nm.substring(cod_nm.indexOf("~"));
 				options.push(cod_nm);
-			
-			
 			numdata = numdata +  ',2961';
-			
-			
 			cod_nm = '1941~1950';
 			cod_nm = cod_nm.substring(cod_nm.indexOf("~"));
 				options.push(cod_nm);
-			
-			
-		
 		line1 =  eval("[" + numdata.substring(1) + "]");
 		plot = 	$.jqplot('divGraph',  [line1], CreateBarChartOptions(options)).replot();
 		
@@ -3999,22 +3820,9 @@ function isOpenChange(){
 			<h4 class="blind">기록물 건 검색 결과</h4>
 			<div id="subcon">
 				
-
-
- 
-
-
 <!--내용 시작-->
 	<!--기록물목록 시작-->
 <div id="recordlist">
-	
-
-
- 
-
-
-<!-- document.querySelector('title').style.color='blue'; -->
-
 <form name="recordlist_form" action="" onsubmit="return listResizing('T');" method="post">	
 <div class="search-result-filter">
 	<h5 class="blind">검색 결과 내 필터</h5>
@@ -4064,38 +3872,8 @@ function isOpenChange(){
 	</div>
 </div>
 <div class="search-result-list">
-	
-		
-		
-			
-			
-			
-						
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-		
-	    
 	   <!-- 백현주, 고문기, 최현숙에대한 인명 마크 처리 추가 각각으로 변경 2015.4.14 기록정보기반과 박영규 -->
-	    
-		
-		
-		
+
 		<!-- 백문갑에대한 인명 마크 처리 추가 2015.6.11 기록정보기반과 조혜선 -->
 		
 		<!-- 문현종에대한 인명 마크 처리 추가 2015.12.02 기록정보기반과 서경란 -->
@@ -4106,14 +3884,6 @@ function isOpenChange(){
 		
 		<!-- 세무조사 검색결과 반영(인명 마크 처리 추가 2016.11.25 기록정보기반과 김정환 -->
         <!-- 오홍근 외 3명 -->
-		
-		
-		
-		
-		
-		
-		
-		
 	    <div class="result-row">
 			
 			
@@ -4130,35 +3900,19 @@ function isOpenChange(){
 						<span class="cate-lb" >일반문서</span>
 						
 							<span class="cate-lb open" style="color:#8D6A69; border-color:#8D6A69;">공개</span>
-							
-							
-							
-						
 					</div>
-			
 					<div class="title">
-						
-		  				
 		  					<a href="#"  title="새창열림" onClick="javascript:showItemDetailWithQuery('1310377','200902659556','000000000004','1','Y');   return false;" >
 			  					일반경쟁입찰 구매결의(<em class=searched-word>공고</em>번호KFX-85320-F4)(2안)<em class=searched-word>공고</em>번호 KFX-85320-F4 구매입찰<em class=searched-word>공고</em>(3안)<em class=searched-word>공고</em>번호 KFX-85320-F4 구매입찰<em class=searched-word>공고</em>(4안)<em class=searched-word>공고</em>번호 KFX-85320-F4 구매입찰<em class=searched-word>공고</em>(5안)<em class=searched-word>공고</em>번호 KFX-85320-F4 구매입찰경락자선정및계약체결
 		  					</a>
-
-
-<!-- 		  					</a> -->
-		  				
 					</div>
 			
 					<div class="info">
 						<ul>
 							<li class="institution">
 								<span class="lb" style="color:#5E5E5E;">생산기관 : </span>
-								<span class="data" style="color:#5E5E5E;">
-									
-										
-										
+								<span class="data" style="color:#5E5E5E;">	
 											조달청
-										
-									
 								</span>
 							</li>
 							<li class="year">
@@ -4169,8 +3923,6 @@ function isOpenChange(){
 								<span class="lb" style="color:#5E5E5E;">관리번호 : </span>
 								<span class="data" style="color:#5E5E5E;">DA0347709</span>
 							</li>
-							
-							
 						</ul>
 					</div>
 				 
@@ -4178,53 +3930,13 @@ function isOpenChange(){
 						<!-- 요약정보 -->
 				    	<a class="btn small brown i-arr-down btn-summary" id="detial_0" href="#none" onclick="showDetail('1310377', '200902659556', '000000000004', 'detial_0'); return false;">요약정보</a>
 					    <!-- 원문서비스  -->
-						
-							
-							
-							
-														
-							
-							
-		                     
-							
 							<!-- <span class="viewrecordnone">원문보기</span> -->
 						
 					</div>
 					<div class="expand-viewer detail_box" id="detial_0" style="display: none;"></div>
-				
 			</div>
 		</div>
-	
-		
-		
-			
-			
-			
-						
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-		
-	    
 	   <!-- 백현주, 고문기, 최현숙에대한 인명 마크 처리 추가 각각으로 변경 2015.4.14 기록정보기반과 박영규 -->
-	    
-		
-		
 		
 		<!-- 백문갑에대한 인명 마크 처리 추가 2015.6.11 기록정보기반과 조혜선 -->
 		
@@ -4308,15 +4020,6 @@ function isOpenChange(){
 						<!-- 요약정보 -->
 				    	<a class="btn small brown i-arr-down btn-summary" id="detial_1" href="#none" onclick="showDetail('1310377', '201205223927', '000000000004', 'detial_1'); return false;">요약정보</a>
 					    <!-- 원문서비스  -->
-						
-							
-							
-							
-														
-							
-							
-		                     
-							
 							<!-- <span class="viewrecordnone">원문보기</span> -->
 						
 					</div>
@@ -4325,37 +4028,8 @@ function isOpenChange(){
 			</div>
 		</div>
 	
-		
-		
-			
-			
-			
-						
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-		
-	    
 	   <!-- 백현주, 고문기, 최현숙에대한 인명 마크 처리 추가 각각으로 변경 2015.4.14 기록정보기반과 박영규 -->
 	    
-		
-		
-		
 		<!-- 백문갑에대한 인명 마크 처리 추가 2015.6.11 기록정보기반과 조혜선 -->
 		
 		<!-- 문현종에대한 인명 마크 처리 추가 2015.12.02 기록정보기반과 서경란 -->
@@ -4366,13 +4040,6 @@ function isOpenChange(){
 		
 		<!-- 세무조사 검색결과 반영(인명 마크 처리 추가 2016.11.25 기록정보기반과 김정환 -->
         <!-- 오홍근 외 3명 -->
-		
-		
-		
-		
-		
-		
-		
 		
 	    <div class="result-row">
 			
@@ -4438,64 +4105,14 @@ function isOpenChange(){
 						<!-- 요약정보 -->
 				    	<a class="btn small brown i-arr-down btn-summary" id="detial_2" href="#none" onclick="showDetail('1310377', '200302096635', '000000000031', 'detial_2'); return false;">요약정보</a>
 					    <!-- 원문서비스  -->
-						
-							
-							
-							
-														
-							
-							
-		                     
-							
-								
-								
-									
-									
 									 	<a class="btn small gold btn-origin" href="https://theme.archives.go.kr/viewer/common/archWebViewer.do?bsid=200302096635&amp;dsid=000000000031&amp;gubun=search" onClick="window.open(this.href,'_blank');return false;" title="새창으로 열림" class="viewrecord">원문보기</a>
-									
-									
-									
-								
-							
-							
-						
 					</div>
 					<div class="expand-viewer detail_box" id="detial_2" style="display: none;"></div>
 				
 			</div>
 		</div>
-	
-		
-		
-			
-			
-			
-						
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-		
-	    
 	   <!-- 백현주, 고문기, 최현숙에대한 인명 마크 처리 추가 각각으로 변경 2015.4.14 기록정보기반과 박영규 -->
-	    
-		
-		
-		
+
 		<!-- 백문갑에대한 인명 마크 처리 추가 2015.6.11 기록정보기반과 조혜선 -->
 		
 		<!-- 문현종에대한 인명 마크 처리 추가 2015.12.02 기록정보기반과 서경란 -->
@@ -4506,17 +4123,8 @@ function isOpenChange(){
 		
 		<!-- 세무조사 검색결과 반영(인명 마크 처리 추가 2016.11.25 기록정보기반과 김정환 -->
         <!-- 오홍근 외 3명 -->
-		
-		
-		
-		
-		
-		
-		
-		
+
 	    <div class="result-row">
-			
-			
 				<div class="select">
 					<label class="only">
 					<input type="checkbox" name="idChk" id="listcheck_3" value="1310377-200302096758-000000000040"><span>선택</span>
@@ -4530,10 +4138,6 @@ function isOpenChange(){
 						<span class="cate-lb" >일반문서</span>
 						
 							<span class="cate-lb open" style="color:#8D6A69; border-color:#8D6A69;">공개</span>
-							
-							
-							
-						
 					</div>
 			
 					<div class="title">
@@ -4542,10 +4146,6 @@ function isOpenChange(){
 		  					<a href="#"  title="새창열림" onClick="javascript:showItemDetailWithQuery('1310377','200302096758','000000000040','1','Y');   return false;" >
 			  					입찰<em class=searched-word>공고</em>번호변경<em class=searched-word>공고</em>(조달청외자<em class=searched-word>공고</em>제1995-16-1호)
 		  					</a>
-
-
-<!-- 		  					</a> -->
-		  				
 					</div>
 			
 					<div class="info">
@@ -4553,12 +4153,7 @@ function isOpenChange(){
 							<li class="institution">
 								<span class="lb" style="color:#5E5E5E;">생산기관 : </span>
 								<span class="data" style="color:#5E5E5E;">
-									
-										
-										
 											행정자치부 기획관리실 법무담당관
-										
-									
 								</span>
 							</li>
 							<li class="year">
@@ -4569,8 +4164,6 @@ function isOpenChange(){
 								<span class="lb" style="color:#5E5E5E;">관리번호 : </span>
 								<span class="data" style="color:#5E5E5E;">BA0427027</span>
 							</li>
-							
-							
 						</ul>
 					</div>
 				 
@@ -4578,64 +4171,14 @@ function isOpenChange(){
 						<!-- 요약정보 -->
 				    	<a class="btn small brown i-arr-down btn-summary" id="detial_3" href="#none" onclick="showDetail('1310377', '200302096758', '000000000040', 'detial_3'); return false;">요약정보</a>
 					    <!-- 원문서비스  -->
-						
-							
-							
-							
-														
-							
-							
-		                     
-							
-								
-								
-									
-									
 									 	<a class="btn small gold btn-origin" href="https://theme.archives.go.kr/viewer/common/archWebViewer.do?bsid=200302096758&amp;dsid=000000000040&amp;gubun=search" onClick="window.open(this.href,'_blank');return false;" title="새창으로 열림" class="viewrecord">원문보기</a>
-									
-									
-									
-								
-							
-							
-						
 					</div>
 					<div class="expand-viewer detail_box" id="detial_3" style="display: none;"></div>
 				
 			</div>
 		</div>
-	
-		
-		
-			
-			
-			
-						
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-		
-	    
 	   <!-- 백현주, 고문기, 최현숙에대한 인명 마크 처리 추가 각각으로 변경 2015.4.14 기록정보기반과 박영규 -->
-	    
-		
-		
-		
+
 		<!-- 백문갑에대한 인명 마크 처리 추가 2015.6.11 기록정보기반과 조혜선 -->
 		
 		<!-- 문현종에대한 인명 마크 처리 추가 2015.12.02 기록정보기반과 서경란 -->
@@ -4646,17 +4189,8 @@ function isOpenChange(){
 		
 		<!-- 세무조사 검색결과 반영(인명 마크 처리 추가 2016.11.25 기록정보기반과 김정환 -->
         <!-- 오홍근 외 3명 -->
-		
-		
-		
-		
-		
-		
-		
-		
+
 	    <div class="result-row">
-			
-			
 				<div class="select">
 					<label class="only">
 					<input type="checkbox" name="idChk" id="listcheck_4" value="1310377-201506700892-000000000019"><span>선택</span>
@@ -4668,12 +4202,7 @@ function isOpenChange(){
 				<div class="list-contents">
 					<div class="category" >						
 						<span class="cate-lb" >일반문서</span>
-						
-							
-							
 							<span class="cate-lb open2"style="color:#8D6A69; border-color:#8D6A69;">비공개</span>
-							
-						
 					</div>
 			
 					<div class="title">
@@ -4682,10 +4211,6 @@ function isOpenChange(){
 		  					<a href="#"  title="새창열림" onClick="javascript:showItemDetailWithQuery('1310377','201506700892','000000000019','1','Y');   return false;" >
 			  					<em class=searched-word>공고</em>번호 제(2003090775500)호 구매입찰 재<em class=searched-word>공고</em>(공기부양정 도입 재<em class=searched-word>공고</em>)
 		  					</a>
-
-
-<!-- 		  					</a> -->
-		  				
 					</div>
 			
 					<div class="info">
@@ -4693,12 +4218,7 @@ function isOpenChange(){
 							<li class="institution">
 								<span class="lb" style="color:#5E5E5E;">생산기관 : </span>
 								<span class="data" style="color:#5E5E5E;">
-									
-										
-										
 											해양경찰청 경비구난국 수색구조과
-										
-									
 								</span>
 							</li>
 							<li class="year">
@@ -4709,8 +4229,6 @@ function isOpenChange(){
 								<span class="lb" style="color:#5E5E5E;">관리번호 : </span>
 								<span class="data" style="color:#5E5E5E;">CA0388691</span>
 							</li>
-							
-							
 						</ul>
 					</div>
 				 
@@ -4718,54 +4236,14 @@ function isOpenChange(){
 						<!-- 요약정보 -->
 				    	<a class="btn small brown i-arr-down btn-summary" id="detial_4" href="#none" onclick="showDetail('1310377', '201506700892', '000000000019', 'detial_4'); return false;">요약정보</a>
 					    <!-- 원문서비스  -->
-						
-							
-							
-							
-														
-							
-							
-		                     
-							
 							<!-- <span class="viewrecordnone">원문보기</span> -->
-						
 					</div>
 					<div class="expand-viewer detail_box" id="detial_4" style="display: none;"></div>
 				
 			</div>
 		</div>
-	
-		
-		
-			
-			
-			
-						
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-		
-	    
 	   <!-- 백현주, 고문기, 최현숙에대한 인명 마크 처리 추가 각각으로 변경 2015.4.14 기록정보기반과 박영규 -->
-	    
-		
-		
-		
+
 		<!-- 백문갑에대한 인명 마크 처리 추가 2015.6.11 기록정보기반과 조혜선 -->
 		
 		<!-- 문현종에대한 인명 마크 처리 추가 2015.12.02 기록정보기반과 서경란 -->
@@ -4777,16 +4255,7 @@ function isOpenChange(){
 		<!-- 세무조사 검색결과 반영(인명 마크 처리 추가 2016.11.25 기록정보기반과 김정환 -->
         <!-- 오홍근 외 3명 -->
 		
-		
-		
-		
-		
-		
-		
-		
 	    <div class="result-row">
-			
-			
 				<div class="select">
 					<label class="only">
 					<input type="checkbox" name="idChk" id="listcheck_5" value="1310377-201909174849-000000000024"><span>선택</span>
@@ -4800,10 +4269,6 @@ function isOpenChange(){
 						<span class="cate-lb" >일반문서</span>
 						
 							<span class="cate-lb open" style="color:#8D6A69; border-color:#8D6A69;">공개</span>
-							
-							
-							
-						
 					</div>
 			
 					<div class="title">
@@ -4812,10 +4277,7 @@ function isOpenChange(){
 		  					<a href="#"  title="새창열림" onClick="javascript:showItemDetailWithQuery('1310377','201909174849','000000000024','1','Y');   return false;" >
 			  					<em class=searched-word>공고</em>내용 정정<em class=searched-word>공고</em> 의뢰(건설교통부 <em class=searched-word>공고</em> 제2007-211호)
 		  					</a>
-
-
 <!-- 		  					</a> -->
-		  				
 					</div>
 			
 					<div class="info">
@@ -4823,12 +4285,7 @@ function isOpenChange(){
 							<li class="institution">
 								<span class="lb" style="color:#5E5E5E;">생산기관 : </span>
 								<span class="data" style="color:#5E5E5E;">
-									
-										
-										
 											건설교통부 주거복지본부 토지기획관 토지정책팀
-										
-									
 								</span>
 							</li>
 							<li class="year">
@@ -4839,8 +4296,6 @@ function isOpenChange(){
 								<span class="lb" style="color:#5E5E5E;">관리번호 : </span>
 								<span class="data" style="color:#5E5E5E;">EA0138713</span>
 							</li>
-							
-							
 						</ul>
 					</div>
 				 
@@ -4848,15 +4303,6 @@ function isOpenChange(){
 						<!-- 요약정보 -->
 				    	<a class="btn small brown i-arr-down btn-summary" id="detial_5" href="#none" onclick="showDetail('1310377', '201909174849', '000000000024', 'detial_5'); return false;">요약정보</a>
 					    <!-- 원문서비스  -->
-						
-							
-							
-							
-														
-							
-							
-		                     
-							
 							<!-- <span class="viewrecordnone">원문보기</span> -->
 						
 					</div>
@@ -4864,38 +4310,8 @@ function isOpenChange(){
 				
 			</div>
 		</div>
-	
-		
-		
-			
-			
-			
-						
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-		
-	    
 	   <!-- 백현주, 고문기, 최현숙에대한 인명 마크 처리 추가 각각으로 변경 2015.4.14 기록정보기반과 박영규 -->
-	    
-		
-		
-		
+	  
 		<!-- 백문갑에대한 인명 마크 처리 추가 2015.6.11 기록정보기반과 조혜선 -->
 		
 		<!-- 문현종에대한 인명 마크 처리 추가 2015.12.02 기록정보기반과 서경란 -->
@@ -4906,14 +4322,6 @@ function isOpenChange(){
 		
 		<!-- 세무조사 검색결과 반영(인명 마크 처리 추가 2016.11.25 기록정보기반과 김정환 -->
         <!-- 오홍근 외 3명 -->
-		
-		
-		
-		
-		
-		
-		
-		
 	    <div class="result-row">
 			
 			
@@ -4928,24 +4336,13 @@ function isOpenChange(){
 				<div class="list-contents">
 					<div class="category" >						
 						<span class="cate-lb" >일반문서</span>
-						
-							
-							
 							<span class="cate-lb open2"style="color:#8D6A69; border-color:#8D6A69;">비공개</span>
-							
-						
 					</div>
 			
 					<div class="title">
-						
-		  				
 		  					<a href="#"  title="새창열림" onClick="javascript:showItemDetailWithQuery('1310377','202110845854','000000000010','1','Y');   return false;" >
 			  					<em class=searched-word>공고</em>(종로구 <em class=searched-word>공고</em> 제1995-228호 의료보호 진료기관 지정 및 지정취소 <em class=searched-word>공고</em>)
 		  					</a>
-
-
-<!-- 		  					</a> -->
-		  				
 					</div>
 			
 					<div class="info">
@@ -4953,12 +4350,7 @@ function isOpenChange(){
 							<li class="institution">
 								<span class="lb" style="color:#5E5E5E;">생산기관 : </span>
 								<span class="data" style="color:#5E5E5E;">
-									
-										
-										
 											보건복지부 연금보험국 보험관리과
-										
-									
 								</span>
 							</li>
 							<li class="year">
@@ -4969,8 +4361,6 @@ function isOpenChange(){
 								<span class="lb" style="color:#5E5E5E;">관리번호 : </span>
 								<span class="data" style="color:#5E5E5E;">DA1884735</span>
 							</li>
-							
-							
 						</ul>
 					</div>
 				 
@@ -4978,15 +4368,6 @@ function isOpenChange(){
 						<!-- 요약정보 -->
 				    	<a class="btn small brown i-arr-down btn-summary" id="detial_6" href="#none" onclick="showDetail('1310377', '202110845854', '000000000010', 'detial_6'); return false;">요약정보</a>
 					    <!-- 원문서비스  -->
-						
-							
-							
-							
-														
-							
-							
-		                     
-							
 							<!-- <span class="viewrecordnone">원문보기</span> -->
 						
 					</div>
@@ -4994,37 +4375,7 @@ function isOpenChange(){
 				
 			</div>
 		</div>
-	
-		
-		
-			
-			
-			
-						
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-		
-	    
 	   <!-- 백현주, 고문기, 최현숙에대한 인명 마크 처리 추가 각각으로 변경 2015.4.14 기록정보기반과 박영규 -->
-	    
-		
-		
 		
 		<!-- 백문갑에대한 인명 마크 처리 추가 2015.6.11 기록정보기반과 조혜선 -->
 		
@@ -5060,22 +4411,11 @@ function isOpenChange(){
 						<span class="cate-lb" >일반문서</span>
 						
 							<span class="cate-lb open" style="color:#8D6A69; border-color:#8D6A69;">공개</span>
-							
-							
-							
-						
 					</div>
-			
 					<div class="title">
-						
-		  				
 		  					<a href="#"  title="새창열림" onClick="javascript:showItemDetailWithQuery('1310377','201909428085','000000000048','1','Y');   return false;" >
 			  					특허청<em class=searched-word>공고</em> 제2007-140호 관보 게재(특허청<em class=searched-word>공고</em> 제2007-130호의 정정<em class=searched-word>공고</em>) 의뢰
 		  					</a>
-
-
-<!-- 		  					</a> -->
-		  				
 					</div>
 			
 					<div class="info">
@@ -5083,12 +4423,7 @@ function isOpenChange(){
 							<li class="institution">
 								<span class="lb" style="color:#5E5E5E;">생산기관 : </span>
 								<span class="data" style="color:#5E5E5E;">
-									
-										
-										
 											특허청 전기전자심사국 특허심사지원과
-										
-									
 								</span>
 							</li>
 							<li class="year">
@@ -5099,8 +4434,6 @@ function isOpenChange(){
 								<span class="lb" style="color:#5E5E5E;">관리번호 : </span>
 								<span class="data" style="color:#5E5E5E;">EA0198566</span>
 							</li>
-							
-							
 						</ul>
 					</div>
 				 
@@ -5108,15 +4441,6 @@ function isOpenChange(){
 						<!-- 요약정보 -->
 				    	<a class="btn small brown i-arr-down btn-summary" id="detial_7" href="#none" onclick="showDetail('1310377', '201909428085', '000000000048', 'detial_7'); return false;">요약정보</a>
 					    <!-- 원문서비스  -->
-						
-							
-							
-							
-														
-							
-							
-		                     
-							
 							<!-- <span class="viewrecordnone">원문보기</span> -->
 						
 					</div>
@@ -5124,38 +4448,8 @@ function isOpenChange(){
 				
 			</div>
 		</div>
-	
-		
-		
-			
-			
-			
-						
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-		
-	    
 	   <!-- 백현주, 고문기, 최현숙에대한 인명 마크 처리 추가 각각으로 변경 2015.4.14 기록정보기반과 박영규 -->
-	    
-		
-		
-		
+
 		<!-- 백문갑에대한 인명 마크 처리 추가 2015.6.11 기록정보기반과 조혜선 -->
 		
 		<!-- 문현종에대한 인명 마크 처리 추가 2015.12.02 기록정보기반과 서경란 -->
@@ -5166,14 +4460,6 @@ function isOpenChange(){
 		
 		<!-- 세무조사 검색결과 반영(인명 마크 처리 추가 2016.11.25 기록정보기반과 김정환 -->
         <!-- 오홍근 외 3명 -->
-		
-		
-		
-		
-		
-		
-		
-		
 	    <div class="result-row">
 			
 			
@@ -5213,12 +4499,7 @@ function isOpenChange(){
 							<li class="institution">
 								<span class="lb" style="color:#5E5E5E;">생산기관 : </span>
 								<span class="data" style="color:#5E5E5E;">
-									
-										
-										
 											행정자치부 기획관리실 법무담당관
-										
-									
 								</span>
 							</li>
 							<li class="year">
@@ -5229,8 +4510,6 @@ function isOpenChange(){
 								<span class="lb" style="color:#5E5E5E;">관리번호 : </span>
 								<span class="data" style="color:#5E5E5E;">BA0427664</span>
 							</li>
-							
-							
 						</ul>
 					</div>
 				 
@@ -5238,64 +4517,13 @@ function isOpenChange(){
 						<!-- 요약정보 -->
 				    	<a class="btn small brown i-arr-down btn-summary" id="detial_8" href="#none" onclick="showDetail('1310377', '200302097389', '000000000039', 'detial_8'); return false;">요약정보</a>
 					    <!-- 원문서비스  -->
-						
-							
-							
-							
-														
-							
-							
-		                     
-							
-								
-								
-									
-									
 									 	<a class="btn small gold btn-origin" href="https://theme.archives.go.kr/viewer/common/archWebViewer.do?bsid=200302097389&amp;dsid=000000000039&amp;gubun=search" onClick="window.open(this.href,'_blank');return false;" title="새창으로 열림" class="viewrecord">원문보기</a>
-									
-									
-									
-								
-							
-							
-						
 					</div>
 					<div class="expand-viewer detail_box" id="detial_8" style="display: none;"></div>
-				
 			</div>
 		</div>
-	
-		
-		
-			
-			
-			
-						
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-		
-	    
 	   <!-- 백현주, 고문기, 최현숙에대한 인명 마크 처리 추가 각각으로 변경 2015.4.14 기록정보기반과 박영규 -->
-	    
-		
-		
-		
+
 		<!-- 백문갑에대한 인명 마크 처리 추가 2015.6.11 기록정보기반과 조혜선 -->
 		
 		<!-- 문현종에대한 인명 마크 처리 추가 2015.12.02 기록정보기반과 서경란 -->
@@ -5306,17 +4534,7 @@ function isOpenChange(){
 		
 		<!-- 세무조사 검색결과 반영(인명 마크 처리 추가 2016.11.25 기록정보기반과 김정환 -->
         <!-- 오홍근 외 3명 -->
-		
-		
-		
-		
-		
-		
-		
-		
 	    <div class="result-row">
-			
-			
 				<div class="select">
 					<label class="only">
 					<input type="checkbox" name="idChk" id="listcheck_9" value="1310377-200302097274-000000000035"><span>선택</span>
@@ -5330,22 +4548,13 @@ function isOpenChange(){
 						<span class="cate-lb" >일반문서</span>
 						
 							<span class="cate-lb open" style="color:#8D6A69; border-color:#8D6A69;">공개</span>
-							
-							
-							
-						
 					</div>
 			
 					<div class="title">
-						
-		  				
+
 		  					<a href="#"  title="새창열림" onClick="javascript:showItemDetailWithQuery('1310377','200302097274','000000000035','1','Y');   return false;" >
 			  					긴급시설공사입찰<em class=searched-word>공고</em>(PQ심사대상<em class=searched-word>공고</em>)(조달청시설<em class=searched-word>공고</em>제1996-804호)
 		  					</a>
-
-
-<!-- 		  					</a> -->
-		  				
 					</div>
 			
 					<div class="info">
@@ -5353,12 +4562,7 @@ function isOpenChange(){
 							<li class="institution">
 								<span class="lb" style="color:#5E5E5E;">생산기관 : </span>
 								<span class="data" style="color:#5E5E5E;">
-									
-										
-										
 											행정자치부 기획관리실 법무담당관
-										
-									
 								</span>
 							</li>
 							<li class="year">
@@ -5369,8 +4573,6 @@ function isOpenChange(){
 								<span class="lb" style="color:#5E5E5E;">관리번호 : </span>
 								<span class="data" style="color:#5E5E5E;">BA0427558</span>
 							</li>
-							
-							
 						</ul>
 					</div>
 				 
@@ -5378,27 +4580,6 @@ function isOpenChange(){
 						<!-- 요약정보 -->
 				    	<a class="btn small brown i-arr-down btn-summary" id="detial_9" href="#none" onclick="showDetail('1310377', '200302097274', '000000000035', 'detial_9'); return false;">요약정보</a>
 					    <!-- 원문서비스  -->
-						
-							
-							
-							
-														
-							
-							
-		                     
-							
-								
-								
-									
-									
-									 	<a class="btn small gold btn-origin" href="https://theme.archives.go.kr/viewer/common/archWebViewer.do?bsid=200302097274&amp;dsid=000000000035&amp;gubun=search" onClick="window.open(this.href,'_blank');return false;" title="새창으로 열림" class="viewrecord">원문보기</a>
-									
-									
-									
-								
-							
-							
-						
 					</div>
 					<div class="expand-viewer detail_box" id="detial_9" style="display: none;"></div>
 				
@@ -5518,11 +4699,6 @@ function isOpenChange(){
 </div><!-- //wrap -->
 <!-- 오류신고 팝업 -->
 <div id="errorReportPop" class="popup_error">
-    
-
-
-
-
 
 <!DOCTYPE HTML>
 <html lang="ko">
