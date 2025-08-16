@@ -1,3 +1,100 @@
+const closeAllRecordDepthLists = () => {
+    const allLists = document.querySelectorAll('.record-depth-list');
+    const closeBtn = document.querySelector('.record-depth-close-btn');
+    const tabContents = document.querySelector('.record-depth-institution-tab-contents');
+    
+    // record-depth-institution-tab-contents가 열려있으면 닫기 상태, 닫혀있으면 열기 상태
+    const isTabOpen = tabContents && tabContents.classList.contains('active');
+    
+    if (isTabOpen) {
+        allLists.forEach(list => {
+            list.style.display = 'none';
+        });
+        closeBtn.textContent = '열기';
+        closeBtn.classList.add('open');
+        
+        // record-depth-institution-tab-contents도 함께 닫기
+        if (tabContents) {
+            tabContents.classList.remove('active');
+        }
+        
+        // 모든 record-depth-title의 active 클래스 제거
+        const allTitles = document.querySelectorAll('.record-depth-title');
+        allTitles.forEach(title => {
+            title.classList.remove('active');
+        });
+    } else {
+        // 열기 상태로 변경 (tab-contents가 닫혀있으므로)
+        // record-depth-title에 active가 있는 경우는 해당 list를 열지 않음
+        allLists.forEach(list => {
+            const parentTitle = list.closest('.record-depth-col').querySelector('.record-depth-title');
+            if (parentTitle.classList.contains('active')) {
+                // active가 있는 경우는 list를 열지 않음 (닫힌 상태 유지)
+                list.style.display = 'none';
+            } else {
+                // active가 없는 경우는 list를 열기
+                list.style.display = 'block';
+            }
+        });
+        closeBtn.textContent = '닫기';
+        closeBtn.classList.remove('open');
+        
+        // institution-tab이 active 상태라면 record-depth-institution-tab-contents도 열기
+        const institutionTitle = document.querySelector('.record-depth-institution .record-depth-title');
+        if (institutionTitle && institutionTitle.classList.contains('active') && tabContents) {
+            tabContents.classList.add('active');
+        }
+    }
+}
+
+const resetClick = () => {
+    const recordHistoryList = document.querySelector('.record-depth-history-list');
+    if (recordHistoryList) {
+        recordHistoryList.innerHTML = '';
+    }
+}
+
+// 전체 체크박스 기능
+const checkAll = (checkbox) => {
+    const isChecked = checkbox.checked;
+    const allCheckboxes = document.querySelectorAll('input[name="idChk"]');
+    
+    allCheckboxes.forEach(item => {
+        item.checked = isChecked;
+    });
+}
+
+// 개별 체크박스 상태 변화 감지하여 전체 체크박스 상태 업데이트
+const updateCheckAllStatus = () => {
+    const checkAllCheckbox = document.getElementById('listcheck_all');
+    const allCheckboxes = document.querySelectorAll('input[name="idChk"]');
+    
+    if (checkAllCheckbox && allCheckboxes.length > 0) {
+        const checkedCount = Array.from(allCheckboxes).filter(item => item.checked).length;
+        
+        if (checkedCount === 0) {
+            // 모든 체크박스가 해제된 경우
+            checkAllCheckbox.checked = false;
+            checkAllCheckbox.indeterminate = false;
+        } else if (checkedCount === allCheckboxes.length) {
+            // 모든 체크박스가 체크된 경우
+            checkAllCheckbox.checked = true;
+            checkAllCheckbox.indeterminate = false;
+        } else {
+            // 일부만 체크된 경우 (indeterminate 상태)
+            checkAllCheckbox.checked = false;
+            checkAllCheckbox.indeterminate = true;
+        }
+    }
+}
+
+// 개별 체크박스 이벤트 리스너 추가
+document.addEventListener('change', function(e) {
+    if (e.target.name === 'idChk') {
+        updateCheckAllStatus();
+    }
+});
+
 // 검색 결과 리스트 js 이거 보고 적용 하시면 됩니다.
 document.addEventListener('DOMContentLoaded', () => {
     // 검색결과 탭메뉴 구현
@@ -419,9 +516,70 @@ document.addEventListener('DOMContentLoaded', () => {
                             </ul>
                         </div>
                     </div>
+
+                    <div class="record-depth-institution-tab-contents">
+                        <div class="search-institution-list-wrap">
+                            <div class="search-institution-input">
+                                <input type="text" placeholder="생산기관 찾기" />
+                                <input type="submit" value="검색" class="btn-submit">
+                            </div>
+                            <div class="search-institution-list">
+                                <div class="search-institution-col">
+                                    <div class="search-institution-item">
+                                        <input type="checkbox" id="inst-1" />
+                                        <label for="inst-1">행정자치부 기획관리실 법무담당관
+                                        <span class="record-depth-count">(125,672)</span>
+                                        </label>
+                                    </div>
+                                    <div class="search-institution-item">
+                                        <input type="checkbox" id="inst-2" />
+                                        <label for="inst-2">총무처 법무담당관 
+                                            <span class="record-depth-count">(68,523)</span>
+                                        </label>
+                                    </div>
+                                    <div class="search-institution-item">
+                                        <input type="checkbox" id="inst-3" />
+                                        <label for="inst-3">건설교통부 중앙토지수용위원회 사무국
+                                            <span class="record-depth-count">(15,222)</span>
+                                        </label>
+                                    </div>
+                                    <div class="search-institution-item">
+                                        <input type="checkbox" id="inst-4" />
+                                        <label for="inst-4">국토해양부 중앙토지수용위원회 사무국
+                                            <span class="record-depth-count">(10,234)</span>
+                                        </label>
+                                    </div>
+                                    <div class="search-institution-item">
+                                        <input type="checkbox" id="inst-5" />
+                                        <label for="inst-5">국세청 광주지방국세청
+                                            <span class="record-depth-count">(7,204)</span>
+                                        </label>
+                                    </div>
+                                    <div class="search-institution-item">
+                                        <input type="checkbox" id="inst-6" />
+                                        <label for="inst-6">국세청 중부지방 국세청
+                                            <span class="record-depth-count">(4,124)</span>
+                                        </label>
+                                    </div>
+                                    <div class="search-institution-item">
+                                        <input type="checkbox" id="inst-7" />
+                                        <label for="inst-7">국세청 서울지방국세청 용산세무서
+                                            <span class="record-depth-count">(4,235)</span>
+                                        </label>
+                                    </div>
+                                    <div class="search-institution-item">
+                                        <input type="checkbox" id="inst-8" />
+                                        <label for="inst-8">국세청 서울지방국세청 영등포세무서
+                                            <span class="record-depth-count"(5,123)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="record-depth-close-wrap">
-                        <button type="button" class="record-depth-close-btn" aria-label="닫기">닫기</button>
+                        <button type="button" class="record-depth-close-btn" aria-label="닫기" onclick="closeAllRecordDepthLists()">닫기</button>
                     </div>
 
                 <div class="record-depth-actions">
@@ -458,7 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </ul>
                     </div>
                     <div class="record-depth-btns">
-                        <button type="button" class="btn reset">초기화</button>
+                        <button type="button" class="btn reset" onclick="resetClick()">초기화</button>
                         <button type="button" class="btn search">검색</button>
                     </div>
                 </div>
@@ -480,14 +638,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ===================== 
-
     document.querySelectorAll('.record-tab .tab-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            // 탭 active 처리
+            
             document.querySelectorAll('.record-tab li').forEach(li => li.classList.remove('active'));
             this.parentElement.classList.add('active');
-            // 컨텐츠 전환
+            
             const tab = this.dataset.tab;
             document.querySelectorAll('.record-tab-contents-item').forEach(item => {
                 item.classList.remove('active');
@@ -498,7 +654,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ===============================
+    // more_view 버튼 클릭 이벤트 핸들러
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('more_view')) {
+            const institutionCol = e.target.closest('.record-depth-institution');
+            const recordDepthFilter = institutionCol.closest('.record-depth-filter');
+            const tabContents = recordDepthFilter.parentElement.querySelector('.record-depth-institution-tab-contents');
+            
+            // more_view 버튼 토글
+            // more_view 버튼이 아니라 부모의 record-depth-title에 active 클래스를 토글합니다.
+            const recordDepthTitle = e.target.closest('.record-depth-title');
+            if (recordDepthTitle) {
+                recordDepthTitle.classList.toggle('active');
+            }
+            
+            // record-depth-institution-tab-contents 토글
+            if (tabContents) {
+                tabContents.classList.toggle('active');
+            }
+            
+            // 모든 record-depth-list ul들을 감추기/보이기
+            const allRecordLists = recordDepthFilter.querySelectorAll('.record-depth-list');
+            allRecordLists.forEach(ul => {
+                if (recordDepthTitle.classList.contains('active')) {
+                    ul.style.display = 'none';
+                } else {
+                    ul.style.display = '';
+                }
+            });
+        }
+    });
 
     // 초기 템플릿 세팅
     recordList.innerHTML = `

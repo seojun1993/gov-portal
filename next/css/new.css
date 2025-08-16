@@ -152,25 +152,40 @@
 .record-depth-filter .record-depth-col.record-depth-institution{flex: 1;}
 .record-depth-filter .record-depth-col.record-depth-institution .more_view{width: 20px; height: 20px; background-image: url(../images/new/plus.svg); background-repeat: no-repeat; background-position: right center; background-size: 18px; color: #5E5E5E; margin-right: 12px; padding: 0;}
 .record-depth-filter .record-depth-col:not(:last-child){border-right: 1px solid #DEDEDE;}
-.record-depth-filter .record-depth-col .record-depth-title{display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #DEDEDE; background-color: #fafafa; }
+.record-depth-filter .record-depth-col .record-depth-title{display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #DEDEDE; border-bottom: none; background-color: #fafafa; }
+.record-depth-filter .record-depth-col .record-depth-title.active{background-color: #4A2E26; color: #fff;}
 .record-depth-filter .record-depth-col .record-depth-title span{display: block; width: 100%; padding:8.5px 14px; font-weight: 500;}
-.record-depth-filter .record-depth-col .record-depth-list{width:100%; max-height: 252px; overflow-y: auto;}
+.record-depth-filter .record-depth-col .record-depth-title.active .more_view {background-image: url(../images/new/minus.svg);}
+.record-depth-filter .record-depth-col .record-depth-list{width:100%; max-height: 252px; overflow-y: auto; border-top: 1px solid #DEDEDE;}
 .record-depth-filter .record-depth-col .record-depth-list li{display: flex; justify-content: space-between; align-items: center; gap: 8px;}
 .record-depth-filter .record-depth-col .record-depth-list li input[type="radio"]{display: none;}
 .record-depth-filter .record-depth-col .record-depth-list li label{width:100%; font-size: 14px; color: #5E5E5E; font-weight: 400; cursor: pointer; padding: 7px 14px;}
-.record-depth-filter .record-depth-col .record-depth-list li input[type="radio"]:checked + label{
-    background-color: #F9F6F4;
-    background-image: url(../images/new/record_chk.svg);
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    background-size: 14px;
-}
+.record-depth-filter .record-depth-col .record-depth-list li input[type="radio"]:checked + label{ background-color: #F9F6F4; background-image: url(../images/new/record_chk.svg); background-repeat: no-repeat; background-position: right 14px center; background-size: 14px;}
 .record-depth-close-wrap{text-align: right; border-top: 1px solid #DEDEDE; background-color: #FAFAFA; padding: 10px;}
-.record-depth-close-btn{
-    display:flex;
-    align-items: center;
-    margin-left: auto; background-image: url(../images/new/arrow_up.svg); background-repeat: no-repeat; background-position: right top; background-size: 14px; padding-right: 16px; color: #5E5E5E;
+.record-depth-close-btn{ display:flex; align-items: center; margin-left: auto; background-image: url(../images/new/arrow_up.svg); background-repeat: no-repeat; background-position: right top; background-size: 14px; padding-right: 16px; color: #5E5E5E;}
+.record-depth-close-btn.open {background-image: url(../images/new/arrow_down.svg);}
+
+/* 생산기관 검색탭 */
+.record-depth-institution-tab-contents { display: none; background-color: #fff; padding: 24px; width: 100%; border-top: 1px solid #DEDEDE; box-sizing: border-box;}
+.record-depth-institution-tab-contents.active {display: block;}
+.search-institution-input{position: relative; width: 100%; max-width: 500px; height: 40px; margin-bottom: 16px;}
+.search-institution-input input[type="text"]{width: 100%; max-width: 100%; height: 40px; border-radius: 6px;}
+.search-institution-input .btn-submit{position: absolute; right: 12px; top: 0;width: 16px; height: 100%; text-indent: -9999px; border-radius: 50%; background: url(../images/new/search.svg) center center no-repeat; background-size: 16px;}
+.search-institution-list{display: flex; align-items: center; gap: 10px;}
+.search-institution-col{display: flex; flex-wrap: wrap; row-gap: 24px;}
+.search-institution-item{width: 50%;}
+.search-institution-list input[type="checkbox"]{display: none;}
+.search-institution-list label{position: relative; display: flex; align-items: center; cursor: pointer; padding-left: 28px;}
+.search-institution-list label::before {content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; border: 1px solid #DEDEDE; border-radius: 4px;
 }
+.search-institution-list input[type="checkbox"]:checked + label::before {content: ''; position: absolute; right: 0px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; background-image: url(../images/new/record_chk.svg); background-repeat: no-repeat; background-position: center; background-size: 18px; border: none;
+    background: #987F62 url(../images/contents/i_checkbox_on.svg) center center no-repeat;
+}
+
+
+
+/* more_view 버튼이 활성화되었을 때의 스타일 */
+.record-depth-col.record-depth-institution .more_view.active {background-image: url(../images/new/minus.svg);}
 
 .record-depth-actions{display: flex; justify-content: space-between; align-items: center; padding: 16px; border-top: 1px solid #DEDEDE;}
 .record-depth-actions .record-depth-history{display: flex; align-items: center; gap: 8px;}
@@ -182,12 +197,8 @@
 .record-depth-actions .record-depth-history-item + li{margin-top: 10px;}
 .record-depth-actions .record-depth-btns{display: flex; gap: 8px;}
 .record-depth-actions .record-depth-btns .btn{padding: 12px 20px; height: 36px;}
-.record-depth-actions .record-depth-btns .btn.reset{
-   background-color: #fff; border: 1px solid #1B1B1B; color: #1B1B1B;
-   background-image: url(../images/new/reset.svg); background-repeat: no-repeat; background-position: 12px center; background-size: 20px; padding:12px 12px 12px 35px;
-}
+.record-depth-actions .record-depth-btns .btn.reset{ background-color: #fff; border: 1px solid #1B1B1B; color: #1B1B1B; background-image: url(../images/new/reset.svg); background-repeat: no-repeat; background-position: 12px center; background-size: 20px; padding:12px 12px 12px 35px;}
 .record-depth-actions .record-depth-btns .btn.search{background-color: #1B1B1B; color: #fff;}
-
 
 .search-result-filter{border: none; padding: 0; margin: 16px 0 8px; border-bottom: 1px solid #000;}
 .search-result-filter .select{margin-right: auto;}
