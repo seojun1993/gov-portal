@@ -19,6 +19,181 @@ const showDetail = (detailId) => {
     }
 };
 
+const showList = () => {
+    const div_sub = document.getElementById('div_sub');
+    const searchResultList = document.querySelector('.search-result-list');
+    const paging = document.querySelector('.paging');
+    const resultBottom = document.querySelector('.result-bottom');
+    if(div_sub){
+        div_sub.style.display = 'none';
+    }
+
+    if(searchResultList){
+        searchResultList.style.display = 'block';
+    }
+    if(paging){
+        paging.style.display = 'block';
+    }
+    if(resultBottom){
+        resultBottom.style.display = 'block';
+    }
+}
+
+    const detailTemplate = (data) => { 
+        return `      
+			<div class="md-wrap">
+				<h4 class="md-title">
+					건기록물 상세정보
+					<button type="button" onclick="javascript:showErrorReportPop()" class="error_button">오류신고</button>
+				</h4>
+				<div class="data-view">
+					<table>
+						<caption>상세정보</caption>
+						<colgroup>
+							<col class="w15">
+							<col>
+							<col class="w15">
+							<col>
+						</colgroup>
+						<tbody>
+							<tr>
+								<th scope="row">건 제목</th>
+								<td colspan="3" class="data-title">
+									공고번호 제(2003090775500)호 구매입찰 재공고(공기부양정 도입 재공고) 
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">생산기관</th>
+								<td>해양경찰청 경비구난국 수색구조과</td>
+								<th scope="row">관리번호</th>
+								<td>CA0388691</td>
+							</tr>
+							<tr>
+								<th scope="row">생산등록일자(건)</th>
+								<td>2003-09-29</td>
+								<th scope="row">문서유형</th>
+								<td>일반문서</td>
+							</tr>
+							<tr>
+								<th scope="row">공개구분</th>
+								<td>일반기록물</td>
+								<th scope="row">보존기간</th>
+								<td>준영구</td>
+							</tr>
+							<tr>
+								<th scope="row">관리기관</th>
+								<td>영구기록물관리기관</td>
+                                <th scope="row">기록물형태</th>
+								<td>일반기록물</td>
+							</tr>
+							<tr>
+								<th scope="row">기록물건등록번호</th>
+								<td>2003153061400005300</td>
+                                <th scope="row">생산연도(철)</th>
+								<td>2003년</td>
+							</tr>
+							<tr>
+								<th scope="row">기록물건등록번호</th>
+								<td>1985123000000002100</td>
+								<th scope="row">생산연도(철)</th>
+								<td>1985년</td>
+							</tr>
+							<tr>
+								<th scope="row">페이지정보</th>
+								<td>149~393 / 245</td>
+								<th scope="row">원문 서비스</th>
+								<td>
+                                    <a class="btn origin" href="https://theme.archives.go.kr/viewer/common/archWebViewer.do?bsid=200302096758&amp;dsid=000000000040&amp;gubun=search" onclick="window.open(this.href,'_blank');return false;" title="새창으로 열림">원문보기</a>
+                                </td>
+							</tr>
+                            <tr>
+                                <th scope="row">원문 미리보기</th>
+                                <td colspan="3">
+                                    <div class="preview-box">
+                                        <div class="preview-box-inner">
+                                            <ul>
+                                                <li>
+                                                    <a href="#;">
+                                                        <img src="https://placehold.co/100x133">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#;">
+                                                        <img src="https://placehold.co/100x133">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#;">
+                                                        <img src="https://placehold.co/100x133">
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="preview-box-desc">
+                                            <a href="#" class="link">[붙임1]</a>
+                                            <p>…사업예정지 ④ 시장·군수 또는 구청장은 제3항의 규정에 의한 공고를 한 때에는 그 공고의 내용과 의견서를 제출할 수 있다는 뜻을 토지소유자 및 관계인에게 통지(소유자 및... ②건설교통부와그소속기관직제중 다음과 같이 개정한다. 제2조제3항중"토지수용법 제30조제…</p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">붙임파일</th>
+                                <td colspan="3">
+                                <div class="hwp-list" style="display: block;">
+                                    <ul>
+                                    <li><a href="#" class="link">실습(기록대상유형구분).hwp</a></li>
+                                    <li><a href="#" class="link">실습(관리기준표1).hwp</a></li>
+                                    <li><a href="#" class="link">실습(관리기준표2).hwp</a></li>
+                                    </ul>
+                                </div>
+                                </td>
+                            </tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="bottom-btns">
+				<a href="#;" class="btn big prev">
+                    <img src="../next/images/new/arrow_left_w.svg" alt="이전" class="arrow">
+                    이전
+                </a>
+				<a href="#;" class="btn big list" onclick="showList()">목록가기</a>
+				<a href="#;" class="btn big next">
+                    다음
+                    <img src="../next/images/new/arrow_right_w.svg" alt="다음" class="arrow">
+                </a>
+			</div>
+        `;
+    }
+
+const showItemDetailWithQuery = (detailId) => {
+    const targetViewer = document.querySelector(`.expand-viewer.detail_box#${detailId}`);
+    const button = document.querySelector(`[data-detail="${detailId}"]`);
+    const searchResultList = document.querySelector('.search-result-list');
+    const paging = document.querySelector('.paging');
+    const resultBottom = document.querySelector('.result-bottom');
+
+    if(targetViewer && button){
+        if(searchResultList){
+            searchResultList.style.display = 'none';
+        }
+        if(paging){
+            paging.style.display = 'none';
+        }
+        if(resultBottom){
+            resultBottom.style.display = 'none';
+        }
+
+        const div_sub = document.getElementById('div_sub');
+        if(div_sub){
+            div_sub.style.display = 'block';
+        }
+        div_sub.innerHTML = detailTemplate('data');
+    }
+
+};
+
 const closeAllRecordDepthLists = () => {
     const allLists = document.querySelectorAll('.record-depth-list');
     const tabContents = document.querySelector('.record-depth-institution-tab-contents');
@@ -247,19 +422,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const recordList = document.getElementById('recordlist');
 
     // 템플릿 정의
-    // 전체
-
-               // 모바일용인가??
-//     <div id="divOrderSelect" style="display:none;">
-//     <select name="sortOrder" id="sortOrder" class="archive_unit_select" title="정렬방법을 선택하세요">
-//       <option value="accuracy"  selected>정확도순</option>
-//       <option value="dateAsc" >생산연도(과거순)</option>
-//       <option value="dateDesc" >생산연도(최신순)</option>
-//       <option value="titleAsc" >제목순(오름차순)</option>
-//       <option value="titleDesc" >제목순(내림차순)</option>
-//     </select>
-//   </div>
-
     const defaultTemplateHeader = `
         <div class="search-result-filter">
             <h5 class="blind">검색 결과 내 필터</h5>
@@ -314,12 +476,8 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     </div>
     `;
-    
-    // ===============================
-    // 컴포넌트별 템플릿 함수들 정의
-    // ===============================
-    
-    // 1. 탭 메뉴 생성 함수
+        
+    // 탭 메뉴 생성 함수
     const createTabMenu = () => {
         return `
             <div class="record-tab">
@@ -335,8 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
     
-    // 2. 개별 필터 함수들
-    // 2-1. 기록물형태 필터
+    // 개별 필터 함수들
     const createRecordTypeFilter = () => {
         return `
             <div class="record-depth-col record-depth-type">
@@ -378,7 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
     
-    // 2-2. 공개여부 필터
+    // 공개여부 필터
     const createOpenFilter = () => {
         return `
             <div class="record-depth-col record-depth-open">
@@ -405,7 +562,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
     
-    // 2-3. 원문서비스 필터
+    // 원문서비스 필터
     const createServiceFilter = () => {
         return `
             <div class="record-depth-col record-depth-service">
@@ -427,7 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
     
-    // 2-4. 생산연도 필터
+    // 생산연도 필터
     const createYearFilter = () => {
         return `
             <div class="record-depth-col record-depth-year">
@@ -453,7 +610,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
     
-    // 2-5. 생산기관 필터
+    // 생산기관 필터
     const createInstitutionFilter = () => {
         return `
             <div class="record-depth-col record-depth-institution">
@@ -479,7 +636,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
     
-    // 3. 생산기관 검색 탭 생성 함수
+    // 생산기관 검색 탭 생성 함수
     const createInstitutionSearchTab = () => {
         return `
             <div class="record-depth-institution-tab-contents">
@@ -548,7 +705,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
     
-    // 4. 액션 섹션 생성 함수 (닫기 버튼, 히스토리, 액션 버튼들)
+    // 액션 섹션 생성 함수 (닫기 버튼, 히스토리, 액션 버튼들)
     const createActionSection = () => {
         return `
             <!-- 닫기/열기 버튼 -->
@@ -1052,6 +1209,7 @@ document.addEventListener('change', (event) => {
         let selectBox = '';
         let actionBox = '';
         let detailBox = detail(data.detailId);
+        let onclickAttr = !all ? `onclick="showItemDetailWithQuery('${data.detailId}'); return false;"` : '';
 
         if(!all){
             selectBox = `
@@ -1080,7 +1238,7 @@ document.addEventListener('change', (event) => {
             <div class="result-row-inner">
             ${selectBox}
             <div class="image-box">
-                <a href="#none" title="새창열림">
+                <a href="#none" title="새창열림" ${onclickAttr}>
                     <img src="https://placehold.co/157x209" />
                 </a>
             </div>
@@ -1094,7 +1252,7 @@ document.addEventListener('change', (event) => {
               ${actionBox}
 
               <div class="title">
-                <a href="#" title="새창열림" >
+                <a href="#" title="새창열림" ${onclickAttr}>
                   <em class=searched-word>공고</em>내용 정정<em class=searched-word>공고</em>의뢰
                 </a>
               </div>
@@ -1132,6 +1290,7 @@ document.addEventListener('change', (event) => {
 
     const rFile = (data, all = false) => {
         let selectBox = '';
+        let onclickAttr = !all ? `onclick="showItemDetailWithQuery('${data.detailId}'); return false;"` : '';
         if(!all){
             selectBox = `
             <div class="select">
@@ -1162,7 +1321,7 @@ document.addEventListener('change', (event) => {
               </div>
               ${actionBox}
               <div class="title">
-                <a href="#" title="새창열림" >
+                <a href="#" title="새창열림" ${onclickAttr}>
                   <em class=searched-word>공고</em>내용 정정<em class=searched-word>공고</em>의뢰
                 </a>
               </div>
@@ -1432,8 +1591,7 @@ document.addEventListener('change', (event) => {
                         <a href="#none" onclick="rePage('34435'); return false;" class="paging_arrow" title="end">≫</a>
                     </ul>						
                 </div>
-            </div>
-        `
+            </div>`
     }
 
     // 버튼 클릭시 템플릿 변경 및 active 처리
@@ -1477,7 +1635,11 @@ document.addEventListener('change', (event) => {
             </div>
             ${defaultTemplateHeader}
             <div class="search-result-list">
-                    ${rItem({}, false).repeat(3)}
+                ${rItem({}, false).repeat(3)}
+            </div>
+
+            <div id="div_sub" style="display: none;">
+                ${detail(1)}
             </div>
 
             ${paging()}

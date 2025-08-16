@@ -2,7 +2,7 @@
 
 .paging .active{background-color:#1B1B1B;}
 .search-result-top{margin-top:24px;}
-.result-bottom{padding-top:24px;/* border-top: 1px solid #DEDEDE; */}
+.result-bottom{padding-top:24px;}
 .feedback-form{display:flex;justify-content:flex-end;align-items:center;}
 .feedback-form-radio{display:flex;align-items:center;}
 .feedback-form-checkbox{display:none;margin-top:10px;}
@@ -11,6 +11,10 @@
 .radio-group > .item{margin-right:12px;align-items:center;}
 .radio-group > .item input[type="radio"]{margin-top:0;}
 .radio-group input[type="button"]{background-color:#1b1b1b;border-radius:4px;}
+
+.btn{ height: 40px; font-size: 17px; font-weight: 500; border-radius: 4px; padding: 0 10px;}
+.btn.summary{background-color: #4A2E26; color: #fff}
+.btn.origin{background-color: #fff; border:1px solid #4A2E26; color: #4A2E26; background-image: url(../images/new/origin.svg); background-repeat: no-repeat; background-position: 10px center; background-size: 17px; padding: 0 10px 0 32px;}
 
 /* 검색창 */
 .list_control_item{display:flex;align-items:center;column-gap:10px;}
@@ -27,7 +31,6 @@
 
 /* 자동완성 */
 .autoComplete_list{position:relative;}
-.autoComplete_list ul{}
 .autoComplete_list ul li{display:flex;align-items:center;}
 .autoComplete_list ul li button{display:inline-flex;margin-left:4px;}
 
@@ -157,12 +160,7 @@
 .record-depth-actions .record-depth-btns .btn.search{background-color: #1B1B1B; color: #fff;}
 
 /* 업무자료 검색탭 */
-.work-tab-contents{
-    border-top: 1px solid #000;
-    border-right: 1px solid #DEDEDE;
-    border-bottom: 1px solid #DEDEDE;
-    border-left: 1px solid #DEDEDE;
-}
+.work-tab-contents{ border-top: 1px solid #000; border-right: 1px solid #DEDEDE; border-bottom: 1px solid #DEDEDE; border-left: 1px solid #DEDEDE;}
 .work-depth-filter{position: relative; display: flex;}
 .work-depth-filter .work-depth-col{position: relative; min-width: 240px;}
 
@@ -184,37 +182,11 @@
 .work-depth-col.work-depth-category4{flex:1; border: 1px solid #4A2E26;}
 .work-depth-col.work-depth-category4 .work-depth-title{background-color: #4A2E26; color: #fff;}
 .work-depth-col.work-depth-category4 input[type="checkbox"]{display: none;}
-.work-depth-col.work-depth-category4 .work-depth-list{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  width: 100%;
-  box-sizing: border-box;
-}
-.work-depth-col.work-depth-category4 .work-depth-list li{
-  width: 100%;
-  height: 72px;
-  display: flex;
-  align-items: stretch;
-  box-sizing: border-box;
-  border-right: 1px solid #DEDEDE;
-  border-top: 1px solid #DEDEDE;
-}
-.work-depth-col.work-depth-category4 .work-depth-list li:nth-child(-n+3) {
-  border-top: none;
-}
-.work-depth-col.work-depth-category4 .work-depth-list li label{
-  width: 100%;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  padding: 22px 25px;
-  word-break: break-all;
-}
-
-.work-depth-col.work-depth-category4 .work-depth-list li input[type="checkbox"]:checked + label{
-    font-weight: 500;
-    background-color: #F9F6F4;
-}
+.work-depth-col.work-depth-category4 .work-depth-list{ display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; box-sizing: border-box;}
+.work-depth-col.work-depth-category4 .work-depth-list li{ width: 100%; height: 72px; display: flex; align-items: stretch; box-sizing: border-box; border-right: 1px solid #DEDEDE; border-top: 1px solid #DEDEDE;}
+.work-depth-col.work-depth-category4 .work-depth-list li:nth-child(-n+3) {border-top: none;}
+.work-depth-col.work-depth-category4 .work-depth-list li label{ width: 100%; display: flex; align-items: center; box-sizing: border-box; padding: 22px 25px; word-break: break-all;}
+.work-depth-col.work-depth-category4 .work-depth-list li input[type="checkbox"]:checked + label{font-weight: 500;background-color: #F9F6F4;}
 
 /* 검색결과 상단 */
 .search-result-filter{border: none; padding: 0; margin: 16px 0 8px; border-bottom: 1px solid #000;}
@@ -237,9 +209,6 @@
 .search-result-list .cate-lb.open{border-color: #3F7E9C; color: #3F7E9C; background-image: url(../images/new/open.svg); background-repeat: no-repeat; background-position: 10px center; background-size: 18px; padding-left: 30px; border-radius: 20px;}
 .search-result-list .cate-lb.open2{border-color: #A6463B; color: #A6463B; background-image: url(../images/new/open2.svg); background-repeat: no-repeat; background-position: 10px center; background-size: 18px; padding-left: 30px; border-radius: 20px;}
 
-.search-result-list .list-contents .expand .btn{ height: 40px; font-size: 17px; font-weight: 500; border-radius: 4px; padding: 0 10px;}
-.search-result-list .list-contents .expand .btn.summary{background-color: #4A2E26; color: #fff}
-.search-result-list .list-contents .expand .btn.origin{background-color: #fff; border:1px solid #4A2E26; color: #4A2E26; background-image: url(../images/new/origin.svg); background-repeat: no-repeat; background-position: 10px center; background-size: 17px; padding: 0 10px 0 32px;}
 .search-result-list .list-contents .action-box{ position: absolute; right: 0; top: 0;}
 .search-result-list .list-contents .action-box ul{display: flex; align-items: center; gap: 8px;}
 .search-result-list .list-contents .action-box ul li button{display:flex;justify-content:center;align-items:center;width:32px;height:32px;border-radius:50%;background-color:#1B1B1B;padding:0;background-repeat:no-repeat;background-position:center;background-size:18px;color:transparent;font-size:0;text-indent:-9999px;overflow:hidden;}
@@ -248,6 +217,7 @@
 .search-result-list .list-contents .action-box ul li button.folder{background-image:url(../images/new/folder.svg);}
 .search-result-list .list-contents .action-box ul li button.copy{ background-image: url(../images/new/copy.svg);}
 
+/* 요약정보 */
 .search-result-list .expand-viewer{display:none; padding: 0 34px; margin-top: 24px; border: none;}
 .search-result-list.all .expand-viewer{padding: 0;}
 .data-view{border-color: #DEDEDE;}
@@ -263,6 +233,14 @@
 .data-view .preview-box .preview-box-desc a{display: inline-block;}
 .data-view .preview-box .preview-box-desc p{display: inline;}
 
+/* 상세정보 */
+.md-wrap{margin: 12px 0 36px;}
+h4.md-title{padding-left: 0;}
+h4.md-title:before{content: none;}
+.bottom-btns .btn.prev{background-color: #93816D; color: #fff;}
+.bottom-btns .btn.list{background-color: #4A2E26; color: #fff;}
+.bottom-btns .btn.next{background-color: #93816D; color: #fff;}
+.search-data-util-wrap{margin-top: 24px;}
 
 /* 업무자료 검색결과 */
 .list-contents .title{display: flex; align-items: center; flex-wrap: wrap; gap: 8px;}
