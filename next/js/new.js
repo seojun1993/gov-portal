@@ -98,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 검색결과 탭메뉴 구현
     const recordFilter = document.getElementById('recordFilter');
     const recordList = document.getElementById('recordlist');
+    const pagingDiv = document.querySelector('.pagelist');
 
     // 템플릿 정의
     // 전체
@@ -425,6 +426,31 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
     };
+
+    const paging = () => {
+        return `
+            <div class="pagelist">
+                <div class="box_board_pagingBox">
+                    <ul class="paging">
+                        <a href="#none" class="paging_arrow">≪</a>
+                        <a href="#none" class="paging_arrow">＜</a>
+                        <a href="#none"class="active" onclick="rePage('1'); return false;">1</a>
+                        <a href="#none" onclick="rePage('2'); return false;">2</a>
+                        <a href="#none" onclick="rePage('3'); return false;">3</a>
+                        <a href="#none" onclick="rePage('4'); return false;">4</a>
+                        <a href="#none" onclick="rePage('5'); return false;">5</a>
+                        <a href="#none" onclick="rePage('6'); return false;">6</a>
+                        <a href="#none" onclick="rePage('7'); return false;">7</a>
+                        <a href="#none" onclick="rePage('8'); return false;">8</a>
+                        <a href="#none" onclick="rePage('9'); return false;">9</a>
+                        <a href="#none" onclick="rePage('10'); return false;">10</a>
+                        <a href="#none" onclick="rePage('2'); return false;" class="paging_arrow" title="next">＞</a>
+                        <a href="#none" onclick="rePage('34435'); return false;" class="paging_arrow" title="end">≫</a>
+                    </ul>						
+                </div>
+            </div>
+        `
+    }
     
     // 6. 기록물 철 탭 컨텐츠 생성 함수
     const createRfileTab = () => {
@@ -561,8 +587,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const rItem = (data, all = false) => {
         let selectBox = '';
         let actionBox = '';
+        let detailBox = '';
 
-        if(all){
+        if(!all){
             selectBox = `
             <div class="select">
               <label class="only">
@@ -581,58 +608,63 @@ document.addEventListener('DOMContentLoaded', () => {
                 </ul>
             </div>
             `;
+
+            detailBox = detail('detial_3');
+
         }
         // 기록물
         return `
           <div class="result-row ritem">     
-            ${selectBox}
-            <div class="image-box">
-                <a href="#none" title="새창열림">
-                    <img src="https://placehold.co/157x209" />
-                </a>
-            </div>
-            <div class="list-contents">
-              <div class="category" >						
-                <span class="cate-lb">일반문서</span>
-                <span class="cate-lb open">공개</span>
-                <span class="cate-lb open2">비공개</span>
-              </div>
+            <div class="result-row-inner">
+                ${selectBox}
+                <div class="image-box">
+                    <a href="#none" title="새창열림">
+                        <img src="https://placehold.co/157x209" />
+                    </a>
+                </div>
+                <div class="list-contents">
+                <div class="category" >						
+                    <span class="cate-lb">일반문서</span>
+                    <span class="cate-lb open">공개</span>
+                    <span class="cate-lb open2">비공개</span>
+                </div>
 
-              ${actionBox}
+                ${actionBox}
 
-              <div class="title">
-                <a href="#" title="새창열림" >
-                  <em class=searched-word>공고</em>내용 정정<em class=searched-word>공고</em>의뢰
-                </a>
+                <div class="title">
+                    <a href="#" title="새창열림" >
+                    <em class=searched-word>공고</em>내용 정정<em class=searched-word>공고</em>의뢰
+                    </a>
+                </div>
+                <div class="info">
+                    <ul>
+                    <li class="institution">
+                        <span class="lb" style="color:#5E5E5E;">생산기관 : </span>
+                        <span class="data" style="color:#5E5E5E;">	
+                            조달청
+                        </span>
+                    </li>
+                    <li class="year">
+                        <span class="lb" style="color:#5E5E5E;">생산연도 : </span>
+                        <span class="data" style="color:#5E5E5E;">1985년</span>
+                    </li>
+                    <li class="manage-numvber">
+                        <span class="lb" style="color:#5E5E5E;">관리번호 : </span>
+                        <span class="data" style="color:#5E5E5E;">DA0347709</span>
+                    </li>
+                    </ul>
+                    <p>
+                        사업예정지 ④ 시장·군수 또는 구청장은 제3항의 규정에 의한 공고를 한 때에는 그 공고의 내용과 의견서를 제출할 수 있다는 뜻을 토지소유자 및 관계인에게 통지(소유자 및... ②건설교통부와그소속기관직제중 다음과 같이 개정한다. 제2조제3항중"토지수용법 제30조제
+                    </p>
+                </div>
+                <div class="expand">
+                    <a class="btn summary i-arr-down" id="detial_3" href="#none" onclick="showDetail('1310377', '200302096758', '000000000040', 'detial_3'); return false;">요약정보</a>
+                    <a class="btn origin" href="https://theme.archives.go.kr/viewer/common/archWebViewer.do?bsid=200302096758&amp;dsid=000000000040&amp;gubun=search" onClick="window.open(this.href,'_blank');return false;" title="새창으로 열림" class="viewrecord">원문보기</a>
+                </div>
+                </div>
+                </div>
+                ${detailBox}
               </div>
-              <div class="info">
-                <ul>
-                  <li class="institution">
-                    <span class="lb" style="color:#5E5E5E;">생산기관 : </span>
-                    <span class="data" style="color:#5E5E5E;">	
-                          조달청
-                    </span>
-                  </li>
-                  <li class="year">
-                    <span class="lb" style="color:#5E5E5E;">생산연도 : </span>
-                    <span class="data" style="color:#5E5E5E;">1985년</span>
-                  </li>
-                  <li class="manage-numvber">
-                    <span class="lb" style="color:#5E5E5E;">관리번호 : </span>
-                    <span class="data" style="color:#5E5E5E;">DA0347709</span>
-                  </li>
-                </ul>
-                <p>
-                    사업예정지 ④ 시장·군수 또는 구청장은 제3항의 규정에 의한 공고를 한 때에는 그 공고의 내용과 의견서를 제출할 수 있다는 뜻을 토지소유자 및 관계인에게 통지(소유자 및... ②건설교통부와그소속기관직제중 다음과 같이 개정한다. 제2조제3항중"토지수용법 제30조제
-                </p>
-              </div>
-              <div class="expand">
-                <a class="btn summary i-arr-down" id="detial_3" href="#none" onclick="showDetail('1310377', '200302096758', '000000000040', 'detial_3'); return false;">요약정보</a>
-                <a class="btn origin" href="https://theme.archives.go.kr/viewer/common/archWebViewer.do?bsid=200302096758&amp;dsid=000000000040&amp;gubun=search" onClick="window.open(this.href,'_blank');return false;" title="새창으로 열림" class="viewrecord">원문보기</a>
-              </div>
-              <div class="expand-viewer detail_box" id="detial_3" style="display: none;"></div>
-            </div>
-          </div>
         `;
     };
 
@@ -650,6 +682,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 기록물
         return `
           <div class="result-row rfile">     
+            <div class="result-row-inner">
             ${selectBox}    
             <div class="list-contents">
               <div class="category" >						
@@ -679,6 +712,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   </li>
                 </ul>
               </div>
+            </div>
             </div>
           </div>
         `;
@@ -741,6 +775,126 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
 
+    const detail = (id) => {
+        return `
+            <div class="expand-viewer detail_box" id="${id}" >
+                <h5 class="blind">요약정보</h5>
+                <div class="data-view">
+                    <table>
+                        <caption>
+                            해당 건의 철제목, 관리기관, 보존기관, 기록물유형, 페이지정보, 발행일, 유형, 표현형태, 서고정보, 공개구분 등 기록물의 유형에 따라 상세정보를 다루고 있습니다
+                        </caption>
+                        <colgroup>
+                            <col class="w15">
+                            <col>
+                            <col class="w15">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="row">철 제목</th>
+                                <td colspan="3" class="data-title">
+                                    <a href="#" title="철 페이지 이동">
+                                        관세사 시험철1(2-1)
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr></tr>
+                            <tr>
+                                <th scope="row">관리기관</th>
+                                <td>영구기록물관리기관</td>
+                                <th scope="row">보존기간</th>
+                                <td>준영구</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">기록물유형</th>
+                                <td>일반기록물</td>
+                                <th scope="row">페이지정보</th>
+                                <td>49~59 / 11</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">유형</th>
+                                <td>실물</td>
+                                <th scope="row">표현형태</th>
+                                <td>시각</td>
+                            </tr>
+                            <tr></tr>
+                            <tr>
+                                <th>기록물건등록번호</th>
+                                <td>2000122101100031500</td>
+                                <th>전자/비전자 여부</th>
+                                <td>비전자</td>
+                            </tr>
+                            <tr>
+                                <th>생산등록일자</th>
+                                <td>2000-02-18</td>
+                                <th>시행일자</th>
+                                <td>2000-02-18</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">서고정보</th>
+                                <td>국가기록원 성남분원</td>
+                                <th scope="row">공개구분</th>
+                                <td class="open-box">
+                                    <span class="cate-lb open">공개</span>
+                                    <p>※국민의 사생활 보호를 위해 개인정보, 민감정보 등은 공개가 제한될 수 있습니다.</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">UCI 코드</th>
+                                <td colspan="3">
+                                    <a href="javascript:scriptCopyUci('G500:1310377-02012015940844')" class="link">G500:1310377-02012015940844</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h5 class="sm-title mgt20">기여자 정보</h5>
+                <div class="data-view">
+                    <table>
+                        <caption>기여자 정보 표기</caption>
+                        <colgroup>
+                            <col class="w15">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="row">서비스권자</th>
+                                <td>국가기록원</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h5 class="sm-title mgt20">기술분류</h5>
+                <div class="data-view">
+                    <table>
+                        <caption>기술분류</caption>
+                        <colgroup>
+                            <col class="w15">
+                            <col>
+                            <col class="w15">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="row">기록물군</th>
+                                <td>
+                                    <a class="link" href="/next/newsearch/viewDescClassContents.do?businessFunctionId=G00000000085&amp;descClassDiv=G&amp;descFullId=T00000000050/T00000000055/G00000000085" title="관세청 이동">
+                                    관세청
+                                    </a>
+                                </td>
+                                <th scope="row">기록물계열</th>
+                                <td>
+                                    <a class="link" href="/next/newsearch/viewDescClassContents.do?businessFunctionId=S00000000714&amp;descClassDiv=S&amp;descFullId=T00000000050/T00000000055/G00000000085/S00000000714" title="관세심사 이동">관세심사</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `
+    }
+
     // 버튼 클릭시 템플릿 변경 및 active 처리
     recordFilter.addEventListener('click', (e) => {
         const btn = e.target.closest('button');
@@ -764,13 +918,15 @@ document.addEventListener('DOMContentLoaded', () => {
             recordList.innerHTML = `
             ${recordTemplateHeader}
             <div class="search-result-list" style="margin-bottom: 20px;">
-                ${rItem({}).repeat(3)}
+                ${rItem({}, true).repeat(3)}
             </div>
 
             ${workTemplateHeader}
             <div class="search-result-list">
-                ${wItem({}).repeat(3)}
+                ${wItem({}, true).repeat(3)}
             </div>
+
+            ${paging()}
             `;
         }else if(type === 'record'){
             recordList.innerHTML = `
@@ -780,21 +936,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 ${defaultTemplateHeader}
                 <div class="search-result-list">
-                    ${rItem({}, true).repeat(3)}
+                    ${rItem({}, false).repeat(3)}
                 </div>
+
+                ${paging()}
             `;
+
+            // 페이징을 recordList 바로 다음에 추가
+            // recordList.insertAdjacentHTML('afterend', paging());            
         }else if(type === 'work'){
             recordList.innerHTML = `
             ${defaultTemplateHeader}
             <div class="search-result-list">
-                ${wItem({}, true).repeat(3)}
+                ${wItem({}, false).repeat(3)}
             </div>
+
+            ${paging()}
             `;
         }
     });
 
     document.addEventListener('click', function(e) {
-        const searchResultList = document.querySelector('.search-result-list');
         // 탭 클릭 이벤트 처리
         if (e.target.classList.contains('tab-btn')) {
             document.querySelectorAll('.record-tab li').forEach(li => li.classList.remove('active'));
@@ -817,7 +979,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // 검색 결과 영역 업데이트
                     if (searchResultList) {
-                        searchResultList.innerHTML = rItem({}, true).repeat(3);
+                        searchResultList.innerHTML = rItem({}, false).repeat(3);
                     }
 
                     
@@ -841,7 +1003,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // 검색 결과 영역 업데이트
                     if (searchResultList) {
-                        searchResultList.innerHTML = rFile({}, true).repeat(3);
+                        searchResultList.innerHTML = rFile({}, false).repeat(3);
                     }
                 }
             }
