@@ -1,3 +1,11 @@
+// 자동완성 리스트에서 해당 버튼(li)만 삭제
+const deleteItem = (btn) => {
+    const li = btn.closest('li');
+    if(li){
+        li.remove();
+    }
+}
+
 // 요약정보 show/hide 함수
 const showDetail = (detailId) => {
     // 해당 detailId를 가진 expand-viewer detail_box 찾기
