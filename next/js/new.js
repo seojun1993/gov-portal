@@ -1,5 +1,5 @@
 // 요약정보 show/hide 함수
-const showDetail = (bsid, dsid, kikwancode, detailId) => {
+const showDetail = (detailId) => {
     console.log('showDetail 호출됨:', detailId);
     
     // 해당 detailId를 가진 expand-viewer detail_box 찾기
@@ -66,7 +66,7 @@ const closeAllRecordDepthLists = () => {
         allLists.forEach(list => {
             const parentTitle = list.closest('.record-depth-col').querySelector('.record-depth-title');
             if (parentTitle.classList.contains('active')) {
-                list.style.display = 'none';
+            list.style.display = 'none';
             } else {
                 list.style.display = 'block';
             }
@@ -82,11 +82,31 @@ const closeAllRecordDepthLists = () => {
     }
 }
 
+// 이 함수는 기록 히스토리만 초기화하고 있음. 
+// 전체 필터, 체크박스, 입력값 등도 모두 초기화해야 함.
+// 아래는 필터, 체크박스, 입력값, 히스토리 모두 초기화하는 예시입니다.
+
 const resetClick = () => {
-    const recordHistoryList = document.querySelector('.record-depth-history-list');
-    if (recordHistoryList) {
-        recordHistoryList.innerHTML = '';
+    // 기록 히스토리 초기화
+    const history = document.querySelector('.record-depth-history-list');
+    if (history) history.innerHTML = '';
+
+    // 필터 영역 input, select, text 초기화
+    const $ = s => document.querySelectorAll(s);
+    [ '.record-depth-filter input[type=checkbox]', '.record-depth-filter input[type=radio]', '.record-depth-institution-tab-contents input[type=checkbox]'].forEach(sel => $(sel).forEach(el => el.checked = false));
+    [ '.record-depth-filter select'].forEach(sel => $(sel).forEach(el => el.selectedIndex = 0));
+    [ '.record-depth-filter input[type=text]', '.record-depth-institution-tab-contents input[type=text]'].forEach(sel => $(sel).forEach(el => el.value = ''));
+
+    // 전체 체크박스 해제
+    const allChk = document.getElementById('listcheck_all');
+    if (allChk) {
+        allChk.checked = false;
+        allChk.indeterminate = false;
     }
+    $('input[name=idChk]').forEach(el => el.checked = false);
+
+    // 전체 체크박스 상태 갱신
+    if (typeof updateCheckAllStatus === 'function') updateCheckAllStatus();
 }
 
 // 전체 체크박스 기능
@@ -135,10 +155,54 @@ document.addEventListener('DOMContentLoaded', () => {
     // 검색결과 탭메뉴 구현
     const recordFilter = document.getElementById('recordFilter');
     const recordList = document.getElementById('recordlist');
-    const pagingDiv = document.querySelector('.pagelist');
 
     // 템플릿 정의
     // 전체
+
+               // 모바일용인가??
+//     <div id="divOrderSelect" style="display:none;">
+//     <select name="sortOrder" id="sortOrder" class="archive_unit_select" title="정렬방법을 선택하세요">
+//       <option value="accuracy"  selected>정확도순</option>
+//       <option value="dateAsc" >생산연도(과거순)</option>
+//       <option value="dateDesc" >생산연도(최신순)</option>
+//       <option value="titleAsc" >제목순(오름차순)</option>
+//       <option value="titleDesc" >제목순(내림차순)</option>
+//     </select>
+//   </div>
+
+    const defaultTemplateHeader = `
+        <div class="search-result-filter">
+            <h5 class="blind">검색 결과 내 필터</h5>
+            <div class="select">
+                <label class="single">
+                <input type="checkbox" id="listcheck_all" onchange="checkAll(this); return false;">
+                    <span>전체(1,085)</span>
+                </label>
+            </div>
+            <div class="sort">
+                <ul>
+                    <li onClick="setSort('accuracy');"><a href="javascript:setSort('accuracy');"  >정확도순</a></li>
+                    <li onClick="setSort('dateAsc');"><a href="javascript:setSort('dateAsc');"   >생산연도(과거순)</a></li>
+                    <li onClick="setSort('dateDesc');"><a href="javascript:setSort('dateDesc');"  >생산연도(최신순)</a></li>
+                    <li onClick="setSort('titleAsc');"><a href="javascript:setSort('titleAsc');"  >제목순(ㄱ-ㅎ)</a></li>
+                    <li onClick="setSort('titleDesc');"><a href="javascript:setSort('titleDesc');" >제목순(ㅎ-ㄱ)</a></li>
+                </ul>
+            </div>
+
+            <div class="views">
+                <select name="listnum_select" id="listnum_list" onchange="listResizing('arc'); resultSort_order(); return false;">
+                    <option value="10" selected>10</option>
+                    <option value="20" >20</option>
+                    <option value="30" >30</option>
+                    <option value="50" >50</option>
+                    <option value="100" >100</option>
+                    <option value="300" >300</option>
+                    <option value="500" >500</option>
+                </select>
+            </div>
+        </div>
+    `;
+
     const recordTemplateHeader = `
     <div class="record-list">
         <div class="record-list-top">
@@ -446,6 +510,138 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
     };
+
+    const createCategory1 = () => {
+        return `
+            <div class="work-depth-col">
+                <div class="work-depth-title">
+                    <span>카테고리1</span>
+                </div>
+                <ul class="work-depth-list">
+                    <li>
+                        <input type="radio" id="category-1-1" name="category-1" />
+                        <label for="category-1-1">업무안내 · 자료</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="category-1-2" name="category-1" />
+                        <label for="category-1-2">뉴스ㆍ소식</label>
+                    </li>
+                </ul>
+            </div>
+        `;
+    }
+
+    const createCategory2 = () => {
+        return `
+            <div class="work-depth-col">
+                <div class="work-depth-title">
+                    <span>카테고리2</span>
+                </div>
+                <ul class="work-depth-list">
+                    <li>
+                        <input type="radio" id="category-2-1" name="category-2" />
+                        <label for="category-2-1">전체</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="category-2-2" name="category-2" />
+                        <label for="category-2-2">기록관리자료실</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="category-2-3" name="category-2" />
+                        <label for="category-2-3">법령정보</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="category-2-4" name="category-2" />
+                        <label for="category-2-4">업무계획</label>
+                    </li>
+                </ul>
+            </div>
+        `;
+    }
+
+    const createCategory3 = () => {
+        return `
+            <div class="work-depth-col">
+                <div class="work-depth-title">
+                    <span>카테고리3</span>
+                </div>
+                <ul class="work-depth-list">
+                    <li>
+                        <input type="radio" id="category-3-1" name="category-3" />
+                        <label for="category-3-1">전체</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="category-3-2" name="category-3" />
+                        <label for="category-3-2">표준·지침·매뉴얼</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="category-3-3" name="category-3" />
+                        <label for="category-3-3">기록물분류기준</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="category-3-4" name="category-3" />
+                        <label for="category-3-4">행정정보데이터세트</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="category-3-4" name="category-3" />
+                        <label for="category-3-4">기록관리평가</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="category-3-5" name="category-3" />
+                        <label for="category-3-5">발간자료</label>
+                    </li>
+                </ul>
+            </div>
+        `;
+    }
+
+    const createCategory4 = () => {
+        return `
+            <div class="work-depth-col work-depth-category4">
+                <div class="work-depth-title">
+                    <span>카테고리4</span>
+                </div>
+                <ul class="work-depth-list">
+                    <li>
+                        <input type="checkbox" id="category-4-1" name="category-4" />
+                        <label for="category-4-1">전체</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="category-4-2" name="category-4" />
+                        <label for="category-4-2">한국산업표준(KS)</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="category-4-3" name="category-4" />
+                        <label for="category-4-3">기록물관리 표준</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="category-4-4" name="category-4" />
+                        <label for="category-4-4">지침</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="category-4-5" name="category-4" />
+                        <label for="category-4-5">메뉴얼</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="category-4-6" name="category-4" />
+                        <label for="category-4-6">규격·서식</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="category-4-7" name="category-4" />
+                        <label for="category-4-7">해외표준</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="category-4-8" name="category-4" />
+                        <label for="category-4-8">기록관리 SW</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="category-4-9" name="category-4" />
+                        <label for="category-4-9">관련사이트 소개</label>
+                    </li>
+                </ul>
+            </div>
+        `;
+    }
     
     // 5. 기록물 건 탭 컨텐츠 생성 함수
     const createRitemTab = () => {
@@ -463,31 +659,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
     };
-
-    const paging = () => {
-        return `
-            <div class="pagelist">
-                <div class="box_board_pagingBox">
-                    <ul class="paging">
-                        <a href="#none" class="paging_arrow">≪</a>
-                        <a href="#none" class="paging_arrow">＜</a>
-                        <a href="#none"class="active" onclick="rePage('1'); return false;">1</a>
-                        <a href="#none" onclick="rePage('2'); return false;">2</a>
-                        <a href="#none" onclick="rePage('3'); return false;">3</a>
-                        <a href="#none" onclick="rePage('4'); return false;">4</a>
-                        <a href="#none" onclick="rePage('5'); return false;">5</a>
-                        <a href="#none" onclick="rePage('6'); return false;">6</a>
-                        <a href="#none" onclick="rePage('7'); return false;">7</a>
-                        <a href="#none" onclick="rePage('8'); return false;">8</a>
-                        <a href="#none" onclick="rePage('9'); return false;">9</a>
-                        <a href="#none" onclick="rePage('10'); return false;">10</a>
-                        <a href="#none" onclick="rePage('2'); return false;" class="paging_arrow" title="next">＞</a>
-                        <a href="#none" onclick="rePage('34435'); return false;" class="paging_arrow" title="end">≫</a>
-                    </ul>						
-                </div>
-            </div>
-        `
-    }
     
     // 6. 기록물 철 탭 컨텐츠 생성 함수
     const createRfileTab = () => {
@@ -503,8 +674,22 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
     };
-    
-    // 7. 기록물 건 탭 헤더 생성 함수
+
+    // 7. 업무자료 탭 컨텐츠 생성 함수
+    const createRworkTab = () => {
+        return `
+            <div class="work-tab-contents-item rwork-tab">
+                <div class="work-depth-filter">
+                    ${createCategory1()}
+                    ${createCategory2()}
+                    ${createCategory3()}
+                    ${createCategory4()}
+                </div>
+            ${createActionSection()}
+            </div>
+        `;
+    };
+    // 8. 기록물 건 탭 헤더 생성 함수
     const createRitemHeader = (count = 1085) => {
         return `
             <div class="search-result-filter">
@@ -539,7 +724,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
     
-    // 8. 기록물 철 탭 헤더 생성 함수
+    // 9. 기록물 철 탭 헤더 생성 함수
     const createRfileHeader = (count = 500) => {
         return `
             <div class="search-result-filter">
@@ -574,57 +759,13 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
 
-    // 모바일용인가??
-//     <div id="divOrderSelect" style="display:none;">
-//     <select name="sortOrder" id="sortOrder" class="archive_unit_select" title="정렬방법을 선택하세요">
-//       <option value="accuracy"  selected>정확도순</option>
-//       <option value="dateAsc" >생산연도(과거순)</option>
-//       <option value="dateDesc" >생산연도(최신순)</option>
-//       <option value="titleAsc" >제목순(오름차순)</option>
-//       <option value="titleDesc" >제목순(내림차순)</option>
-//     </select>
-//   </div>
-
-    const defaultTemplateHeader = `
-        <div class="search-result-filter">
-            <h5 class="blind">검색 결과 내 필터</h5>
-            <div class="select">
-              <label class="single">
-              <input type="checkbox" id="listcheck_all" onchange="checkAll(this); return false;">
-                <span>전체(1,085)</span>
-              </label>
-            </div>
-            <div class="sort">
-              <ul>
-                <li onClick="setSort('accuracy');"><a href="javascript:setSort('accuracy');"  >정확도순</a></li>
-                <li onClick="setSort('dateAsc');"><a href="javascript:setSort('dateAsc');"   >생산연도(과거순)</a></li>
-                <li onClick="setSort('dateDesc');"><a href="javascript:setSort('dateDesc');"  >생산연도(최신순)</a></li>
-                <li onClick="setSort('titleAsc');"><a href="javascript:setSort('titleAsc');"  >제목순(ㄱ-ㅎ)</a></li>
-                <li onClick="setSort('titleDesc');"><a href="javascript:setSort('titleDesc');" >제목순(ㅎ-ㄱ)</a></li>
-              </ul>
-            </div>
-
-            <div class="views">
-              <select name="listnum_select" id="listnum_list" onchange="listResizing('arc'); resultSort_order(); return false;">
-                <option value="10" selected>10</option>
-                <option value="20" >20</option>
-                <option value="30" >30</option>
-                <option value="50" >50</option>
-                <option value="100" >100</option>
-                <option value="300" >300</option>
-                <option value="500" >500</option>
-              </select>
-            </div>
-          </div>
-    `;
-
     // 기록물/업무자료 공통 아이템 함수
     // all = true 면 selectbox 추가
     // data에 필요한 값들을 넣어서 사용
     const rItem = (data, all = false) => {
         let selectBox = '';
         let actionBox = '';
-        let detailBox = '';
+        let detailBox = detail(data.detailId);
 
         if(!all){
             selectBox = `
@@ -645,69 +786,67 @@ document.addEventListener('DOMContentLoaded', () => {
                 </ul>
             </div>
             `;
-            
-            detailBox = detail('detial_3');
         }
         
         // 기록물
         return `
           <div class="result-row ritem">     
             <div class="result-row-inner">
-                ${selectBox}
-                <div class="image-box">
-                    <a href="#none" title="새창열림">
-                        <img src="https://placehold.co/157x209" />
-                    </a>
-                </div>
-                <div class="list-contents">
-                <div class="category" >						
-                    <span class="cate-lb">일반문서</span>
-                    <span class="cate-lb open">공개</span>
-                    <span class="cate-lb open2">비공개</span>
-                </div>
+            ${selectBox}
+            <div class="image-box">
+                <a href="#none" title="새창열림">
+                    <img src="https://placehold.co/157x209" />
+                </a>
+            </div>
+            <div class="list-contents">
+              <div class="category" >						
+                <span class="cate-lb">일반문서</span>
+                <span class="cate-lb open">공개</span>
+                <span class="cate-lb open2">비공개</span>
+              </div>
 
-                ${actionBox}
+              ${actionBox}
 
-                <div class="title">
-                    <a href="#" title="새창열림" >
-                    <em class=searched-word>공고</em>내용 정정<em class=searched-word>공고</em>의뢰
-                    </a>
-                </div>
-                <div class="info">
-                    <ul>
-                    <li class="institution">
-                        <span class="lb" style="color:#5E5E5E;">생산기관 : </span>
-                        <span class="data" style="color:#5E5E5E;">	
-                            조달청
-                        </span>
-                    </li>
-                    <li class="year">
-                        <span class="lb" style="color:#5E5E5E;">생산연도 : </span>
-                        <span class="data" style="color:#5E5E5E;">1985년</span>
-                    </li>
-                    <li class="manage-numvber">
-                        <span class="lb" style="color:#5E5E5E;">관리번호 : </span>
-                        <span class="data" style="color:#5E5E5E;">DA0347709</span>
-                    </li>
-                    </ul>
-                    <p>
-                        사업예정지 ④ 시장·군수 또는 구청장은 제3항의 규정에 의한 공고를 한 때에는 그 공고의 내용과 의견서를 제출할 수 있다는 뜻을 토지소유자 및 관계인에게 통지(소유자 및... ②건설교통부와그소속기관직제중 다음과 같이 개정한다. 제2조제3항중"토지수용법 제30조제
-                    </p>
-                </div>
-                <div class="expand">
-                    <a class="btn summary i-arr-down" data-detail="detial_3" href="#none" onclick="showDetail('1310377', '200302096758', '000000000040', 'detial_3'); return false;">요약정보</a>
-                    <a class="btn origin" href="https://theme.archives.go.kr/viewer/common/archWebViewer.do?bsid=200302096758&amp;dsid=000000000040&amp;gubun=search" onClick="window.open(this.href,'_blank');return false;" title="새창으로 열림" class="viewrecord">원문보기</a>
-                </div>
-                </div>
+              <div class="title">
+                <a href="#" title="새창열림" >
+                  <em class=searched-word>공고</em>내용 정정<em class=searched-word>공고</em>의뢰
+                </a>
+              </div>
+              <div class="info">
+                <ul>
+                  <li class="institution">
+                    <span class="lb" style="color:#5E5E5E;">생산기관 : </span>
+                    <span class="data" style="color:#5E5E5E;">	
+                          조달청
+                    </span>
+                  </li>
+                  <li class="year">
+                    <span class="lb" style="color:#5E5E5E;">생산연도 : </span>
+                    <span class="data" style="color:#5E5E5E;">1985년</span>
+                  </li>
+                  <li class="manage-numvber">
+                    <span class="lb" style="color:#5E5E5E;">관리번호 : </span>
+                    <span class="data" style="color:#5E5E5E;">DA0347709</span>
+                  </li>
+                </ul>
+                <p>
+                    사업예정지 ④ 시장·군수 또는 구청장은 제3항의 규정에 의한 공고를 한 때에는 그 공고의 내용과 의견서를 제출할 수 있다는 뜻을 토지소유자 및 관계인에게 통지(소유자 및... ②건설교통부와그소속기관직제중 다음과 같이 개정한다. 제2조제3항중"토지수용법 제30조제
+                </p>
+              </div>
+              <div class="expand">
+                    <a class="btn summary i-arr-down" data-detail="${data.detailId}" href="#none" onclick="showDetail('${data.detailId}'); return false;">요약정보</a>
+                <a class="btn origin" href="https://theme.archives.go.kr/viewer/common/archWebViewer.do?bsid=200302096758&amp;dsid=000000000040&amp;gubun=search" onClick="window.open(this.href,'_blank');return false;" title="새창으로 열림" class="viewrecord">원문보기</a>
+              </div>
+            </div>
                 </div>
                 ${detailBox}
-              </div>
+          </div>
         `;
     };
 
     const rFile = (data, all = false) => {
         let selectBox = '';
-        if(all){
+        if(!all){
             selectBox = `
             <div class="select">
               <label class="only">
@@ -716,6 +855,15 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             `;
         }
+
+        let actionBox = `
+            <div class="action-box">
+                <ul>
+                    <li><button class="btn down">Download</button></li>
+                    <li><button class="btn print">Print</button></li>
+                </ul>
+            </div>
+            `;
         // 기록물
         return `
           <div class="result-row rfile">     
@@ -726,6 +874,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="cate-lb">일반문서</span>
                 <span class="cate-lb open">공개</span>
               </div>
+              ${actionBox}
               <div class="title">
                 <a href="#" title="새창열림" >
                   <em class=searched-word>공고</em>내용 정정<em class=searched-word>공고</em>의뢰
@@ -749,7 +898,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   </li>
                 </ul>
               </div>
-            </div>
+              </div>
             </div>
           </div>
         `;
@@ -757,7 +906,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const wItem = (data, all = false) => {
         let selectBox = '';
-        if(all){
+        if(!all){
             selectBox = `
             <div class="select">
               <label class="only">
@@ -769,6 +918,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 업무자료
         return `
           <div class="result-row witem">
+            <div class="result-row-inner">
             ${selectBox}      
             <div class="list-contents">
               <div class="title">
@@ -807,6 +957,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   <span>한국산업표준(KS)</span>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         `;
@@ -883,6 +1034,48 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <a href="javascript:scriptCopyUci('G500:1310377-02012015940844')" class="link">G500:1310377-02012015940844</a>
                                 </td>
                             </tr>
+                            <tr>
+                                <th scope="row">원문 미리보기</th>
+                                <td colspan="3">
+                                    <div class="preview-box">
+                                        <div class="preview-box-inner">
+                                            <ul>
+                                                <li>
+                                                    <a href="#;">
+                                                        <img src="https://placehold.co/100x133" />
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#;">
+                                                        <img src="https://placehold.co/100x133" />
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#;">
+                                                        <img src="https://placehold.co/100x133" />
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="preview-box-desc">
+                                            <a href="#" class="link">[붙임1]</a>
+                                            <p>…사업예정지 ④ 시장·군수 또는 구청장은 제3항의 규정에 의한 공고를 한 때에는 그 공고의 내용과 의견서를 제출할 수 있다는 뜻을 토지소유자 및 관계인에게 통지(소유자 및... ②건설교통부와그소속기관직제중 다음과 같이 개정한다. 제2조제3항중"토지수용법 제30조제…</p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">붙임파일</th>
+                                <td colspan="3">
+                                <div class="hwp-list" style="display: block;">
+                                    <ul>
+                                    <li><a href="#" class="link">실습(기록대상유형구분).hwp</a></li>
+                                    <li><a href="#" class="link">실습(관리기준표1).hwp</a></li>
+                                    <li><a href="#" class="link">실습(관리기준표2).hwp</a></li>
+                                    </ul>
+                                </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -932,6 +1125,31 @@ document.addEventListener('DOMContentLoaded', () => {
         `
     }
 
+    const paging = () => {
+        return `
+            <div class="pagelist">
+                <div class="box_board_pagingBox">
+                    <ul class="paging">
+                        <a href="#none" class="paging_arrow">≪</a>
+                        <a href="#none" class="paging_arrow">＜</a>
+                        <a href="#none"class="active" onclick="rePage('1'); return false;">1</a>
+                        <a href="#none" onclick="rePage('2'); return false;">2</a>
+                        <a href="#none" onclick="rePage('3'); return false;">3</a>
+                        <a href="#none" onclick="rePage('4'); return false;">4</a>
+                        <a href="#none" onclick="rePage('5'); return false;">5</a>
+                        <a href="#none" onclick="rePage('6'); return false;">6</a>
+                        <a href="#none" onclick="rePage('7'); return false;">7</a>
+                        <a href="#none" onclick="rePage('8'); return false;">8</a>
+                        <a href="#none" onclick="rePage('9'); return false;">9</a>
+                        <a href="#none" onclick="rePage('10'); return false;">10</a>
+                        <a href="#none" onclick="rePage('2'); return false;" class="paging_arrow" title="next">＞</a>
+                        <a href="#none" onclick="rePage('34435'); return false;" class="paging_arrow" title="end">≫</a>
+                    </ul>						
+                </div>
+            </div>
+        `
+    }
+
     // 버튼 클릭시 템플릿 변경 및 active 처리
     recordFilter.addEventListener('click', (e) => {
         const btn = e.target.closest('button');
@@ -954,7 +1172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(type === 'all'){
             recordList.innerHTML = `
             ${recordTemplateHeader}
-            <div class="search-result-list" style="margin-bottom: 20px;">
+            <div class="search-result-list all" style="margin-bottom: 20px;">
                 ${rItem({}, true).repeat(3)}
             </div>
 
@@ -968,21 +1186,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }else if(type === 'record'){
             recordList.innerHTML = `
                 ${createTabMenu()}
-                <div class="record-tab-contents">
-                    ${createRitemTab()}
-                </div>
-                ${defaultTemplateHeader}
-                <div class="search-result-list">
+            <div class="record-tab-contents">
+                ${createRitemTab()}
+            </div>
+            ${defaultTemplateHeader}
+            <div class="search-result-list">
                     ${rItem({}, false).repeat(3)}
-                </div>
+            </div>
 
-                ${paging()}
+            ${paging()}
             `;
 
             // 페이징을 recordList 바로 다음에 추가
             // recordList.insertAdjacentHTML('afterend', paging());            
         }else if(type === 'work'){
             recordList.innerHTML = `
+            <div class="work-tab-contents">
+                ${createRworkTab()}
+            </div>
             ${defaultTemplateHeader}
             <div class="search-result-list">
                 ${wItem({}, false).repeat(3)}
@@ -1003,6 +1224,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const tabContentsContainer = document.querySelector('.record-tab-contents');
             const searchResultList = document.querySelector('.search-result-list');
 
+            console.log(tab, 'tab');
             if (tabContentsContainer) {
                 if (tab === 'ritem') {
                     // 기록물 건 탭: 모든 필터
@@ -1016,17 +1238,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // 검색 결과 영역 업데이트
                     if (searchResultList) {
-                        searchResultList.innerHTML = rItem({}, true).repeat(3);
+                        searchResultList.innerHTML = rItem({}, false).repeat(3);
                     }
-
-                    
-
-                    // searchResultList.innerHTML = `
-                    //     ${defaultTemplateHeader}
-                    //     <div class="search-result-list">
-                    //         ${rItem({}, true).repeat(3)}
-                    //     </div>
-                    // `;
 
                 } else if (tab === 'rfile') {
                     // 기록물 철 탭: 일부 필터만 (공개여부, 원문서비스 제외)
@@ -1040,7 +1253,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // 검색 결과 영역 업데이트
                     if (searchResultList) {
-                        searchResultList.innerHTML = rFile({}, true).repeat(3);
+                        searchResultList.innerHTML = rFile({}, false).repeat(3);
                     }
                 }
             }
@@ -1089,7 +1302,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 초기 템플릿 세팅
     recordList.innerHTML = `
         ${recordTemplateHeader}
-        <div class="search-result-list" style="margin-bottom: 20px;">
+        <div class="search-result-list all" style="margin-bottom: 20px;">
             ${rItem({}, true).repeat(3)}
         </div>
 
@@ -1131,8 +1344,15 @@ const downloadEvent = (type, event) => {
         case 'pdf':
             break;
         case 'hwp':
-            const btn = event.target;
-            const li = btn.closest('li');
+            const btn = event;  // event.target 대신 event 직접 사용
+            // const li = btn.closest('li');
+            const li = btn.parentElement;
+            
+            console.log('btn:', btn);
+            console.log('btn.parentElement:', btn.parentElement);
+            console.log('btn.closest("li"):', btn.closest('li'));
+            console.log('li:', li);
+            
             let isOpen = false;
             if (li) {
                 const hwpList = li.querySelector('.hwp-list');
