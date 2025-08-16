@@ -1,3 +1,40 @@
+// 요약정보 show/hide 함수
+const showDetail = (bsid, dsid, kikwancode, detailId) => {
+    console.log('showDetail 호출됨:', detailId);
+    
+    // 해당 detailId를 가진 expand-viewer detail_box 찾기
+    const targetViewer = document.querySelector(`.expand-viewer.detail_box#${detailId}`);
+    console.log('targetViewer:', targetViewer);
+    
+    // 버튼 찾기 (data-detail 속성으로 깔끔하게)
+    const button = document.querySelector(`[data-detail="${detailId}"]`);
+    console.log('button:', button);
+    
+    if (targetViewer && button) {
+        console.log('현재 button active 상태:', button.classList.contains('active'));
+        
+        if (button.classList.contains('active')) {
+            // active 상태면 숨기기
+            targetViewer.style.display = 'none';
+            button.classList.remove('active');
+            // 화살표 아래로 변경
+            button.classList.remove('i-arr-up');
+            button.classList.add('i-arr-down');
+            console.log('숨김 처리 완료');
+        } else {
+            // active 상태가 아니면 보이기
+            targetViewer.style.display = 'block';
+            button.classList.add('active');
+            // 화살표 위로 변경
+            button.classList.remove('i-arr-down');
+            button.classList.add('i-arr-up');
+            console.log('보임 처리 완료');
+        }
+    } else {
+        console.log('targetViewer 또는 button을 찾을 수 없음');
+    }
+};
+
 const closeAllRecordDepthLists = () => {
     const allLists = document.querySelectorAll('.record-depth-list');
     const closeBtn = document.querySelector('.record-depth-close-btn');
@@ -608,10 +645,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 </ul>
             </div>
             `;
-
+            
             detailBox = detail('detial_3');
-
         }
+        
         // 기록물
         return `
           <div class="result-row ritem">     
@@ -658,7 +695,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </p>
                 </div>
                 <div class="expand">
-                    <a class="btn summary i-arr-down" id="detial_3" href="#none" onclick="showDetail('1310377', '200302096758', '000000000040', 'detial_3'); return false;">요약정보</a>
+                    <a class="btn summary i-arr-down" data-detail="detial_3" href="#none" onclick="showDetail('1310377', '200302096758', '000000000040', 'detial_3'); return false;">요약정보</a>
                     <a class="btn origin" href="https://theme.archives.go.kr/viewer/common/archWebViewer.do?bsid=200302096758&amp;dsid=000000000040&amp;gubun=search" onClick="window.open(this.href,'_blank');return false;" title="새창으로 열림" class="viewrecord">원문보기</a>
                 </div>
                 </div>
@@ -979,7 +1016,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // 검색 결과 영역 업데이트
                     if (searchResultList) {
-                        searchResultList.innerHTML = rItem({}, false).repeat(3);
+                        searchResultList.innerHTML = rItem({}, true).repeat(3);
                     }
 
                     
@@ -1003,7 +1040,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // 검색 결과 영역 업데이트
                     if (searchResultList) {
-                        searchResultList.innerHTML = rFile({}, false).repeat(3);
+                        searchResultList.innerHTML = rFile({}, true).repeat(3);
                     }
                 }
             }
