@@ -1,37 +1,21 @@
 // 요약정보 show/hide 함수
 const showDetail = (detailId) => {
-    console.log('showDetail 호출됨:', detailId);
-    
     // 해당 detailId를 가진 expand-viewer detail_box 찾기
     const targetViewer = document.querySelector(`.expand-viewer.detail_box#${detailId}`);
-    console.log('targetViewer:', targetViewer);
-    
-    // 버튼 찾기 (data-detail 속성으로 깔끔하게)
     const button = document.querySelector(`[data-detail="${detailId}"]`);
-    console.log('button:', button);
     
     if (targetViewer && button) {
-        console.log('현재 button active 상태:', button.classList.contains('active'));
-        
         if (button.classList.contains('active')) {
-            // active 상태면 숨기기
             targetViewer.style.display = 'none';
             button.classList.remove('active');
-            // 화살표 아래로 변경
             button.classList.remove('i-arr-up');
             button.classList.add('i-arr-down');
-            console.log('숨김 처리 완료');
         } else {
-            // active 상태가 아니면 보이기
             targetViewer.style.display = 'block';
             button.classList.add('active');
-            // 화살표 위로 변경
             button.classList.remove('i-arr-down');
             button.classList.add('i-arr-up');
-            console.log('보임 처리 완료');
         }
-    } else {
-        console.log('targetViewer 또는 button을 찾을 수 없음');
     }
 };
 
@@ -164,6 +148,97 @@ document.addEventListener('change', function(e) {
         updateCheckAllStatus();
     }
 });
+
+const deleteHistory = (e) => {
+    const historyItem = e.closest('.record-depth-history-item');
+    if(historyItem){
+        historyItem.remove();
+    }
+}
+
+
+// 전역 버튼 상태 업데이트 함수
+const updateGlobalButtonState = () => {
+    const closeBtn = document.querySelector('.record-depth-close-btn');
+    const tabContents = document.querySelector('.record-depth-institution-tab-contents');
+    const activeTitle = document.querySelector('.record-depth-title.active');
+    const allLists = document.querySelectorAll('.record-depth-list');
+    
+    // 현재 열린 상태인지 확인 (ul들의 display 상태도 포함)
+    const isCurrentlyOpen = (tabContents && tabContents.classList.contains('active')) || 
+                           activeTitle || 
+                           Array.from(allLists).some(list => list.style.display !== 'none');
+    
+    if (isCurrentlyOpen) {
+        // 열린 상태면 "닫기" 버튼
+        closeBtn.textContent = '닫기';
+        closeBtn.classList.remove('open');
+    } else {
+        // 닫힌 상태면 "열기" 버튼
+        closeBtn.textContent = '열기';
+        closeBtn.classList.add('open');
+    }
+};
+
+// 전역 함수들
+const downloadEvent = (type, event) => {
+    switch(type){
+        case 'viewer':
+            break;
+        case 'pdf':
+            break;
+        case 'hwp':
+            const btn = event;  // event.target 대신 event 직접 사용
+            // const li = btn.closest('li');
+            const li = btn.parentElement;
+            
+            console.log('btn:', btn);
+            console.log('btn.parentElement:', btn.parentElement);
+            console.log('btn.closest("li"):', btn.closest('li'));
+            console.log('li:', li);
+            
+            let isOpen = false;
+            if (li) {
+                const hwpList = li.querySelector('.hwp-list');
+                if (hwpList) {
+                    isOpen = hwpList.style.display === 'block';
+                }
+            }
+            document.querySelectorAll('.hwp-list').forEach(el => {
+                el.style.display = 'none';
+            });
+            if (li) {
+                const hwpList = li.querySelector('.hwp-list');
+                if (hwpList && !isOpen) {
+                    hwpList.style.display = 'block';
+                }
+            }
+            break;
+        case 'link':
+            break;
+        case 'excel':
+            break;
+        case 'mp4':
+            break;
+        case 'mv61':
+            break;
+        case 'etc':
+            break;
+    }
+};
+
+// 검색결과 만족여부 클릭
+const showDsntRsn = (flag) => {
+    const divNo = document.getElementById('fbAnDsntNoList'); 
+    if(flag){
+        divNo.style.display = 'flex';
+        divNo.style.flexDirection = 'column';
+        divNo.style.alignItems = 'flex-end';
+    }else{
+        divNo.style.display = 'none';
+    }
+};
+
 
 // 검색 결과 리스트 js 이거 보고 적용 하시면 됩니다.
 document.addEventListener('DOMContentLoaded', () => {
@@ -491,28 +566,28 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span>법령정보</span>
                             <span>소관법령</span>
                             <span>훈령·예규</span>
-                            <button type="button" class="delete"></button>
+                            <button type="button" class="delete" onclick="deleteHistory(this)"></button>
                         </li>
                         <li class="record-depth-history-item">
                             <span>업무안내·자료</span>
                             <span>법령정보</span>
                             <span>소관법령</span>
                             <span>훈령·예규</span>
-                            <button type="button" class="delete"></button>
+                            <button type="button" class="delete" onclick="deleteHistory(this)"></button>
                         </li>
                         <li class="record-depth-history-item">
                             <span>업무안내·자료</span>
                             <span>기록관리자료실</span>
                             <span>표준·지침·매뉴얼</span>
                             <span>기록물관리 표준</span>
-                            <button type="button" class="delete"></button>
+                            <button type="button" class="delete" onclick="deleteHistory(this)"></button>
                         </li>
                         <li class="record-depth-history-item">
                             <span>업무안내·자료</span>
                             <span>기록관리자료실</span>
                             <span>표준·지침·매뉴얼</span>
                             <span>매뉴얼</span>
-                            <button type="button" class="delete"></button>
+                            <button type="button" class="delete" onclick="deleteHistory(this)"></button>
                         </li>
                     </ul>
                 </div>
@@ -525,7 +600,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
     };
-
 
 
     // 카테고리 생성 함수들 (전역 스코프)
@@ -671,13 +745,8 @@ const categoryState = {
 
 // 카테고리 상태 업데이트 함수
 const updateCategoryStates = () => {
-    // 카테고리 2: 카테고리 1 선택 시 활성화
     categoryState.category2.enabled = !!categoryState.category1.selected;
-    
-    // 카테고리 3: 카테고리 2 선택 시 활성화
     categoryState.category3.enabled = !!categoryState.category2.selected;
-    
-    // 카테고리 4: 카테고리 3 선택 시 활성화
     categoryState.category4.enabled = !!categoryState.category3.selected;
 };
 
@@ -685,44 +754,31 @@ const updateCategoryStates = () => {
 const handleCategoryChange = (categoryLevel, value) => {
     // 해당 카테고리 선택
     categoryState[categoryLevel].selected = value;
-    
-    // 하위 카테고리 초기화 및 DOM에서 제거
+
     if (categoryLevel === 'category1') {
         categoryState.category2.selected = null;
         categoryState.category3.selected = null;
         categoryState.category4.selected = null;
-        
-        // 카테고리 3, 4 DOM에서 제거
+    
         removeCategory3();
         removeCategory4();
-        
-        // 카테고리 2 동적 추가
         addCategory2();
         
     } else if (categoryLevel === 'category2') {
         categoryState.category3.selected = null;
         categoryState.category4.selected = null;
-        
-        // 카테고리 4 DOM에서 제거
         removeCategory4();
-        
-        // 카테고리 3 동적 추가
         addCategory3();
         
     } else if (categoryLevel === 'category3') {
         categoryState.category4.selected = null;
-        
-        // 카테고리 4 동적 추가
         addCategory4();
     }
     
     // 상태 업데이트
     updateCategoryStates();
-    
     // UI 업데이트
     renderCategories();
-    
-    console.log('카테고리 상태:', categoryState);
 };
 
 // 카테고리 2 동적 추가 함수 (전역 스코프)
@@ -1541,86 +1597,3 @@ document.addEventListener('change', (event) => {
         </div>
     `;
 });
-
-// 전역 버튼 상태 업데이트 함수
-const updateGlobalButtonState = () => {
-    const closeBtn = document.querySelector('.record-depth-close-btn');
-    const tabContents = document.querySelector('.record-depth-institution-tab-contents');
-    const activeTitle = document.querySelector('.record-depth-title.active');
-    const allLists = document.querySelectorAll('.record-depth-list');
-    
-    // 현재 열린 상태인지 확인 (ul들의 display 상태도 포함)
-    const isCurrentlyOpen = (tabContents && tabContents.classList.contains('active')) || 
-                           activeTitle || 
-                           Array.from(allLists).some(list => list.style.display !== 'none');
-    
-    if (isCurrentlyOpen) {
-        // 열린 상태면 "닫기" 버튼
-        closeBtn.textContent = '닫기';
-        closeBtn.classList.remove('open');
-    } else {
-        // 닫힌 상태면 "열기" 버튼
-        closeBtn.textContent = '열기';
-        closeBtn.classList.add('open');
-    }
-};
-
-// 전역 함수들
-const downloadEvent = (type, event) => {
-    switch(type){
-        case 'viewer':
-            break;
-        case 'pdf':
-            break;
-        case 'hwp':
-            const btn = event;  // event.target 대신 event 직접 사용
-            // const li = btn.closest('li');
-            const li = btn.parentElement;
-            
-            console.log('btn:', btn);
-            console.log('btn.parentElement:', btn.parentElement);
-            console.log('btn.closest("li"):', btn.closest('li'));
-            console.log('li:', li);
-            
-            let isOpen = false;
-            if (li) {
-                const hwpList = li.querySelector('.hwp-list');
-                if (hwpList) {
-                    isOpen = hwpList.style.display === 'block';
-                }
-            }
-            document.querySelectorAll('.hwp-list').forEach(el => {
-                el.style.display = 'none';
-            });
-            if (li) {
-                const hwpList = li.querySelector('.hwp-list');
-                if (hwpList && !isOpen) {
-                    hwpList.style.display = 'block';
-                }
-            }
-            break;
-        case 'link':
-            break;
-        case 'excel':
-            break;
-        case 'mp4':
-            break;
-        case 'mv61':
-            break;
-        case 'etc':
-            break;
-    }
-};
-
-// 검색결과 만족여부 클릭
-const showDsntRsn = (flag) => {
-    const divNo = document.getElementById('fbAnDsntNoList'); 
-    if(flag){
-        divNo.style.display = 'flex';
-        divNo.style.flexDirection = 'column';
-        divNo.style.alignItems = 'flex-end';
-    }else{
-        divNo.style.display = 'none';
-    }
-};
-
