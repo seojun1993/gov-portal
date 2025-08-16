@@ -8,16 +8,17 @@
     margin-top: 24px;
 }
 
+.result-bottom{
+    padding-top: 30px;
+    border-top: 1px solid #DEDEDE;
+}
+
 .feedback-form{
-    margin-top: 10px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
 }
 
-.feedback-form-title{
-    margin-right: 20px;
-}
 
 .feedback-form-radio{
     display: flex;
@@ -25,9 +26,28 @@
 }
 
 .feedback-form-checkbox{
-    display: flex;
-    align-items: flex-end;
-    flex-direction: column;
+    display: none;
+    margin-top: 10px;
+}
+
+.checkbox-group.type-block{
+    margin-top: 8px;
+    gap: 8px;
+}
+
+.feedback-form-title{
+    margin-right: 12px;
+}
+
+.radio-group > .item{
+    margin-right: 12px;
+}
+.radio-group > .item input[type="radio"]{
+    margin-top: 0;
+}
+.radio-group input[type="button"]{
+    background-color: #1b1b1b;
+    border-radius: 4px;
 }
 
 
@@ -122,7 +142,9 @@
 
 .search-result-list .result-row > .select{width:auto;margin-right:16px;}
 .search-result-list .result-row > .list-contents{width: calc(100% - 50px - 157px - 24px);}
-.search-result-list .info > li{margin-right: 10px;}
+.search-result-list .result-row:last-child {border-bottom: none;}
+
+.search-result-list .info li{margin-right: 10px;}
 .search-result-list .info > p{padding-top: 8px;}
 .search-result-list .image-box{height:auto; max-width: 157px; margin-right:24px; overflow: hidden; text-align: center;}
 .search-result-list .image-box a{display:block; width:100%; height:100%;}

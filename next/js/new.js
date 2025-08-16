@@ -128,3 +128,15 @@ const downloadEvent = (type) => {
             break;
     }
 }
+
+// 검색결과 클릭
+const showDsntRsn = (flag) => {
+    const divNo = document.getElementById('fbAnDsntNoList'); 
+    if(flag){
+        divNo.style.display = 'flex';
+        divNo.style.flexDirection = 'column';
+        divNo.style.alignItems = 'flex-end';
+    }else{
+        divNo.style.display = 'none';
+    }
+}
