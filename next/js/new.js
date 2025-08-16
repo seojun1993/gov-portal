@@ -3,8 +3,8 @@ const closeAllRecordDepthLists = () => {
     const closeBtn = document.querySelector('.record-depth-close-btn');
     const tabContents = document.querySelector('.record-depth-institution-tab-contents');
     
-    // record-depth-institution-tab-contents가 열려있으면 닫기 상태, 닫혀있으면 열기 상태
-    const isTabOpen = tabContents && tabContents.classList.contains('active');
+    const isTabOpen = (tabContents && tabContents.classList.contains('active')) || 
+                     Array.from(allLists).every(list => list.style.display !== 'none');
     
     if (isTabOpen) {
         allLists.forEach(list => {
@@ -24,8 +24,6 @@ const closeAllRecordDepthLists = () => {
             title.classList.remove('active');
         });
     } else {
-        // 열기 상태로 변경 (tab-contents가 닫혀있으므로)
-        // record-depth-title에 active가 있는 경우는 해당 list를 열지 않음
         allLists.forEach(list => {
             const parentTitle = list.closest('.record-depth-col').querySelector('.record-depth-title');
             if (parentTitle.classList.contains('active')) {
@@ -120,10 +118,282 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="record-list-title">
                 <span>업무자료 검색(47)</span>
             </div>
-            <a href="#" class="more_view">더보기</a>
+            <a href="#" class="main-more-view">더보기</a>
         </div>
     </div>
     `;
+    
+    // ===============================
+    // 컴포넌트별 템플릿 함수들 정의
+    // ===============================
+    
+    // 1. 탭 메뉴 생성 함수
+    const createTabMenu = () => {
+        return `
+            <div class="record-tab">
+                <ul>
+                    <li class="active">
+                        <button type="button" class="tab-btn" data-tab="ritem">기록물 건</button>
+                    </li>
+                    <li>
+                        <button type="button" class="tab-btn" data-tab="rfile">기록물 철</button>
+                    </li>
+                </ul>
+            </div>
+        `;
+    };
+    
+    // 2. 필터 섹션 생성 함수 (기록물형태, 공개여부, 원문서비스, 생산연도, 생산기관)
+    const createFilterSection = () => {
+        return `
+            <div class="record-depth-filter">
+                <!-- 기록물형태 필터 -->
+                <div class="record-depth-col record-depth-type">
+                    <div class="record-depth-title">
+                        <span>기록물형태</span>
+                        <button class="more_view"></button>
+                    </div>
+                    <ul class="record-depth-list">
+                        <li>
+                            <input type="radio" id="record-type-1" name="record-type" />
+                            <label for="record-type-1">일반문서류 <span class="record-depth-count">(532)</span></label>
+                        </li>
+                        <li>
+                            <input type="radio" id="record-type-2" name="record-type" />
+                            <label for="record-type-2">도면류 <span class="record-depth-count">(33)</span></label>
+                        </li>
+                        <li>
+                            <input type="radio" id="record-type-3" name="record-type" />
+                            <label for="record-type-3">사진,필름류 <span class="record-depth-count">(24)</span></label>
+                        </li>
+                        <li>
+                            <input type="radio" id="record-type-4" name="record-type" />
+                            <label for="record-type-4">녹음,동영상류 <span class="record-depth-count">(12)</span></label>
+                        </li>
+                        <li>
+                            <input type="radio" id="record-type-5" name="record-type" />
+                            <label for="record-type-5">마이크로필름류 <span class="record-depth-count">(14)</span></label>
+                        </li>
+                        <li>
+                            <input type="radio" id="record-type-6" name="record-type" />
+                            <label for="record-type-6">전자기록류 <span class="record-depth-count">(21)</span></label>
+                        </li>
+                        <li>
+                            <input type="radio" id="record-type-7" name="record-type" />
+                            <label for="record-type-7">간행물 <span class="record-depth-count">(9)</span></label>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 공개여부 필터 -->
+                <div class="record-depth-col record-depth-open">
+                    <div class="record-depth-title">
+                        <span>공개여부</span>
+                        <button class="more_view"></button>
+                    </div>
+                    <ul class="record-depth-list">
+                        <li>
+                            <input type="radio" id="open-type-1" name="open-type" />
+                            <label for="open-type-1">
+                                <span class="record-depth-open-label">공개</span>
+                                <span class="record-depth-count">(251)</span>
+                            </label>
+                        </li>
+                        <li>
+                            <input type="radio" id="open-type-2" name="open-type" />
+                            <label for="open-type-2">
+                                부분공개 <span class="record-depth-count">(24)</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 원문서비스 필터 -->
+                <div class="record-depth-col record-depth-service">
+                    <div class="record-depth-title">
+                        <span>원문서비스</span>
+                        <button class="more_view"></button>
+                    </div>
+                    <ul class="record-depth-list">
+                        <li>
+                            <input type="radio" id="service-type-1" name="service-type" />
+                            <label for="service-type-1">온라인 미제공 <span class="record-depth-count">(251)</span></label>
+                        </li>
+                        <li>
+                            <input type="radio" id="service-type-2" name="service-type" />
+                            <label for="service-type-2">온라인 제공 <span class="record-depth-count">(32)</span></label>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 생산연도 필터 -->
+                <div class="record-depth-col record-depth-year">
+                    <div class="record-depth-title">
+                        <span>생산연도</span>
+                        <button class="more_view"></button>
+                    </div>
+                    <ul class="record-depth-list">
+                        <li>
+                            <input type="radio" id="year-type-1" name="year-type" />
+                            <label for="year-type-1">2011~2020 <span class="record-depth-count">(124)</span></label>
+                        </li>
+                        <li>
+                            <input type="radio" id="year-type-2" name="year-type" />
+                            <label for="year-type-2">2001~2010 <span class="record-depth-count">(42)</span></label>
+                        </li>
+                        <li>
+                            <input type="radio" id="year-type-3" name="year-type" />
+                            <label for="year-type-3">1991~2000 <span class="record-depth-count">(36)</span></label>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 생산기관 필터 -->
+                <div class="record-depth-col record-depth-institution">
+                    <div class="record-depth-title">
+                        <span>생산기관</span>
+                        <button class="more_view"></button>
+                    </div>
+                    <ul class="record-depth-list">
+                        <li>
+                            <input type="radio" id="inst-type-1" name="inst-type" />
+                            <label for="inst-type-1">조달청 <span class="record-depth-count">(124)</span></label>
+                        </li>
+                        <li>
+                            <input type="radio" id="inst-type-2" name="inst-type" />
+                            <label for="inst-type-2">조달청 <span class="record-depth-count">(42)</span></label>
+                        </li>
+                        <li>
+                            <input type="radio" id="inst-type-3" name="inst-type" />
+                            <label for="inst-type-3">조달청 <span class="record-depth-count">(36)</span></label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        `;
+    };
+    
+    // 3. 생산기관 검색 탭 생성 함수
+    const createInstitutionSearchTab = () => {
+        return `
+            <div class="record-depth-institution-tab-contents">
+                <div class="search-institution-list-wrap">
+                    <!-- 검색 입력창 -->
+                    <div class="search-institution-input">
+                        <input type="text" placeholder="생산기관 찾기" />
+                        <input type="submit" value="검색" class="btn-submit" onclick="return onSearch();">
+                    </div>
+                    
+                    <!-- 검색 결과 리스트 -->
+                    <div class="search-institution-list">
+                        <div class="search-institution-col">
+                            <div class="search-institution-item">
+                                <input type="checkbox" id="inst-1" />
+                                <label for="inst-1">행정자치부 기획관리실 법무담당관
+                                <span class="record-depth-count">(125,672)</span>
+                                </label>
+                            </div>
+                            <div class="search-institution-item">
+                                <input type="checkbox" id="inst-2" />
+                                <label for="inst-2">총무처 법무담당관 
+                                    <span class="record-depth-count">(68,523)</span>
+                                </label>
+                            </div>
+                            <div class="search-institution-item">
+                                <input type="checkbox" id="inst-3" />
+                                <label for="inst-3">건설교통부 중앙토지수용위원회 사무국
+                                    <span class="record-depth-count">(15,222)</span>
+                                </label>
+                            </div>
+                            <div class="search-institution-item">
+                                <input type="checkbox" id="inst-4" />
+                                <label for="inst-4">국토해양부 중앙토지수용위원회 사무국
+                                    <span class="record-depth-count">(10,234)</span>
+                                </label>
+                            </div>
+                            <div class="search-institution-item">
+                                <input type="checkbox" id="inst-5" />
+                                <label for="inst-5">국세청 광주지방국세청
+                                    <span class="record-depth-count">(7,204)</span>
+                                </label>
+                            </div>
+                            <div class="search-institution-item">
+                                <input type="checkbox" id="inst-6" />
+                                <label for="inst-6">국세청 중부지방 국세청
+                                    <span class="record-depth-count">(4,124)</span>
+                                </label>
+                            </div>
+                            <div class="search-institution-item">
+                                <input type="checkbox" id="inst-7" />
+                                <label for="inst-7">국세청 서울지방국세청 용산세무서
+                                    <span class="record-depth-count">(4,235)</span>
+                                </label>
+                            </div>
+                            <div class="search-institution-item">
+                                <input type="checkbox" id="inst-8" />
+                                <label for="inst-8">국세청 서울지방국세청 영등포세무서
+                                    <span class="record-depth-count">(5,123)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    };
+    
+    // 4. 액션 섹션 생성 함수 (닫기 버튼, 히스토리, 액션 버튼들)
+    const createActionSection = () => {
+        return `
+            <!-- 닫기/열기 버튼 -->
+            <div class="record-depth-close-wrap">
+                <button type="button" class="record-depth-close-btn" aria-label="닫기" onclick="closeAllRecordDepthLists()">닫기</button>
+            </div>
+            
+            <!-- 하단 액션 영역 -->
+            <div class="record-depth-actions">
+                <!-- 검색 히스토리 -->
+                <div class="record-depth-history">
+                    <ul class="record-depth-history-list">
+                        <li class="record-depth-history-item">
+                            <span>업무안내·자료</span>
+                            <span>법령정보</span>
+                            <span>소관법령</span>
+                            <span>훈령·예규</span>
+                            <button type="button" class="delete"></button>
+                        </li>
+                        <li class="record-depth-history-item">
+                            <span>업무안내·자료</span>
+                            <span>법령정보</span>
+                            <span>소관법령</span>
+                            <span>훈령·예규</span>
+                            <button type="button" class="delete"></button>
+                        </li>
+                        <li class="record-depth-history-item">
+                            <span>업무안내·자료</span>
+                            <span>기록관리자료실</span>
+                            <span>표준·지침·매뉴얼</span>
+                            <span>기록물관리 표준</span>
+                            <button type="button" class="delete"></button>
+                        </li>
+                        <li class="record-depth-history-item">
+                            <span>업무안내·자료</span>
+                            <span>기록관리자료실</span>
+                            <span>표준·지침·매뉴얼</span>
+                            <span>매뉴얼</span>
+                            <button type="button" class="delete"></button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 액션 버튼들 -->
+                <div class="record-depth-btns">
+                    <button type="button" class="btn reset" onclick="resetClick()">초기화</button>
+                    <button type="button" class="btn search">검색</button>
+                </div>
+            </div>
+        `;
+    };
 
     // 모바일용인가??
 //     <div id="divOrderSelect" style="display:none;">
@@ -388,245 +658,18 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }else if(type === 'record'){
             recordList.innerHTML = `
-
-            <div class="record-tab">
-                <ul>
-                    <li class="active">
-                        <button type="button" class="tab-btn" data-tab="ritem">기록물 건</button>
-                    </li>
-                    <li>
-                        <button type="button" class="tab-btn" data-tab="rfile">기록물 철</button>
-                    </li>
-                </ul>
-            </div>
-            <div class="record-tab-contents">
-                <div class="record-tab-contents-item ritem-tab">
-                    <div class="record-depth-filter">
-                        <div class="record-depth-col record-depth-type">
-                            <div class="record-depth-title">
-                                <span>기록물형태</span>
-                                <button class="more_view"></button>
-                            </div>
-                            <ul class="record-depth-list">
-                                <li>
-                                    <input type="radio" id="record-type-1" name="record-type" />
-                                    <label for="record-type-1">일반문서류 <span class="record-depth-count">(532)</span></label>
-                                </li>
-                                <li>
-                                    <input type="radio" id="record-type-2" name="record-type" />
-                                    <label for="record-type-2">도면류 <span class="record-depth-count">(33)</span></label>
-                                </li>
-                                <li>
-                                    <input type="radio" id="record-type-3" name="record-type" />
-                                    <label for="record-type-3">사진,필름류 <span class="record-depth-count">(24)</span></label>
-                                </li>
-                                <li>
-                                    <input type="radio" id="record-type-4" name="record-type" />
-                                    <label for="record-type-4">녹음,동영상류 <span class="record-depth-count">(12)</span></label>
-                                </li>
-                                <li>
-                                    <input type="radio" id="record-type-5" name="record-type" />
-                                    <label for="record-type-5">마이크로필름류 <span class="record-depth-count">(14)</span></label>
-                                </li>
-                                <li>
-                                    <input type="radio" id="record-type-6" name="record-type" />
-                                    <label for="record-type-6">전자기록류 <span class="record-depth-count">(21)</span></label>
-                                </li>
-                                <li>
-                                    <input type="radio" id="record-type-7" name="record-type" />
-                                    <label for="record-type-7">간행물 <span class="record-depth-count">(9)</span></label>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="record-depth-col record-depth-open">
-                            <div class="record-depth-title">
-                                <span>공개여부</span>
-                                <button class="more_view"></button>
-                            </div>
-                            <ul class="record-depth-list">
-                                <li>
-                                    <input type="radio" id="open-type-1" name="open-type" />
-                                    <label for="open-type-1">
-                                        <span class="record-depth-open-label">공개</span>
-                                        <span class="record-depth-count">(251)</span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <input type="radio" id="open-type-2" name="open-type" />
-                                    <label for="open-type-2">
-                                        부분공개 <span class="record-depth-count">(24)</span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="record-depth-col record-depth-service">
-                            <div class="record-depth-title">
-                                <span>원문서비스</span>
-                                <button class="more_view"></button>
-                            </div>
-                            <ul class="record-depth-list">
-                                <li>
-                                    <input type="radio" id="service-type-1" name="service-type" />
-                                    <label for="service-type-1">온라인 미제공 <span class="record-depth-count">(251)</span></label>
-                                </li>
-                                <li>
-                                    <input type="radio" id="service-type-2" name="service-type" />
-                                    <label for="service-type-2">온라인 제공 <span class="record-depth-count">(32)</span></label>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="record-depth-col record-depth-year">
-                            <div class="record-depth-title">
-                                <span>생산연도</span>
-                                <button class="more_view"></button>
-                            </div>
-                            <ul class="record-depth-list">
-                                <li>
-                                    <input type="radio" id="year-type-1" name="year-type" />
-                                    <label for="year-type-1">2011~2020 <span class="record-depth-count">(124)</span></label>
-                                </li>
-                                <li>
-                                    <input type="radio" id="year-type-2" name="year-type" />
-                                    <label for="year-type-2">2001~2010 <span class="record-depth-count">(42)</span></label>
-                                </li>
-                                <li>
-                                    <input type="radio" id="year-type-3" name="year-type" />
-                                    <label for="year-type-3">1991~2000 <span class="record-depth-count">(36)</span></label>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="record-depth-col record-depth-institution">
-                            <div class="record-depth-title">
-                                <span>생산기관</span>
-                                <button class="more_view"></button>
-                            </div>
-                            <ul class="record-depth-list">
-                                <li>
-                                    <input type="radio" id="inst-type-1" name="inst-type" />
-                                    <label for="inst-type-1">조달청 <span class="record-depth-count">(124)</span></label>
-                                </li>
-                                <li>
-                                    <input type="radio" id="inst-type-2" name="inst-type" />
-                                    <label for="inst-type-2">조달청 <span class="record-depth-count">(42)</span></label>
-                                </li>
-                                <li>
-                                    <input type="radio" id="inst-type-3" name="inst-type" />
-                                    <label for="inst-type-3">조달청 <span class="record-depth-count">(36)</span></label>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="record-depth-institution-tab-contents">
-                        <div class="search-institution-list-wrap">
-                            <div class="search-institution-input">
-                                <input type="text" placeholder="생산기관 찾기" />
-                                <input type="submit" value="검색" class="btn-submit">
-                            </div>
-                            <div class="search-institution-list">
-                                <div class="search-institution-col">
-                                    <div class="search-institution-item">
-                                        <input type="checkbox" id="inst-1" />
-                                        <label for="inst-1">행정자치부 기획관리실 법무담당관
-                                        <span class="record-depth-count">(125,672)</span>
-                                        </label>
-                                    </div>
-                                    <div class="search-institution-item">
-                                        <input type="checkbox" id="inst-2" />
-                                        <label for="inst-2">총무처 법무담당관 
-                                            <span class="record-depth-count">(68,523)</span>
-                                        </label>
-                                    </div>
-                                    <div class="search-institution-item">
-                                        <input type="checkbox" id="inst-3" />
-                                        <label for="inst-3">건설교통부 중앙토지수용위원회 사무국
-                                            <span class="record-depth-count">(15,222)</span>
-                                        </label>
-                                    </div>
-                                    <div class="search-institution-item">
-                                        <input type="checkbox" id="inst-4" />
-                                        <label for="inst-4">국토해양부 중앙토지수용위원회 사무국
-                                            <span class="record-depth-count">(10,234)</span>
-                                        </label>
-                                    </div>
-                                    <div class="search-institution-item">
-                                        <input type="checkbox" id="inst-5" />
-                                        <label for="inst-5">국세청 광주지방국세청
-                                            <span class="record-depth-count">(7,204)</span>
-                                        </label>
-                                    </div>
-                                    <div class="search-institution-item">
-                                        <input type="checkbox" id="inst-6" />
-                                        <label for="inst-6">국세청 중부지방 국세청
-                                            <span class="record-depth-count">(4,124)</span>
-                                        </label>
-                                    </div>
-                                    <div class="search-institution-item">
-                                        <input type="checkbox" id="inst-7" />
-                                        <label for="inst-7">국세청 서울지방국세청 용산세무서
-                                            <span class="record-depth-count">(4,235)</span>
-                                        </label>
-                                    </div>
-                                    <div class="search-institution-item">
-                                        <input type="checkbox" id="inst-8" />
-                                        <label for="inst-8">국세청 서울지방국세청 영등포세무서
-                                            <span class="record-depth-count"(5,123)</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="record-depth-close-wrap">
-                        <button type="button" class="record-depth-close-btn" aria-label="닫기" onclick="closeAllRecordDepthLists()">닫기</button>
-                    </div>
-
-                <div class="record-depth-actions">
-                    <div class="record-depth-history">
-                        <ul class="record-depth-history-list">
-                            <li class="record-depth-history-item">
-                                <span>업무안내·자료</span>
-                                <span>법령정보</span>
-                                <span>소관법령</span>
-                                <span>훈령·예규</span>
-                                <button type="button" class="delete"></button>
-                            </li>
-                            <li class="record-depth-history-item">
-                                <span>업무안내·자료</span>
-                                <span>법령정보</span>
-                                <span>소관법령</span>
-                                <span>훈령·예규</span>
-                                <button type="button" class="delete"></button>
-                            </li>
-                            <li class="record-depth-history-item">
-                                <span>업무안내·자료</span>
-                                <span>기록관리자료실</span>
-                                <span>표준·지침·매뉴얼</span>
-                                <span>기록물관리 표준</span>
-                                <button type="button" class="delete"></button>
-                            </li>
-                            <li class="record-depth-history-item">
-                                <span>업무안내·자료</span>
-                                <span>기록관리자료실</span>
-                                <span>표준·지침·매뉴얼</span>
-                                <span>매뉴얼</span>
-                                <button type="button" class="delete"></button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="record-depth-btns">
-                        <button type="button" class="btn reset" onclick="resetClick()">초기화</button>
-                        <button type="button" class="btn search">검색</button>
+                ${createTabMenu()}
+                <div class="record-tab-contents">
+                    <div class="record-tab-contents-item ritem-tab">
+                        ${createFilterSection()}
+                        ${createInstitutionSearchTab()}
+                        ${createActionSection()}
                     </div>
                 </div>
+                ${defaultTemplateHeader}
+                <div class="search-result-list">
+                    ${rItem({}, true).repeat(3)}
                 </div>
-                </div>
-            </div>
-            ${defaultTemplateHeader}
-            <div class="search-result-list">
-                ${rItem({}, true).repeat(3)}
-            </div>
             `;
         }else if(type === 'work'){
             recordList.innerHTML = `
@@ -665,23 +708,30 @@ document.addEventListener('DOMContentLoaded', () => {
             // more_view 버튼이 아니라 부모의 record-depth-title에 active 클래스를 토글합니다.
             const recordDepthTitle = e.target.closest('.record-depth-title');
             if (recordDepthTitle) {
+                const wasActive = recordDepthTitle.classList.contains('active');
                 recordDepthTitle.classList.toggle('active');
-            }
-            
-            // record-depth-institution-tab-contents 토글
-            if (tabContents) {
-                tabContents.classList.toggle('active');
-            }
-            
-            // 모든 record-depth-list ul들을 감추기/보이기
-            const allRecordLists = recordDepthFilter.querySelectorAll('.record-depth-list');
-            allRecordLists.forEach(ul => {
-                if (recordDepthTitle.classList.contains('active')) {
-                    ul.style.display = 'none';
-                } else {
-                    ul.style.display = '';
+                
+                // record-depth-institution-tab-contents 토글
+                if (tabContents) {
+                    if (wasActive) {
+                        tabContents.classList.remove('active');
+                    } else {
+                        tabContents.classList.add('active');
+                    }
                 }
-            });
+                
+                // 모든 record-depth-list ul들을 감추기/보이기
+                const allRecordLists = recordDepthFilter.querySelectorAll('.record-depth-list');
+                allRecordLists.forEach(ul => {
+                    if (!wasActive) {
+                        // active가 되었으므로 list를 감추기
+                        ul.style.display = 'none';
+                    } else {
+                        // active가 해제되었으므로 list를 보이기
+                        ul.style.display = '';
+                    }
+                });
+            }
         }
     });
 
