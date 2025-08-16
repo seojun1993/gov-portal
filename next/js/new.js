@@ -1672,6 +1672,16 @@ document.addEventListener('change', (event) => {
             const tabContentsContainer = document.querySelector('.record-tab-contents');
             const searchResultList = document.querySelector('.search-result-list');
 
+            // 상세(div_sub)가 열려 있으면 닫고, 검색 결과(result) 영역을 보이게 처리
+            const divSub = document.getElementById('div_sub');
+            if (divSub && divSub.style.display !== 'none') {
+                divSub.style.display = 'none';
+            }
+            const searchResultListDiv = document.querySelector('.search-result-list');
+            if (searchResultListDiv) {
+                searchResultListDiv.style.display = '';
+            }
+
             if (tabContentsContainer) {
                 if (tab === 'ritem') {
                     // 기록물 건 탭: 모든 필터
