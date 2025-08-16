@@ -4,44 +4,44 @@ const closeAllRecordDepthLists = () => {
     const tabContents = document.querySelector('.record-depth-institution-tab-contents');
     
     const isTabOpen = (tabContents && tabContents.classList.contains('active')) || 
-                     Array.from(allLists).every(list => list.style.display !== 'none');
+                     document.querySelector('.record-depth-title.active') ||
+                     Array.from(allLists).some(list => list.style.display !== 'none');
     
     if (isTabOpen) {
+        // 전역 닫기: 모든 것을 닫고 초기화
         allLists.forEach(list => {
             list.style.display = 'none';
         });
-        closeBtn.textContent = '열기';
-        closeBtn.classList.add('open');
         
-        // record-depth-institution-tab-contents도 함께 닫기
         if (tabContents) {
             tabContents.classList.remove('active');
         }
         
-        // 모든 record-depth-title의 active 클래스 제거
+        // 모든 record-depth-title의 active 클래스 제거 (전체 초기화)
         const allTitles = document.querySelectorAll('.record-depth-title');
         allTitles.forEach(title => {
             title.classList.remove('active');
         });
+        
+        // 전역 버튼 상태 업데이트
+        updateGlobalButtonState();
     } else {
         allLists.forEach(list => {
             const parentTitle = list.closest('.record-depth-col').querySelector('.record-depth-title');
             if (parentTitle.classList.contains('active')) {
-                // active가 있는 경우는 list를 열지 않음 (닫힌 상태 유지)
                 list.style.display = 'none';
             } else {
-                // active가 없는 경우는 list를 열기
                 list.style.display = 'block';
             }
         });
-        closeBtn.textContent = '닫기';
-        closeBtn.classList.remove('open');
         
-        // institution-tab이 active 상태라면 record-depth-institution-tab-contents도 열기
         const institutionTitle = document.querySelector('.record-depth-institution .record-depth-title');
         if (institutionTitle && institutionTitle.classList.contains('active') && tabContents) {
             tabContents.classList.add('active');
         }
+        
+        // 전역 버튼 상태 업데이트
+        updateGlobalButtonState();
     }
 }
 
@@ -143,132 +143,146 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
     
-    // 2. 필터 섹션 생성 함수 (기록물형태, 공개여부, 원문서비스, 생산연도, 생산기관)
-    const createFilterSection = () => {
+    // 2. 개별 필터 함수들
+    // 2-1. 기록물형태 필터
+    const createRecordTypeFilter = () => {
         return `
-            <div class="record-depth-filter">
-                <!-- 기록물형태 필터 -->
-                <div class="record-depth-col record-depth-type">
-                    <div class="record-depth-title">
-                        <span>기록물형태</span>
-                        <button class="more_view"></button>
-                    </div>
-                    <ul class="record-depth-list">
-                        <li>
-                            <input type="radio" id="record-type-1" name="record-type" />
-                            <label for="record-type-1">일반문서류 <span class="record-depth-count">(532)</span></label>
-                        </li>
-                        <li>
-                            <input type="radio" id="record-type-2" name="record-type" />
-                            <label for="record-type-2">도면류 <span class="record-depth-count">(33)</span></label>
-                        </li>
-                        <li>
-                            <input type="radio" id="record-type-3" name="record-type" />
-                            <label for="record-type-3">사진,필름류 <span class="record-depth-count">(24)</span></label>
-                        </li>
-                        <li>
-                            <input type="radio" id="record-type-4" name="record-type" />
-                            <label for="record-type-4">녹음,동영상류 <span class="record-depth-count">(12)</span></label>
-                        </li>
-                        <li>
-                            <input type="radio" id="record-type-5" name="record-type" />
-                            <label for="record-type-5">마이크로필름류 <span class="record-depth-count">(14)</span></label>
-                        </li>
-                        <li>
-                            <input type="radio" id="record-type-6" name="record-type" />
-                            <label for="record-type-6">전자기록류 <span class="record-depth-count">(21)</span></label>
-                        </li>
-                        <li>
-                            <input type="radio" id="record-type-7" name="record-type" />
-                            <label for="record-type-7">간행물 <span class="record-depth-count">(9)</span></label>
-                        </li>
-                    </ul>
+            <div class="record-depth-col record-depth-type">
+                <div class="record-depth-title">
+                    <span>기록물형태</span>
+                    <button class="more_view"></button>
                 </div>
-                
-                <!-- 공개여부 필터 -->
-                <div class="record-depth-col record-depth-open">
-                    <div class="record-depth-title">
-                        <span>공개여부</span>
-                        <button class="more_view"></button>
-                    </div>
-                    <ul class="record-depth-list">
-                        <li>
-                            <input type="radio" id="open-type-1" name="open-type" />
-                            <label for="open-type-1">
-                                <span class="record-depth-open-label">공개</span>
-                                <span class="record-depth-count">(251)</span>
-                            </label>
-                        </li>
-                        <li>
-                            <input type="radio" id="open-type-2" name="open-type" />
-                            <label for="open-type-2">
-                                부분공개 <span class="record-depth-count">(24)</span>
-                            </label>
-                        </li>
-                    </ul>
+                <ul class="record-depth-list">
+                    <li>
+                        <input type="radio" id="record-type-1" name="record-type" />
+                        <label for="record-type-1">일반문서류 <span class="record-depth-count">(532)</span></label>
+                    </li>
+                    <li>
+                        <input type="radio" id="record-type-2" name="record-type" />
+                        <label for="record-type-2">도면류 <span class="record-depth-count">(33)</span></label>
+                    </li>
+                    <li>
+                        <input type="radio" id="record-type-3" name="record-type" />
+                        <label for="record-type-3">사진,필름류 <span class="record-depth-count">(24)</span></label>
+                    </li>
+                    <li>
+                        <input type="radio" id="record-type-4" name="record-type" />
+                        <label for="record-type-4">녹음,동영상류 <span class="record-depth-count">(12)</span></label>
+                    </li>
+                    <li>
+                        <input type="radio" id="record-type-5" name="record-type" />
+                        <label for="record-type-5">마이크로필름류 <span class="record-depth-count">(14)</span></label>
+                    </li>
+                    <li>
+                        <input type="radio" id="record-type-6" name="record-type" />
+                        <label for="record-type-6">전자기록류 <span class="record-depth-count">(21)</span></label>
+                    </li>
+                    <li>
+                        <input type="radio" id="record-type-7" name="record-type" />
+                        <label for="record-type-7">간행물 <span class="record-depth-count">(9)</span></label>
+                    </li>
+                </ul>
+            </div>
+        `;
+    };
+    
+    // 2-2. 공개여부 필터
+    const createOpenFilter = () => {
+        return `
+            <div class="record-depth-col record-depth-open">
+                <div class="record-depth-title">
+                    <span>공개여부</span>
+                    <button class="more_view"></button>
                 </div>
-                
-                <!-- 원문서비스 필터 -->
-                <div class="record-depth-col record-depth-service">
-                    <div class="record-depth-title">
-                        <span>원문서비스</span>
-                        <button class="more_view"></button>
-                    </div>
-                    <ul class="record-depth-list">
-                        <li>
-                            <input type="radio" id="service-type-1" name="service-type" />
-                            <label for="service-type-1">온라인 미제공 <span class="record-depth-count">(251)</span></label>
-                        </li>
-                        <li>
-                            <input type="radio" id="service-type-2" name="service-type" />
-                            <label for="service-type-2">온라인 제공 <span class="record-depth-count">(32)</span></label>
-                        </li>
-                    </ul>
+                <ul class="record-depth-list">
+                    <li>
+                        <input type="radio" id="open-type-1" name="open-type" />
+                        <label for="open-type-1">
+                            <span class="record-depth-open-label">공개</span>
+                            <span class="record-depth-count">(251)</span>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="radio" id="open-type-2" name="open-type" />
+                        <label for="open-type-2">
+                            부분공개 <span class="record-depth-count">(24)</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+        `;
+    };
+    
+    // 2-3. 원문서비스 필터
+    const createServiceFilter = () => {
+        return `
+            <div class="record-depth-col record-depth-service">
+                <div class="record-depth-title">
+                    <span>원문서비스</span>
+                    <button class="more_view"></button>
                 </div>
-                
-                <!-- 생산연도 필터 -->
-                <div class="record-depth-col record-depth-year">
-                    <div class="record-depth-title">
-                        <span>생산연도</span>
-                        <button class="more_view"></button>
-                    </div>
-                    <ul class="record-depth-list">
-                        <li>
-                            <input type="radio" id="year-type-1" name="year-type" />
-                            <label for="year-type-1">2011~2020 <span class="record-depth-count">(124)</span></label>
-                        </li>
-                        <li>
-                            <input type="radio" id="year-type-2" name="year-type" />
-                            <label for="year-type-2">2001~2010 <span class="record-depth-count">(42)</span></label>
-                        </li>
-                        <li>
-                            <input type="radio" id="year-type-3" name="year-type" />
-                            <label for="year-type-3">1991~2000 <span class="record-depth-count">(36)</span></label>
-                        </li>
-                    </ul>
+                <ul class="record-depth-list">
+                    <li>
+                        <input type="radio" id="service-type-1" name="service-type" />
+                        <label for="service-type-1">온라인 미제공 <span class="record-depth-count">(251)</span></label>
+                    </li>
+                    <li>
+                        <input type="radio" id="service-type-2" name="service-type" />
+                        <label for="service-type-2">온라인 제공 <span class="record-depth-count">(32)</span></label>
+                    </li>
+                </ul>
+            </div>
+        `;
+    };
+    
+    // 2-4. 생산연도 필터
+    const createYearFilter = () => {
+        return `
+            <div class="record-depth-col record-depth-year">
+                <div class="record-depth-title">
+                    <span>생산연도</span>
+                    <button class="more_view"></button>
                 </div>
-                
-                <!-- 생산기관 필터 -->
-                <div class="record-depth-col record-depth-institution">
-                    <div class="record-depth-title">
-                        <span>생산기관</span>
-                        <button class="more_view"></button>
-                    </div>
-                    <ul class="record-depth-list">
-                        <li>
-                            <input type="radio" id="inst-type-1" name="inst-type" />
-                            <label for="inst-type-1">조달청 <span class="record-depth-count">(124)</span></label>
-                        </li>
-                        <li>
-                            <input type="radio" id="inst-type-2" name="inst-type" />
-                            <label for="inst-type-2">조달청 <span class="record-depth-count">(42)</span></label>
-                        </li>
-                        <li>
-                            <input type="radio" id="inst-type-3" name="inst-type" />
-                            <label for="inst-type-3">조달청 <span class="record-depth-count">(36)</span></label>
-                        </li>
-                    </ul>
+                <ul class="record-depth-list">
+                    <li>
+                        <input type="radio" id="year-type-1" name="year-type" />
+                        <label for="year-type-1">2011~2020 <span class="record-depth-count">(124)</span></label>
+                    </li>
+                    <li>
+                        <input type="radio" id="year-type-2" name="year-type" />
+                        <label for="year-type-2">2001~2010 <span class="record-depth-count">(42)</span></label>
+                    </li>
+                    <li>
+                        <input type="radio" id="year-type-3" name="year-type" />
+                        <label for="year-type-3">1991~2000 <span class="record-depth-count">(36)</span></label>
+                    </li>
+                </ul>
+            </div>
+        `;
+    };
+    
+    // 2-5. 생산기관 필터
+    const createInstitutionFilter = () => {
+        return `
+            <div class="record-depth-col record-depth-institution">
+                <div class="record-depth-title">
+                    <span>생산기관</span>
+                    <button class="more_view"></button>
                 </div>
+                <ul class="record-depth-list">
+                    <li>
+                        <input type="radio" id="inst-type-1" name="inst-type" />
+                        <label for="inst-type-1">조달청 <span class="record-depth-count">(124)</span></label>
+                    </li>
+                    <li>
+                        <input type="radio" id="inst-type-2" name="inst-type" />
+                        <label for="inst-type-2">조달청 <span class="record-depth-count">(42)</span></label>
+                    </li>
+                    <li>
+                        <input type="radio" id="inst-type-3" name="inst-type" />
+                        <label for="inst-type-3">조달청 <span class="record-depth-count">(36)</span></label>
+                    </li>
+                </ul>
             </div>
         `;
     };
@@ -390,6 +404,108 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="record-depth-btns">
                     <button type="button" class="btn reset" onclick="resetClick()">초기화</button>
                     <button type="button" class="btn search">검색</button>
+                </div>
+            </div>
+        `;
+    };
+    
+    // 5. 기록물 건 탭 컨텐츠 생성 함수
+    const createRitemTab = () => {
+        return `
+            <div class="record-tab-contents-item ritem-tab">
+                <div class="record-depth-filter">
+                    ${createRecordTypeFilter()}
+                    ${createOpenFilter()}
+                    ${createServiceFilter()}
+                    ${createYearFilter()}
+                    ${createInstitutionFilter()}
+                </div>
+                ${createInstitutionSearchTab()}
+                ${createActionSection()}
+            </div>
+        `;
+    };
+    
+    // 6. 기록물 철 탭 컨텐츠 생성 함수
+    const createRfileTab = () => {
+        return `
+            <div class="record-tab-contents-item rfile-tab">
+                <div class="record-depth-filter">
+                    ${createRecordTypeFilter()}
+                    ${createYearFilter()}
+                    ${createInstitutionFilter()}
+                </div>
+                ${createInstitutionSearchTab()}
+                ${createActionSection()}
+            </div>
+        `;
+    };
+    
+    // 7. 기록물 건 탭 헤더 생성 함수
+    const createRitemHeader = (count = 1085) => {
+        return `
+            <div class="search-result-filter">
+                <h5 class="blind">기록물 건 검색 결과 내 필터</h5>
+                <div class="select">
+                    <label class="single">
+                        <input type="checkbox" id="listcheck_all" onchange="checkAll(this); return false;">
+                        <span>전체(${count})</span>
+                    </label>
+                </div>
+                <div class="sort">
+                    <ul>
+                        <li onclick="setSort('accuracy');"><a href="javascript:setSort('accuracy');">정확도순</a></li>
+                        <li onclick="setSort('dateAsc');"><a href="javascript:setSort('dateAsc');">생산연도(과거순)</a></li>
+                        <li onclick="setSort('dateDesc');"><a href="javascript:setSort('dateDesc');">생산연도(최신순)</a></li>
+                        <li onclick="setSort('titleAsc');"><a href="javascript:setSort('titleAsc');">제목순(ㄱ-ㅎ)</a></li>
+                        <li onclick="setSort('titleDesc');"><a href="javascript:setSort('titleDesc');">제목순(ㅎ-ㄱ)</a></li>
+                    </ul>
+                </div>
+                <div class="views">
+                    <select name="listnum_select" id="listnum_list" onchange="listResizing('arc'); resultSort_order(); return false;">
+                        <option value="10" selected="">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="300">300</option>
+                        <option value="500">500</option>
+                    </select>
+                </div>
+            </div>
+        `;
+    };
+    
+    // 8. 기록물 철 탭 헤더 생성 함수
+    const createRfileHeader = (count = 500) => {
+        return `
+            <div class="search-result-filter">
+                <h5 class="blind">기록물 철 검색 결과 내 필터</h5>
+                <div class="select">
+                    <label class="single">
+                        <input type="checkbox" id="listcheck_all" onchange="checkAll(this); return false;">
+                        <span>전체(${count})</span>
+                    </label>
+                </div>
+                <div class="sort">
+                    <ul>
+                        <li onclick="setSort('accuracy');"><a href="javascript:setSort('accuracy');">정확도순</a></li>
+                        <li onclick="setSort('dateAsc');"><a href="javascript:setSort('dateAsc');">생산연도(과거순)</a></li>
+                        <li onclick="setSort('dateDesc');"><a href="javascript:setSort('dateDesc');">생산연도(최신순)</a></li>
+                        <li onclick="setSort('titleAsc');"><a href="javascript:setSort('titleAsc');">제목순(ㄱ-ㅎ)</a></li>
+                        <li onclick="setSort('titleDesc');"><a href="javascript:setSort('titleDesc');">제목순(ㅎ-ㄱ)</a></li>
+                    </ul>
+                </div>
+                <div class="views">
+                    <select name="listnum_select" id="listnum_list" onchange="listResizing('arc'); resultSort_order(); return false;">
+                        <option value="10" selected="">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="300">300</option>
+                        <option value="500">500</option>
+                    </select>
                 </div>
             </div>
         `;
@@ -590,22 +706,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 </a>
                 <div class="download" >						
                   <ul>
-                    <li><button type="button" class="btn viewer" onclick="downloadEvent('viewer')">Viewer</button></li>
-                    <li><button type="button" class="btn pdf" onclick="downloadEvent('pdf')">PDF</button></li>
-                    <li><button type="button" class="btn hwp" onclick="downloadEvent('hwp')">HWP</button>
+                    <li><button type="button" class="btn viewer" onclick="downloadEvent('viewer', this)">Viewer</button></li>
+                    <li><button type="button" class="btn pdf" onclick="downloadEvent('pdf', this)">PDF</button></li>
+                    <li><button type="button" class="btn hwp" onclick="downloadEvent('hwp', this)">HWP</button>
                       <div class="hwp-list">
                         <ul>
-                          <li><button type="button" onclick="downloadEvent('')">실습(기록대상유형구분).hwp</button></li>
-                          <li><button type="button" onclick="downloadEvent('')">실습(관리기준표1).hwp</button></li>
-                          <li><button type="button" onclick="downloadEvent('')">실습(관리기준표2).hwp</button></li>
+                          <li><button type="button" onclick="downloadEvent('hwp01', this)">실습(기록대상유형구분).hwp</button></li>
+                          <li><button type="button" onclick="downloadEvent('hwp02', this)">실습(관리기준표1).hwp</button></li>
+                          <li><button type="button" onclick="downloadEvent('hwp03', this)">실습(관리기준표2).hwp</button></li>
                         </ul>
                       </div>
                     </li>
-                    <li><button type="button" class="btn link" onclick="downloadEvent('link')">LINK</button></li>
-                    <li><button type="button" class="btn excel" onclick="downloadEvent('excel')">EXCEL</button></li>
-                    <li><button type="button" class="btn mp4" onclick="downloadEvent('mp4')">MP4</button></li>
-                    <li><button type="button" class="btn mv61" onclick="downloadEvent('mv61')">MV61</button></li>
-                    <li><button type="button" class="btn etc" onclick="downloadEvent('etc')">기타</button></li>
+                    <li><button type="button" class="btn link" onclick="downloadEvent('link', this)">LINK</button></li>
+                    <li><button type="button" class="btn excel" onclick="downloadEvent('excel', this)">EXCEL</button></li>
+                    <li><button type="button" class="btn mp4" onclick="downloadEvent('mp4', this)">MP4</button></li>
+                    <li><button type="button" class="btn mv61" onclick="downloadEvent('mv61', this)">MV61</button></li>
+                    <li><button type="button" class="btn etc" onclick="downloadEvent('etc', this)">기타</button></li>
                   </ul>
                 </div>
               </div>
@@ -660,11 +776,7 @@ document.addEventListener('DOMContentLoaded', () => {
             recordList.innerHTML = `
                 ${createTabMenu()}
                 <div class="record-tab-contents">
-                    <div class="record-tab-contents-item ritem-tab">
-                        ${createFilterSection()}
-                        ${createInstitutionSearchTab()}
-                        ${createActionSection()}
-                    </div>
+                    ${createRitemTab()}
                 </div>
                 ${defaultTemplateHeader}
                 <div class="search-result-list">
@@ -681,24 +793,61 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.querySelectorAll('.record-tab .tab-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            
-            document.querySelectorAll('.record-tab li').forEach(li => li.classList.remove('active'));
-            this.parentElement.classList.add('active');
-            
-            const tab = this.dataset.tab;
-            document.querySelectorAll('.record-tab-contents-item').forEach(item => {
-                item.classList.remove('active');
-                item.style.display = 'none';
-            });
-            document.querySelector(`.record-tab-contents-item.${tab}-tab`).classList.add('active');
-            document.querySelector(`.record-tab-contents-item.${tab}-tab`).style.display = '';
-        });
-    });
-
-    // more_view 버튼 클릭 이벤트 핸들러
     document.addEventListener('click', function(e) {
+        const searchResultList = document.querySelector('.search-result-list');
+        // 탭 클릭 이벤트 처리
+        if (e.target.classList.contains('tab-btn')) {
+            document.querySelectorAll('.record-tab li').forEach(li => li.classList.remove('active'));
+            e.target.parentElement.classList.add('active');
+        
+            const tab = e.target.dataset.tab;
+            const tabContentsContainer = document.querySelector('.record-tab-contents');
+            const searchResultList = document.querySelector('.search-result-list');
+
+            if (tabContentsContainer) {
+                if (tab === 'ritem') {
+                    // 기록물 건 탭: 모든 필터
+                    tabContentsContainer.innerHTML = createRitemTab();
+                    
+                    // 헤더 영역 업데이트
+                    const headerContainer = document.querySelector('.search-result-filter');
+                    if (headerContainer) {
+                        headerContainer.outerHTML = createRitemHeader(1085);
+                    }
+                    
+                    // 검색 결과 영역 업데이트
+                    if (searchResultList) {
+                        searchResultList.innerHTML = rItem({}, true).repeat(3);
+                    }
+
+                    
+
+                    // searchResultList.innerHTML = `
+                    //     ${defaultTemplateHeader}
+                    //     <div class="search-result-list">
+                    //         ${rItem({}, true).repeat(3)}
+                    //     </div>
+                    // `;
+
+                } else if (tab === 'rfile') {
+                    // 기록물 철 탭: 일부 필터만 (공개여부, 원문서비스 제외)
+                    tabContentsContainer.innerHTML = createRfileTab();
+                    
+                    // 헤더 영역 업데이트
+                    const headerContainer = document.querySelector('.search-result-filter');
+                    if (headerContainer) {
+                        headerContainer.outerHTML = createRfileHeader(500);
+                    }
+                    
+                    // 검색 결과 영역 업데이트
+                    if (searchResultList) {
+                        searchResultList.innerHTML = rFile({}, true).repeat(3);
+                    }
+                }
+            }
+        }
+        
+        // more_view 버튼 클릭 이벤트 처리
         if (e.target.classList.contains('more_view')) {
             const institutionCol = e.target.closest('.record-depth-institution');
             const recordDepthFilter = institutionCol.closest('.record-depth-filter');
@@ -731,6 +880,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         ul.style.display = '';
                     }
                 });
+                
+                // 전역 버튼 상태 업데이트
+                updateGlobalButtonState();
             }
         }
     });
@@ -749,15 +901,37 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 });
 
+// 전역 버튼 상태 업데이트 함수
+const updateGlobalButtonState = () => {
+    const closeBtn = document.querySelector('.record-depth-close-btn');
+    const tabContents = document.querySelector('.record-depth-institution-tab-contents');
+    const activeTitle = document.querySelector('.record-depth-title.active');
+    const allLists = document.querySelectorAll('.record-depth-list');
+    
+    // 현재 열린 상태인지 확인 (ul들의 display 상태도 포함)
+    const isCurrentlyOpen = (tabContents && tabContents.classList.contains('active')) || 
+                           activeTitle || 
+                           Array.from(allLists).some(list => list.style.display !== 'none');
+    
+    if (isCurrentlyOpen) {
+        // 열린 상태면 "닫기" 버튼
+        closeBtn.textContent = '닫기';
+        closeBtn.classList.remove('open');
+    } else {
+        // 닫힌 상태면 "열기" 버튼
+        closeBtn.textContent = '열기';
+        closeBtn.classList.add('open');
+    }
+};
+
 // 전역 함수들
-const downloadEvent = (type) => {
+const downloadEvent = (type, event) => {
     switch(type){
         case 'viewer':
             break;
         case 'pdf':
             break;
         case 'hwp':
-            // 모든 hwp-list를 우선 숨김 처리
             const btn = event.target;
             const li = btn.closest('li');
             let isOpen = false;
