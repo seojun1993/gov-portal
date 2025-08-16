@@ -37,7 +37,6 @@ const showDetail = (detailId) => {
 
 const closeAllRecordDepthLists = () => {
     const allLists = document.querySelectorAll('.record-depth-list');
-    const closeBtn = document.querySelector('.record-depth-close-btn');
     const tabContents = document.querySelector('.record-depth-institution-tab-contents');
     
     const isTabOpen = (tabContents && tabContents.classList.contains('active')) || 
@@ -54,13 +53,11 @@ const closeAllRecordDepthLists = () => {
             tabContents.classList.remove('active');
         }
         
-        // 모든 record-depth-title의 active 클래스 제거 (전체 초기화)
         const allTitles = document.querySelectorAll('.record-depth-title');
         allTitles.forEach(title => {
             title.classList.remove('active');
         });
         
-        // 전역 버튼 상태 업데이트
         updateGlobalButtonState();
     } else {
         allLists.forEach(list => {
@@ -77,15 +74,9 @@ const closeAllRecordDepthLists = () => {
             tabContents.classList.add('active');
         }
         
-        // 전역 버튼 상태 업데이트
         updateGlobalButtonState();
     }
 }
-
-// 이 함수는 기록 히스토리만 초기화하고 있음. 
-// 전체 필터, 체크박스, 입력값 등도 모두 초기화해야 함.
-// 아래는 필터, 체크박스, 입력값, 히스토리 모두 초기화하는 예시입니다.
-
 const resetClick = () => {
     // 기록 히스토리 초기화
     const history = document.querySelector('.record-depth-history-list');
@@ -511,138 +502,284 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
 
-    const createCategory1 = () => {
-        return `
-            <div class="work-depth-col">
-                <div class="work-depth-title">
-                    <span>카테고리1</span>
-                </div>
-                <ul class="work-depth-list">
-                    <li>
-                        <input type="radio" id="category-1-1" name="category-1" />
-                        <label for="category-1-1">업무안내 · 자료</label>
-                    </li>
-                    <li>
-                        <input type="radio" id="category-1-2" name="category-1" />
-                        <label for="category-1-2">뉴스ㆍ소식</label>
-                    </li>
-                </ul>
-            </div>
-        `;
-    }
 
-    const createCategory2 = () => {
-        return `
-            <div class="work-depth-col">
-                <div class="work-depth-title">
-                    <span>카테고리2</span>
-                </div>
-                <ul class="work-depth-list">
-                    <li>
-                        <input type="radio" id="category-2-1" name="category-2" />
-                        <label for="category-2-1">전체</label>
-                    </li>
-                    <li>
-                        <input type="radio" id="category-2-2" name="category-2" />
-                        <label for="category-2-2">기록관리자료실</label>
-                    </li>
-                    <li>
-                        <input type="radio" id="category-2-3" name="category-2" />
-                        <label for="category-2-3">법령정보</label>
-                    </li>
-                    <li>
-                        <input type="radio" id="category-2-4" name="category-2" />
-                        <label for="category-2-4">업무계획</label>
-                    </li>
-                </ul>
-            </div>
-        `;
-    }
 
-    const createCategory3 = () => {
-        return `
-            <div class="work-depth-col">
-                <div class="work-depth-title">
-                    <span>카테고리3</span>
-                </div>
-                <ul class="work-depth-list">
-                    <li>
-                        <input type="radio" id="category-3-1" name="category-3" />
-                        <label for="category-3-1">전체</label>
-                    </li>
-                    <li>
-                        <input type="radio" id="category-3-2" name="category-3" />
-                        <label for="category-3-2">표준·지침·매뉴얼</label>
-                    </li>
-                    <li>
-                        <input type="radio" id="category-3-3" name="category-3" />
-                        <label for="category-3-3">기록물분류기준</label>
-                    </li>
-                    <li>
-                        <input type="radio" id="category-3-4" name="category-3" />
-                        <label for="category-3-4">행정정보데이터세트</label>
-                    </li>
-                    <li>
-                        <input type="radio" id="category-3-4" name="category-3" />
-                        <label for="category-3-4">기록관리평가</label>
-                    </li>
-                    <li>
-                        <input type="radio" id="category-3-5" name="category-3" />
-                        <label for="category-3-5">발간자료</label>
-                    </li>
-                </ul>
+    // 카테고리 생성 함수들 (전역 스코프)
+const createCategory1 = () => {
+    return `
+        <div class="work-depth-col">
+            <div class="work-depth-title">
+                <span>카테고리1</span>
             </div>
-        `;
-    }
+            <ul class="work-depth-list">
+                <li>
+                    <input type="radio" id="category-1-1" name="category1" value="업무안내자료" />
+                    <label for="category-1-1">업무안내 · 자료</label>
+                </li>
+                <li>
+                    <input type="radio" id="category-1-2" name="category1" value="뉴스소식" />
+                    <label for="category-1-2">뉴스ㆍ소식</label>
+                </li>
+            </ul>
+        </div>
+    `;
+}
 
-    const createCategory4 = () => {
-        return `
-            <div class="work-depth-col work-depth-category4">
-                <div class="work-depth-title">
-                    <span>카테고리4</span>
-                </div>
-                <ul class="work-depth-list">
-                    <li>
-                        <input type="checkbox" id="category-4-1" name="category-4" />
-                        <label for="category-4-1">전체</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="category-4-2" name="category-4" />
-                        <label for="category-4-2">한국산업표준(KS)</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="category-4-3" name="category-4" />
-                        <label for="category-4-3">기록물관리 표준</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="category-4-4" name="category-4" />
-                        <label for="category-4-4">지침</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="category-4-5" name="category-4" />
-                        <label for="category-4-5">메뉴얼</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="category-4-6" name="category-4" />
-                        <label for="category-4-6">규격·서식</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="category-4-7" name="category-4" />
-                        <label for="category-4-7">해외표준</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="category-4-8" name="category-4" />
-                        <label for="category-4-8">기록관리 SW</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="category-4-9" name="category-4" />
-                        <label for="category-4-9">관련사이트 소개</label>
-                    </li>
-                </ul>
+const createCategory2 = () => {
+    return `
+        <div class="work-depth-col">
+            <div class="work-depth-title">
+                <span>카테고리2</span>
             </div>
-        `;
+            <ul class="work-depth-list">
+                <li>
+                    <input type="radio" id="category-2-1" name="category2" value="전체" />
+                    <label for="category-2-1">전체</label>
+                </li>
+                <li>
+                    <input type="radio" id="category-2-2" name="category2" value="기록관리자료실" />
+                    <label for="category-2-2">기록관리자료실</label>
+                </li>
+                <li>
+                    <input type="radio" id="category-2-3" name="category2" value="법령정보" />
+                    <label for="category-2-3">법령정보</label>
+                </li>
+                <li>
+                    <input type="radio" id="category-2-4" name="category2" value="업무계획" />
+                    <label for="category-2-4">업무계획</label>
+                </li>
+            </ul>
+        </div>
+    `;
+}
+
+const createCategory3 = () => {
+    return `
+        <div class="work-depth-col">
+            <div class="work-depth-title">
+                <span>카테고리3</span>
+            </div>
+            <ul class="work-depth-list">
+                <li>
+                    <input type="radio" id="category-3-1" name="category3" value="전체" />
+                    <label for="category-3-1">전체</label>
+                </li>
+                <li>
+                    <input type="radio" id="category-3-2" name="category3" value="표준지침매뉴얼" />
+                    <label for="category-3-2">표준·지침·매뉴얼</label>
+                </li>
+                <li>
+                    <input type="radio" id="category-3-3" name="category3" value="기록물분류기준" />
+                    <label for="category-3-3">기록물분류기준</label>
+                </li>
+                <li>
+                    <input type="radio" id="category-3-4" name="category3" value="행정정보데이터세트" />
+                    <label for="category-3-4">행정정보데이터세트</label>
+                </li>
+                <li>
+                    <input type="radio" id="category-3-5" name="category3" value="기록관리평가" />
+                    <label for="category-3-5">기록관리평가</label>
+                </li>
+                <li>
+                    <input type="radio" id="category-3-6" name="category3" value="발간자료" />
+                    <label for="category-3-6">발간자료</label>
+                </li>
+            </ul>
+        </div>
+    `;
+}
+
+const createCategory4 = () => {
+    return `
+        <div class="work-depth-col work-depth-category4">
+            <div class="work-depth-title">
+                <span>카테고리4</span>
+            </div>
+            <ul class="work-depth-list">
+                <li>
+                    <input type="checkbox" id="category-4-1" name="category4" value="전체" />
+                    <label for="category-4-1">전체</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="category-4-2" name="category4" value="한국산업표준KS" />
+                    <label for="category-4-2">한국산업표준(KS)</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="category-4-3" name="category4" value="기록물관리표준" />
+                    <label for="category-4-3">기록물관리 표준</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="category-4-4" name="category4" value="지침" />
+                    <label for="category-4-4">지침</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="category-4-5" name="category4" value="메뉴얼" />
+                    <label for="category-4-5">메뉴얼</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="category-4-6" name="category4" value="규격서식" />
+                    <label for="category-4-6">규격·서식</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="category-4-7" name="category4" value="해외표준" />
+                    <label for="category-4-7">해외표준</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="category-4-8" name="category4" value="기록관리SW" />
+                    <label for="category-4-8">기록관리 SW</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="category-4-9" name="category4" value="관련사이트소개" />
+                    <label for="category-4-9">관련사이트 소개</label>
+                </li>
+            </ul>
+        </div>
+    `;
+}
+
+// 카테고리 단계별 연쇄 선택 기능
+const categoryState = {
+    category1: { selected: null, enabled: true },
+    category2: { selected: null, enabled: false },
+    category3: { selected: null, enabled: false },
+    category4: { selected: null, enabled: false }
+};
+
+// 카테고리 상태 업데이트 함수
+const updateCategoryStates = () => {
+    // 카테고리 2: 카테고리 1 선택 시 활성화
+    categoryState.category2.enabled = !!categoryState.category1.selected;
+    
+    // 카테고리 3: 카테고리 2 선택 시 활성화
+    categoryState.category3.enabled = !!categoryState.category2.selected;
+    
+    // 카테고리 4: 카테고리 3 선택 시 활성화
+    categoryState.category4.enabled = !!categoryState.category3.selected;
+};
+
+// 카테고리 변경 이벤트 핸들러 (전역 스코프)
+const handleCategoryChange = (categoryLevel, value) => {
+    // 해당 카테고리 선택
+    categoryState[categoryLevel].selected = value;
+    
+    // 하위 카테고리 초기화
+    if (categoryLevel === 'category1') {
+        categoryState.category2.selected = null;
+        categoryState.category3.selected = null;
+        categoryState.category4.selected = null;
+        
+        // 카테고리 2 동적 추가
+        addCategory2();
+        
+    } else if (categoryLevel === 'category2') {
+        categoryState.category3.selected = null;
+        categoryState.category4.selected = null;
+        
+        // 카테고리 3 동적 추가
+        addCategory3();
+        
+    } else if (categoryLevel === 'category3') {
+        categoryState.category4.selected = null;
+        
+        // 카테고리 4 동적 추가
+        addCategory4();
     }
     
+    // 상태 업데이트
+    updateCategoryStates();
+    
+    // UI 업데이트
+    renderCategories();
+    
+    console.log('카테고리 상태:', categoryState);
+};
+
+// 카테고리 2 동적 추가 함수 (전역 스코프)
+const addCategory2 = () => {
+    const workDepthFilter = document.querySelector('.work-depth-filter');
+    if (workDepthFilter && !document.querySelector('.work-depth-col:has(input[name="category2"])')) {
+        const category2HTML = createCategory2();
+        workDepthFilter.insertAdjacentHTML('beforeend', category2HTML);
+        console.log('카테고리 2 추가됨');
+    }
+};
+
+// 카테고리 3 동적 추가 함수 (전역 스코프)
+const addCategory3 = () => {
+    const workDepthFilter = document.querySelector('.work-depth-filter');
+    if (workDepthFilter && !document.querySelector('.work-depth-col:has(input[name="category3"])')) {
+        const category3HTML = createCategory3();
+        workDepthFilter.insertAdjacentHTML('beforeend', category3HTML);
+        console.log('카테고리 3 추가됨');
+    }
+};
+
+// 카테고리 4 동적 추가 함수 (전역 스코프)
+const addCategory4 = () => {
+    const workDepthFilter = document.querySelector('.work-depth-filter');
+    if (workDepthFilter && !document.querySelector('.work-depth-col:has(input[name="category4"])')) {
+        const category4HTML = createCategory4();
+        workDepthFilter.insertAdjacentHTML('beforeend', category4HTML);
+        console.log('카테고리 4 추가됨');
+    }
+};
+
+const renderCategories = () => {
+    // 카테고리 1
+    const category1Inputs = document.querySelectorAll('input[name="category1"]');
+    category1Inputs.forEach(input => {
+        input.checked = input.value === categoryState.category1.selected;
+    });
+    
+    // 카테고리 2
+    const category2Inputs = document.querySelectorAll('input[name="category2"]');
+    category2Inputs.forEach(input => {
+        input.disabled = !categoryState.category2.enabled;
+        input.checked = input.value === categoryState.category2.selected;
+    });
+    
+    // 카테고리 3
+    const category3Inputs = document.querySelectorAll('input[name="category3"]');
+    category3Inputs.forEach(input => {
+        input.disabled = !categoryState.category3.enabled;
+        input.checked = input.value === categoryState.category3.selected;
+    });
+    
+    // 카테고리 4
+    const category4Inputs = document.querySelectorAll('input[name="category4"]');
+    category4Inputs.forEach(input => {
+        input.disabled = !categoryState.category4.enabled;
+        input.checked = input.value === categoryState.category4.selected;
+    });
+};
+
+// 카테고리 초기화 함수 (전역 스코프)
+const resetCategories = () => {
+    categoryState.category1.selected = null;
+    categoryState.category2.selected = null;
+    categoryState.category3.selected = null;
+    categoryState.category4.selected = null;
+    
+    updateCategoryStates();
+    renderCategories();
+    
+    console.log('카테고리 초기화 완료');
+};
+
+document.addEventListener('change', (event) => {
+    if (event.target.matches('input[name^="category"]')) {
+        const categoryLevel = event.target.name;
+        const value = event.target.value;
+        
+        // handleCategoryChange 함수가 정의된 후에 호출
+        if (typeof handleCategoryChange === 'function') {
+            handleCategoryChange(categoryLevel, value);
+        } else {
+            console.log('handleCategoryChange 함수가 아직 정의되지 않음');
+        }
+    }
+});
+ 
     // 5. 기록물 건 탭 컨텐츠 생성 함수
     const createRitemTab = () => {
         return `
@@ -681,9 +818,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="work-tab-contents-item rwork-tab">
                 <div class="work-depth-filter">
                     ${createCategory1()}
-                    ${createCategory2()}
-                    ${createCategory3()}
-                    ${createCategory4()}
                 </div>
             ${createActionSection()}
             </div>
@@ -830,7 +964,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   </li>
                 </ul>
                 <p>
-                    사업예정지 ④ 시장·군수 또는 구청장은 제3항의 규정에 의한 공고를 한 때에는 그 공고의 내용과 의견서를 제출할 수 있다는 뜻을 토지소유자 및 관계인에게 통지(소유자 및... ②건설교통부와그소속기관직제중 다음과 같이 개정한다. 제2조제3항중"토지수용법 제30조제
+                    사업예정지 ④ 시장·군수 또는 구청장은 제3항의 규정에 의한 공고를 한 때에는 그 공고의 내용과 의견서를 제출할 수 있다는 뜻을 토지소유자 및 관계인에게 통지(소유자 및... ②건설교통부와그소속기관직제중 다음과 같이 개정한다. 제2조제3항중"토지수용법 제30조제
                 </p>
               </div>
               <div class="expand">
@@ -1059,7 +1193,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         </div>
                                         <div class="preview-box-desc">
                                             <a href="#" class="link">[붙임1]</a>
-                                            <p>…사업예정지 ④ 시장·군수 또는 구청장은 제3항의 규정에 의한 공고를 한 때에는 그 공고의 내용과 의견서를 제출할 수 있다는 뜻을 토지소유자 및 관계인에게 통지(소유자 및... ②건설교통부와그소속기관직제중 다음과 같이 개정한다. 제2조제3항중"토지수용법 제30조제…</p>
+                                            <p>…사업예정지 ④ 시장·군수 또는 구청장은 제3항의 규정에 의한 공고를 한 때에는 그 공고의 내용과 의견서를 제출할 수 있다는 뜻을 토지소유자 및 관계인에게 통지(소유자 및... ②건설교통부와그소속기관직제중 다음과 같이 개정한다. 제2조제3항중"토지수용법 제30조제…</p>
                                         </div>
                                     </div>
                                 </td>
@@ -1224,7 +1358,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const tabContentsContainer = document.querySelector('.record-tab-contents');
             const searchResultList = document.querySelector('.search-result-list');
 
-            console.log(tab, 'tab');
             if (tabContentsContainer) {
                 if (tab === 'ritem') {
                     // 기록물 건 탭: 모든 필터

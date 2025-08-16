@@ -163,15 +163,16 @@
     border-bottom: 1px solid #DEDEDE;
     border-left: 1px solid #DEDEDE;
 }
-.work-depth-filter{display: flex;}
-.work-depth-filter .work-depth-col{min-width: 240px;}
+.work-depth-filter{position: relative; display: flex;}
+.work-depth-filter .work-depth-col{position: relative; min-width: 240px;}
 
-.work-depth-filter .work-depth-col:not(:last-child){border-right: 1px solid #DEDEDE;}
+.work-depth-filter .work-depth-col:not(:nth-child(4)){border-right: 1px solid #DEDEDE;}
+.work-depth-filter .work-depth-col:last-child::after{content: '카테고리를 선택해주세요'; position: absolute; left: calc(100% + 30px); top: 50%; transform: translateY(-50%); width: max-content; background-image: url('../images/new/arrow_left.svg'); background-repeat: no-repeat; background-position: left center; padding-left: 20px; font-size: 15px; color: #5e5e5e;}
 .work-depth-filter .work-depth-col .work-depth-title{display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #DEDEDE; border-bottom: none; background-color: #fafafa; }
 .work-depth-filter .work-depth-col .work-depth-title.active{background-color: #4A2E26; color: #fff;}
 .work-depth-filter .work-depth-col .work-depth-title span{display: block; width: 100%; padding:8.5px 14px; font-weight: 500;}
 .work-depth-filter .work-depth-col .work-depth-title.active .more_view {background-image: url(../images/new/minus.svg);}
-.work-depth-filter .work-depth-col .work-depth-list{width:100%; max-height: 252px; overflow-y: auto; border-top: 1px solid #DEDEDE;}
+.work-depth-filter .work-depth-col .work-depth-list{width:100%; min-height: 216px; max-height: 252px; overflow-y: auto; border-top: 1px solid #DEDEDE;}
 .work-depth-filter .work-depth-col .work-depth-list li{display: flex; justify-content: space-between; align-items: center; gap: 8px;}
 .work-depth-filter .work-depth-col .work-depth-list li input[type="radio"]{display: none;}
 .work-depth-filter .work-depth-col .work-depth-list li label{width:100%; font-size: 15px; color: #5E5E5E; font-weight: 400; cursor: pointer; padding: 7px 14px;}
