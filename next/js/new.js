@@ -98,6 +98,30 @@ const resetClick = () => {
 
     // 전체 체크박스 상태 갱신
     if (typeof updateCheckAllStatus === 'function') updateCheckAllStatus();
+    
+    // 카테고리 뎁스들 초기화 (업무자료 검색탭인 경우)
+    const workDepthFilter = document.querySelector('.work-depth-filter');
+    if (workDepthFilter) {
+        // 카테고리 2, 3, 4 제거
+        const category2Element = workDepthFilter.querySelector('.work-depth-col:has(input[name="category2"])');
+        const category3Element = workDepthFilter.querySelector('.work-depth-col:has(input[name="category3"])');
+        const category4Element = workDepthFilter.querySelector('.work-depth-col:has(input[name="category4"])');
+        
+        if (category2Element) category2Element.remove();
+        if (category3Element) category3Element.remove();
+        if (category4Element) category4Element.remove();
+        
+        // 카테고리 1에 last 클래스 다시 적용
+        const category1Element = workDepthFilter.querySelector('.work-depth-col:has(input[name="category1"])');
+        if (category1Element) {
+            category1Element.classList.add('last');
+        }
+        
+        // 카테고리 상태도 초기화
+        if (typeof resetCategories === 'function') {
+            resetCategories();
+        }
+    }
 }
 
 // 전체 체크박스 기능
@@ -662,11 +686,15 @@ const handleCategoryChange = (categoryLevel, value) => {
     // 해당 카테고리 선택
     categoryState[categoryLevel].selected = value;
     
-    // 하위 카테고리 초기화
+    // 하위 카테고리 초기화 및 DOM에서 제거
     if (categoryLevel === 'category1') {
         categoryState.category2.selected = null;
         categoryState.category3.selected = null;
         categoryState.category4.selected = null;
+        
+        // 카테고리 3, 4 DOM에서 제거
+        removeCategory3();
+        removeCategory4();
         
         // 카테고리 2 동적 추가
         addCategory2();
@@ -674,6 +702,9 @@ const handleCategoryChange = (categoryLevel, value) => {
     } else if (categoryLevel === 'category2') {
         categoryState.category3.selected = null;
         categoryState.category4.selected = null;
+        
+        // 카테고리 4 DOM에서 제거
+        removeCategory4();
         
         // 카테고리 3 동적 추가
         addCategory3();
@@ -700,7 +731,19 @@ const addCategory2 = () => {
     if (workDepthFilter && !document.querySelector('.work-depth-col:has(input[name="category2"])')) {
         const category2HTML = createCategory2();
         workDepthFilter.insertAdjacentHTML('beforeend', category2HTML);
-        console.log('카테고리 2 추가됨');
+        
+        // 기존 last 클래스 제거
+        workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
+            col.classList.remove('last');
+        });
+        
+        // 새로 추가된 카테고리 2에 last 클래스 추가
+        const category2Element = workDepthFilter.querySelector('.work-depth-col:has(input[name="category2"])');
+        if (category2Element) {
+            category2Element.classList.add('last');
+        }
+        
+        console.log('카테고리 2 추가됨 (last 클래스 적용)');
     }
 };
 
@@ -710,17 +753,74 @@ const addCategory3 = () => {
     if (workDepthFilter && !document.querySelector('.work-depth-col:has(input[name="category3"])')) {
         const category3HTML = createCategory3();
         workDepthFilter.insertAdjacentHTML('beforeend', category3HTML);
-        console.log('카테고리 3 추가됨');
+        
+        // 기존 last 클래스 제거
+        workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
+            col.classList.remove('last');
+        });
+        
+        // 새로 추가된 카테고리 3에 last 클래스 추가
+        const category3Element = workDepthFilter.querySelector('.work-depth-col:has(input[name="category3"])');
+        if (category3Element) {
+            category3Element.classList.add('last');
+        }
+        
+        console.log('카테고리 3 추가됨 (last 클래스 적용)');
     }
 };
 
-// 카테고리 4 동적 추가 함수 (전역 스코프)
+// 카테고리 4 동적 추가 함수
 const addCategory4 = () => {
     const workDepthFilter = document.querySelector('.work-depth-filter');
     if (workDepthFilter && !document.querySelector('.work-depth-col:has(input[name="category4"])')) {
         const category4HTML = createCategory4();
         workDepthFilter.insertAdjacentHTML('beforeend', category4HTML);
-        console.log('카테고리 4 추가됨');
+        
+        workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
+            col.classList.remove('last');
+        });
+    }
+};
+
+// 카테고리 제거 함수들
+const removeCategory2 = () => {
+    const category2Element = document.querySelector('.work-depth-col:has(input[name="category2"])');
+    if (category2Element) {
+        category2Element.remove();
+        
+        const workDepthFilter = document.querySelector('.work-depth-filter');
+        const category1Element = workDepthFilter.querySelector('.work-depth-col:has(input[name="category1"])');
+        if (category1Element) {
+            category1Element.classList.add('last');
+        }
+    }
+};
+
+const removeCategory3 = () => {
+    const category3Element = document.querySelector('.work-depth-col:has(input[name="category3"])');
+    if (category3Element) {
+        category3Element.remove();
+        
+        const workDepthFilter = document.querySelector('.work-depth-filter');
+        const category2Element = workDepthFilter.querySelector('.work-depth-col:has(input[name="category2"])');
+        if (category2Element) {
+            category2Element.classList.add('last');
+        }
+    }
+};
+
+const removeCategory4 = () => {
+    const category4Element = document.querySelector('.work-depth-col:has(input[name="category4"])');
+    if (category4Element) {
+        category4Element.remove();
+        
+        const workDepthFilter = document.querySelector('.work-depth-filter');
+        const category3Element = workDepthFilter.querySelector('.work-depth-col:has(input[name="category3"])');
+        if (category3Element) {
+            category3Element.classList.add('last');
+        }
+        
+        console.log('카테고리 4 제거됨 (카테고리 3에 last 클래스 적용)');
     }
 };
 
@@ -762,8 +862,6 @@ const resetCategories = () => {
     
     updateCategoryStates();
     renderCategories();
-    
-    console.log('카테고리 초기화 완료');
 };
 
 document.addEventListener('change', (event) => {
@@ -774,8 +872,6 @@ document.addEventListener('change', (event) => {
         // handleCategoryChange 함수가 정의된 후에 호출
         if (typeof handleCategoryChange === 'function') {
             handleCategoryChange(categoryLevel, value);
-        } else {
-            console.log('handleCategoryChange 함수가 아직 정의되지 않음');
         }
     }
 });
@@ -817,7 +913,7 @@ document.addEventListener('change', (event) => {
         return `
             <div class="work-tab-contents-item rwork-tab">
                 <div class="work-depth-filter">
-                    ${createCategory1()}
+                    ${createCategory1().replace('work-depth-col', 'work-depth-col last')}
                 </div>
             ${createActionSection()}
             </div>
