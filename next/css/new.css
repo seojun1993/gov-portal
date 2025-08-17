@@ -1,6 +1,6 @@
 @charset "utf-8";
 .mobile{display: none;}
-.pc{display: none;}
+.pc{display: block;}
 .pagelist{width: 100%; overflow: hidden;}
 .paiging{width: 100%; overflow: hidden;}
 .paging .active{background-color:#1B1B1B;}
