@@ -6,6 +6,14 @@ const deleteItem = (btn) => {
     }
 }
 
+const recentDeleteAllItem = () => {
+    // .recent_list 안의 ul#list의 모든 li를 삭제
+    const list = document.querySelector('.recent_list ul#list');
+    if (list) {
+        list.innerHTML = '';
+    }
+}
+
 const showDetail = (detailId) => {
     // 해당 detailId를 가진 expand-viewer detail_box 찾기
     const targetViewer = document.querySelector(`.expand-viewer.detail_box#${detailId}`);
@@ -459,8 +467,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 <input type="checkbox" id="listcheck_all" onchange="checkAll(this); return false;">
                     <span>전체(1,085)</span>
                 </label>
+
+                <div class="mobile mobile-select">
+                    <select>
+                        <option value="accuracy" selected>정확도순</option>
+                        <option value="dateAsc">생산연도(과거순)</option>
+                        <option value="dateDesc">생산연도(최신순)</option>
+                        <option value="titleAsc">제목순(ㄱ-ㅎ)</option>
+                        <option value="titleDesc">제목순(ㅎ-ㄱ)</option>
+                    </select>
+                </div>
             </div>
-            <div class="sort">
+            <div class="pc sort">
                 <ul>
                     <li onClick="setSort('accuracy');"><a href="javascript:setSort('accuracy');"  >정확도순</a></li>
                     <li onClick="setSort('dateAsc');"><a href="javascript:setSort('dateAsc');"   >생산연도(과거순)</a></li>
@@ -939,12 +957,29 @@ const updateCategoryStates = () => {
 // 카테고리 변경 이벤트 핸들러 (전역 스코프)
 const handleCategoryChange = (categoryLevel, value) => {
     // 해당 카테고리 선택
-    categoryState[categoryLevel].selected = value;
+    if (categoryLevel === 'category4') {
+        // 카테고리4는 체크박스이므로 배열로 관리
+        if (!categoryState[categoryLevel].selected) {
+            categoryState[categoryLevel].selected = [];
+        }
+        
+        const index = categoryState[categoryLevel].selected.indexOf(value);
+        if (index > -1) {
+            // 이미 선택된 값이면 제거
+            categoryState[categoryLevel].selected.splice(index, 1);
+        } else {
+            // 선택되지 않은 값이면 추가
+            categoryState[categoryLevel].selected.push(value);
+        }
+    } else {
+        // 카테고리1, 2, 3은 라디오 버튼이므로 단일 값으로 관리
+        categoryState[categoryLevel].selected = value;
+    }
 
     if (categoryLevel === 'category1') {
         categoryState.category2.selected = null;
         categoryState.category3.selected = null;
-        categoryState.category4.selected = null;
+        categoryState.category4.selected = [];
     
         removeCategory3();
         removeCategory4();
@@ -952,12 +987,12 @@ const handleCategoryChange = (categoryLevel, value) => {
         
     } else if (categoryLevel === 'category2') {
         categoryState.category3.selected = null;
-        categoryState.category4.selected = null;
+        categoryState.category4.selected = [];
         removeCategory4();
         addCategory3();
         
     } else if (categoryLevel === 'category3') {
-        categoryState.category4.selected = null;
+        categoryState.category4.selected = [];
         addCategory4();
     }
     
@@ -1079,7 +1114,7 @@ const renderCategories = () => {
     // 카테고리 3
     const category3Inputs = document.querySelectorAll('input[name="category3"]');
     category3Inputs.forEach(input => {
-        input.disabled = !categoryState.category3.enabled;
+        input.disabled = !categoryState.category2.enabled;
         input.checked = input.value === categoryState.category3.selected;
     });
     
@@ -1087,7 +1122,9 @@ const renderCategories = () => {
     const category4Inputs = document.querySelectorAll('input[name="category4"]');
     category4Inputs.forEach(input => {
         input.disabled = !categoryState.category4.enabled;
-        input.checked = input.value === categoryState.category4.selected;
+        // 카테고리4는 배열로 관리되므로 includes로 확인
+        input.checked = Array.isArray(categoryState.category4.selected) && 
+                      categoryState.category4.selected.includes(input.value);
     });
 };
 
@@ -1096,7 +1133,7 @@ const resetCategories = () => {
     categoryState.category1.selected = null;
     categoryState.category2.selected = null;
     categoryState.category3.selected = null;
-    categoryState.category4.selected = null;
+    categoryState.category4.selected = [];
     
     updateCategoryStates();
     renderCategories();

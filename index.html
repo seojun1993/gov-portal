@@ -35,210 +35,212 @@
 						<form name="totalSearchForm" onSubmit="return onSearch();" method="post">
 							<fieldset>
 								<legend>통합검색</legend>
-                <!-- <div class="mobile-search-type">
+                <div class="mobile mobile-search-type">
                   <input type="radio" name="search-type" id="search-type-1" value="1">
                   <label for="search-type-1">전체</label>
                   <input type="radio" name="search-type" id="search-type-2" value="2">
                   <label for="search-type-2">기록물 검색</label>
-                  <input type="radio" name="search-type" id="search-type-2" value="2">
-                  <label for="search-type-2">업무자료 검색</label>
-                </div> -->
-								<div class="inputs">
-									<input type="hidden" name="query_type" value="keyword">
-									<input type="hidden" name="is_detail" value="yes">
-									<select name="selectSearch" id="selectSearch" class="opt" title="검색조건">
-										<option value="1">전체</option>
-										<option value="2">건기록물</option>
-										<option value="3">철기록물</option>
-									</select>
-									<input type="text" class="keyword" id="searchalltxt" name="upside_query" autocomplete="off" title="검색어" placeholder="검색어를 입력해주세요.">
-									
-									<div class="keyword-autoComplete hide">
-                    <div class="autoComplete_list">
-                    <p>자동 완성</p>
-                    <ul>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문화재 보수정비실적')">
-                          <span>문화</span>재 보수정비실적
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문화 관광')">
-                          문화 관광
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문화 예술')">
-                          문화 예술
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문교부 훈령 10호')">
-                          문교부 훈령 10호
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문화부 예산각목명세서')">
-                          문화부 예산각목명세서
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문화유적분포지도 강화군')">
-                          문화유적분포지도 강화군
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문교부 탄원')">
-                          문교부 탄원
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문화재 이전')">
-                          문화재 이전
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문화체육부 고시')">
-                          문화체육부 고시
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문교부 대장')">
-                          문교부 대장
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문광면 광덕리')">
-                          문광면 광덕리
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문화관관해설 가이드북')">
-                          문화관관해설 가이드북
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문화재 손실')">
-                          문화재 손실
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문교부 140')">
-                          문교부 140
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      <li>
-                        <a href="javascript:goKeywordSearch('문교부 고시 69호')">
-                          문교부 고시 69호
-                        </a>
-                        <button type="button" onclick="deleteItem(this)">
-                          <img src="/next/images/new/close.svg" alt="닫기">
-                        </button>
-                      </li>
-                      </ul>
-                    <div class="list_control">
-                      <div class="list_control_item">
-                        <span>자동 저장</span>
-                        <label class="switch">
-                          <input type="checkbox" name="recent-keyword" id="recent-keyword-all">
-                          <span class="slider"></span>
-                      </label>
-                       </div>
-                    </div>
-                  </div>
+                  <input type="radio" name="search-type" id="search-type-3" value="3">
+                  <label for="search-type-3">업무자료 검색</label>
                 </div>
-									<div class="keyword-recent hide">
-                    <div class="recent_list">
-                      <p>최근 검색어</p>
-                      <ul id="list">
+                <div class="search-box">
+                  <div class="inputs">
+                    <input type="hidden" name="query_type" value="keyword">
+                    <input type="hidden" name="is_detail" value="yes">
+                    <select name="selectSearch" id="selectSearch" class="opt" title="검색조건">
+                      <option value="1">전체</option>
+                      <option value="2">건기록물</option>
+                      <option value="3">철기록물</option>
+                    </select>
+                    <input type="text" class="keyword" id="searchalltxt" name="upside_query" autocomplete="off" title="검색어" placeholder="검색어를 입력해주세요.">
+                    
+                    <div class="keyword-autoComplete hide">
+                      <div class="autoComplete_list">
+                      <p>자동 완성</p>
+                      <ul>
                         <li>
-                          <span id="keyword">입찰</span>
-                          <button type="button" name="close" title="닫기" onclick="deleteItem(this)">
+                          <a href="javascript:goKeywordSearch('문화재 보수정비실적')">
+                            <span>문화</span>재 보수정비실적
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
                             <img src="/next/images/new/close.svg" alt="닫기">
                           </button>
                         </li>
                         <li>
-                          <span id="keyword">조달청</span>
-                          <button type="button" name="close" title="닫기" onclick="deleteItem(this)">
+                          <a href="javascript:goKeywordSearch('문화 관광')">
+                            문화 관광
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
                             <img src="/next/images/new/close.svg" alt="닫기">
                           </button>
                         </li>
                         <li>
-                          <span id="keyword">조달청</span>
-                          <button type="button" name="close" title="닫기" onclick="deleteItem(this)">
+                          <a href="javascript:goKeywordSearch('문화 예술')">
+                            문화 예술
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
                             <img src="/next/images/new/close.svg" alt="닫기">
                           </button>
                         </li>
-                      </ul>
-
+                        <li>
+                          <a href="javascript:goKeywordSearch('문교부 훈령 10호')">
+                            문교부 훈령 10호
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
+                            <img src="/next/images/new/close.svg" alt="닫기">
+                          </button>
+                        </li>
+                        <li>
+                          <a href="javascript:goKeywordSearch('문화부 예산각목명세서')">
+                            문화부 예산각목명세서
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
+                            <img src="/next/images/new/close.svg" alt="닫기">
+                          </button>
+                        </li>
+                        <li>
+                          <a href="javascript:goKeywordSearch('문화유적분포지도 강화군')">
+                            문화유적분포지도 강화군
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
+                            <img src="/next/images/new/close.svg" alt="닫기">
+                          </button>
+                        </li>
+                        <li>
+                          <a href="javascript:goKeywordSearch('문교부 탄원')">
+                            문교부 탄원
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
+                            <img src="/next/images/new/close.svg" alt="닫기">
+                          </button>
+                        </li>
+                        <li>
+                          <a href="javascript:goKeywordSearch('문화재 이전')">
+                            문화재 이전
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
+                            <img src="/next/images/new/close.svg" alt="닫기">
+                          </button>
+                        </li>
+                        <li>
+                          <a href="javascript:goKeywordSearch('문화체육부 고시')">
+                            문화체육부 고시
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
+                            <img src="/next/images/new/close.svg" alt="닫기">
+                          </button>
+                        </li>
+                        <li>
+                          <a href="javascript:goKeywordSearch('문교부 대장')">
+                            문교부 대장
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
+                            <img src="/next/images/new/close.svg" alt="닫기">
+                          </button>
+                        </li>
+                        <li>
+                          <a href="javascript:goKeywordSearch('문광면 광덕리')">
+                            문광면 광덕리
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
+                            <img src="/next/images/new/close.svg" alt="닫기">
+                          </button>
+                        </li>
+                        <li>
+                          <a href="javascript:goKeywordSearch('문화관관해설 가이드북')">
+                            문화관관해설 가이드북
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
+                            <img src="/next/images/new/close.svg" alt="닫기">
+                          </button>
+                        </li>
+                        <li>
+                          <a href="javascript:goKeywordSearch('문화재 손실')">
+                            문화재 손실
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
+                            <img src="/next/images/new/close.svg" alt="닫기">
+                          </button>
+                        </li>
+                        <li>
+                          <a href="javascript:goKeywordSearch('문교부 140')">
+                            문교부 140
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
+                            <img src="/next/images/new/close.svg" alt="닫기">
+                          </button>
+                        </li>
+                        <li>
+                          <a href="javascript:goKeywordSearch('문교부 고시 69호')">
+                            문교부 고시 69호
+                          </a>
+                          <button type="button" onclick="deleteItem(this)">
+                            <img src="/next/images/new/close.svg" alt="닫기">
+                          </button>
+                        </li>
+                        </ul>
                       <div class="list_control">
-                        <button type="button">전체 삭제</button>
-  
                         <div class="list_control_item">
                           <span>자동 저장</span>
                           <label class="switch">
                             <input type="checkbox" name="recent-keyword" id="recent-keyword-all">
                             <span class="slider"></span>
                         </label>
-                         </div>
+                        </div>
                       </div>
                     </div>
+                  </div>
+                    <div class="keyword-recent hide">
+                      <div class="recent_list">
+                        <p>최근 검색어</p>
+                        <ul id="list">
+                          <li>
+                            <span id="keyword">입찰</span>
+                            <button type="button" name="close" title="닫기" onclick="deleteItem(this)">
+                              <img src="/next/images/new/close.svg" alt="닫기">
+                            </button>
+                          </li>
+                          <li>
+                            <span id="keyword">조달청</span>
+                            <button type="button" name="close" title="닫기" onclick="deleteItem(this)">
+                              <img src="/next/images/new/close.svg" alt="닫기">
+                            </button>
+                          </li>
+                          <li>
+                            <span id="keyword">조달청</span>
+                            <button type="button" name="close" title="닫기" onclick="deleteItem(this)">
+                              <img src="/next/images/new/close.svg" alt="닫기">
+                            </button>
+                          </li>
+                        </ul>
 
-                    <div class="popular_list">
-                      <p>인기 검색어</p>
-                      <ul class="list">
-                        <li><button type="button">입찰</button></li>
-                        <li><button type="button">공고</button></li>
-                        <li><button type="button">조달청</button></li>
-                      </ul>
+                        <div class="list_control">
+                          <button type="button" class="btn-delete-all" onclick="recentDeleteAllItem()">전체 삭제</button>
+    
+                          <div class="list_control_item">
+                            <span>자동 저장</span>
+                            <label class="switch">
+                              <input type="checkbox" name="recent-keyword" id="recent-keyword-all">
+                              <span class="slider"></span>
+                          </label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="popular_list">
+                        <p>인기 검색어</p>
+                        <ul class="list">
+                          <li><button type="button">입찰</button></li>
+                          <li><button type="button">공고</button></li>
+                          <li><button type="button">조달청</button></li>
+                        </ul>
+                      </div>
                     </div>
-									</div>
-									
-									<input type="submit" value="검색" class="btn-submit" onClick="return onSearch();">
-								</div>
-								<a href="#" class="btn-detail btn-openPop" id="btnSearchByTop" data-target="#popSearchDetail">상세검색</a>
+                    
+                    <input type="submit" value="검색" class="btn-submit" onClick="return onSearch();">
+                  </div>
+                  <a href="#" class="btn-detail btn-openPop" id="btnSearchByTop" data-target="#popSearchDetail">상세검색</a>
+                </div>
 							</fieldset>
 						</form>
 					</div>
@@ -783,8 +785,12 @@
 								<div class="f-inputs">
 									<input type="text" class="keyword" id="againtext" name="againtext"  autocomplete="off" onfocus="keywordReset(this,'arc'); return false;" title="검색어" placeholder="검색어를 입력해주세요.">
                   <input type="submit" value="검색" class="btn-submit" onclick="return onSearch();">
+                  <div class="mobile mobile-search-btn">
+                    <input type="button" value="상세검색" class="btn-submit" onclick="totalSearch(); return false;">
+                  </div>
 								</div>
               </div>
+              
 								<div class="f-cmd">
 									<!-- <input type="button" value="검색" onclick="reSearch('arc'); return false;" class="btn-submit"> -->
 									<input type="button" value="상세검색" class="btn-submit" onclick="totalSearch(); return false;">
@@ -833,9 +839,9 @@
 			<div id="subcon">
         <div id="recordFilter" class="record-list-filter">
           <ul>
-            <li class="active"><button type="button" data-type="all">전체(1,132)</button></li>
-            <li><button type="button" data-type="record">기록물 검색(1,085)</button></li>
-            <li><button type="button" data-type="work">업무자료 검색(47)</button></li>
+            <li class="active"><button type="button" data-type="all">전체<br/ class="mobile">(1,132)</button></li>
+            <li><button type="button" data-type="record">기록물 검색<br/ class="mobile">(1,085)</button></li>
+            <li><button type="button" data-type="work">업무자료 검색<br/ class="mobile">(47)</button></li>
           </ul>
         </div>
         <div id="recordlist">
