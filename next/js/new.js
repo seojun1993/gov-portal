@@ -54,23 +54,23 @@ const showList = () => {
     }
 }
 
-    // 각 record-depth-type 버튼 클릭 시 해당 li에만 active 클래스 부여, 나머지는 제거
-    document.addEventListener('DOMContentLoaded', function() {
-        const recordDepthType = document.querySelector('.record-depth-type');
-        if (recordDepthType) {
-            recordDepthType.addEventListener('click', function(e) {
-                if (e.target && e.target.tagName === 'BUTTON') {
-                    const lis = recordDepthType.querySelectorAll('li');
-                    lis.forEach(li => li.classList.remove('active'));
-                    const clickedLi = e.target.closest('li');
-                    if (clickedLi) {
-                        clickedLi.classList.add('active');
-                    }
-                }
-            });
-        }
-    });
+const mobileSearchItemClick = (type) => {
+    const targetPopup = document.querySelector('#popup-search-mobile');
 
+    if(type === 'reset'){
+        return;
+    } else{
+        const mobileSearchDiv = document.querySelector('.mobile-search-select');
+        const button = mobileSearchDiv.querySelector(`button.${type}`);
+        if (button) button.classList.add('active');
+        if (targetPopup) targetPopup.style.display = 'block';
+    }
+}
+
+const mobileSearchClose = () => {
+    const targetPopup = document.querySelector('#popup-search-mobile');
+    if (targetPopup) targetPopup.style.display = 'none';
+}
 
     const detailTemplate = (data) => { 
         return `      
@@ -472,6 +472,22 @@ const showDsntRsn = (flag) => {
 
 // 검색 결과 리스트 js 이거 보고 적용 하시면 됩니다.
 document.addEventListener('DOMContentLoaded', () => {
+
+    // 모바일용 기록물 + 업무안내,자료 상세검색 탭버튼 구현
+    const recordDepthType = document.querySelector('.record-depth-type');
+    if (recordDepthType) {
+        recordDepthType.addEventListener('click', function(e) {
+            if (e.target && e.target.tagName === 'BUTTON') {
+                const lis = recordDepthType.querySelectorAll('li');
+                lis.forEach(li => li.classList.remove('active'));
+                const clickedLi = e.target.closest('li');
+                if (clickedLi) {
+                    clickedLi.classList.add('active');
+                }
+            }
+        });
+    }
+
     // 검색결과 탭메뉴 구현
     const recordFilter = document.getElementById('recordFilter');
     const recordList = document.getElementById('recordlist');
@@ -1222,8 +1238,19 @@ document.addEventListener('change', (event) => {
                         <input type="checkbox" id="listcheck_all" onchange="checkAll(this); return false;">
                         <span>전체(${count})</span>
                     </label>
+
+                    <div class="mobile mobile-select">
+                    <select>
+                        <option value="accuracy" selected>정확도순</option>
+                        <option value="dateAsc">생산연도(과거순)</option>
+                        <option value="dateDesc">생산연도(최신순)</option>
+                        <option value="titleAsc">제목순(ㄱ-ㅎ)</option>
+                        <option value="titleDesc">제목순(ㅎ-ㄱ)</option>
+                    </select>
                 </div>
-                <div class="sort">
+                </div>
+
+                <div class="pc sort">
                     <ul>
                         <li onclick="setSort('accuracy');"><a href="javascript:setSort('accuracy');">정확도순</a></li>
                         <li onclick="setSort('dateAsc');"><a href="javascript:setSort('dateAsc');">생산연도(과거순)</a></li>
@@ -1257,8 +1284,19 @@ document.addEventListener('change', (event) => {
                         <input type="checkbox" id="listcheck_all" onchange="checkAll(this); return false;">
                         <span>전체(${count})</span>
                     </label>
+
+                    <div class="mobile mobile-select">
+                        <select>
+                            <option value="accuracy" selected>정확도순</option>
+                            <option value="dateAsc">생산연도(과거순)</option>
+                            <option value="dateDesc">생산연도(최신순)</option>
+                            <option value="titleAsc">제목순(ㄱ-ㅎ)</option>
+                            <option value="titleDesc">제목순(ㅎ-ㄱ)</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="sort">
+
+                <div class="pc sort">
                     <ul>
                         <li onclick="setSort('accuracy');"><a href="javascript:setSort('accuracy');">정확도순</a></li>
                         <li onclick="setSort('dateAsc');"><a href="javascript:setSort('dateAsc');">생산연도(과거순)</a></li>
@@ -1488,6 +1526,40 @@ document.addEventListener('change', (event) => {
         `;
     };
 
+    const mobileSearch = (type) => {
+        switch(type){
+            case 'rtype':
+                return `
+                <div class="mobile mobile-search-select">
+                    <button type="button" class="reset" onclick="mobileSearchItemClick('reset')"></button>
+                    <button type="button" class="debth1" onclick="mobileSearchItemClick('debth1')">기록물형태</button>
+                    <button type="button" class="debth2" onclick="mobileSearchItemClick('debth2')">공개여부</button>
+                    <button type="button" class="debth3" onclick="mobileSearchItemClick('debth3')">원문서비스</button>
+                    <button type="button" class="debth4" onclick="mobileSearchItemClick('debth4')">생산연도</button>
+                    <button type="button" class="debth5" onclick="mobileSearchItemClick('debth5')">생산기관</button>
+                </div>
+                `;
+            case 'rfile':
+                return `
+                <div class="mobile mobile-search-select">
+                    <button type="button" class="reset" onclick="mobileSearchItemClick('reset')"></button>
+                    <button type="button" class="debth1" onclick="mobileSearchItemClick('debth1')">기록물형태</button>
+                    <button type="button" class="debth2" onclick="mobileSearchItemClick('debth2')">생산연도</button>
+                    <button type="button" class="debth3" onclick="mobileSearchItemClick('debth3')">생산기관</button>
+                </div>
+                `;
+
+            case 'work':
+                return `
+                <div class="mobile mobile-search-select">
+                    <button type="button" class="reset" onclick="mobileSearchItemClick('reset')"></button>
+                    <button type="button" class="debth1" onclick="mobileSearchItemClick('debth1')">업무안내·자료</button>
+                    <button type="button" class="debth2" onclick="mobileSearchItemClick('debth2')">뉴스·소식</button>
+                </div>
+                `;
+        }
+    }
+
     const detail = (id) => {
         return `
             <div class="expand-viewer detail_box" id="${id}" >
@@ -1679,6 +1751,8 @@ document.addEventListener('change', (event) => {
         const btn = e.target.closest('button');
         if (!btn) return;
 
+        console.log(btn);
+
         // 모든 li, button에서 active 제거
         recordFilter.querySelectorAll('li').forEach(li => {
             li.classList.remove('active');
@@ -1709,7 +1783,8 @@ document.addEventListener('change', (event) => {
             `;
         }else if(type === 'record'){
             recordList.innerHTML = `
-                ${createTabMenu()}
+            ${createTabMenu()}
+            ${mobileSearch('rtype')}
             <div class="record-tab-contents">
                 ${createRitemTab()}
             </div>
@@ -1729,6 +1804,7 @@ document.addEventListener('change', (event) => {
             // recordList.insertAdjacentHTML('afterend', paging());            
         }else if(type === 'work'){
             recordList.innerHTML = `
+            ${mobileSearch('work')}
             <div class="work-tab-contents">
                 ${createRworkTab()}
             </div>
@@ -1751,20 +1827,27 @@ document.addEventListener('change', (event) => {
             const tab = e.target.dataset.tab;
             const tabContentsContainer = document.querySelector('.record-tab-contents');
             const searchResultList = document.querySelector('.search-result-list');
+            const searchResultListDiv = document.querySelector('.search-result-list');
+            const divSub = document.getElementById('div_sub');
+            const mobileSearchDiv = document.querySelector('.mobile-search-select');
 
             // 상세(div_sub)가 열려 있으면 닫고, 검색 결과(result) 영역을 보이게 처리
-            const divSub = document.getElementById('div_sub');
             if (divSub && divSub.style.display !== 'none') {
                 divSub.style.display = 'none';
             }
-            const searchResultListDiv = document.querySelector('.search-result-list');
             if (searchResultListDiv) {
                 searchResultListDiv.style.display = '';
             }
 
+
+
             if (tabContentsContainer) {
                 if (tab === 'ritem') {
                     // 기록물 건 탭: 모든 필터
+                    if (mobileSearchDiv) {
+                        mobileSearchDiv.innerHTML = mobileSearch('rtype');
+                    }
+
                     tabContentsContainer.innerHTML = createRitemTab();
                     
                     // 헤더 영역 업데이트
@@ -1780,6 +1863,10 @@ document.addEventListener('change', (event) => {
 
                 } else if (tab === 'rfile') {
                     // 기록물 철 탭: 일부 필터만 (공개여부, 원문서비스 제외)
+                    if (mobileSearchDiv) {
+                        mobileSearchDiv.innerHTML = mobileSearch('rfile');
+                    }
+
                     tabContentsContainer.innerHTML = createRfileTab();
                     
                     // 헤더 영역 업데이트

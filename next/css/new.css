@@ -359,7 +359,15 @@ h4.md-title:before{content: none;}
     .list-contents .info .breadcrumbs{flex-wrap: wrap;}
     .list-contents .info .breadcrumbs span{font-size: 14px;}
 
+    /* 모바일 전용 검색 (셀렉트??) - 기능 잘 모르겠음 나도 */
+    .mobile-search-select{width:100%; display: flex; gap: 8px; margin: 0; flex-wrap: nowrap; overflow-x: auto;}
+    .mobile-search-select button{width: auto; height: 40px; border: 1px solid #D1D5DB; border-radius: 4px; padding: 0 34px 0 14px; word-break: keep-all; background-image: url('../images/new/arrow_down.svg'); background-repeat: no-repeat; background-position: calc(100% - 12px) center;}
+    
+    .mobile-search-select button.reset{min-width: 40px; max-width:40px; height:40px; padding: 0; border: 1px solid #D1D5DB; border-radius: 50%; background-image: url(../images/new/reset.svg); background-repeat: no-repeat; background-position: center; background-size: 22px;}
+
+
     /* 기록물 검색 */
+    .record-tab{margin-bottom: 12px;}
     .record-tab ul{width: 100%;}
     .record-tab ul li button{width: 100%; border: 1px solid #4A2E26;}
     .record-tab-contents{display: none;}
@@ -396,11 +404,14 @@ h4.md-title:before{content: none;}
     .feedback-form-radio .radio-group input[type="button"]{width: 100%; margin-top: 16px;}
 
     /* 모바일 전용 팝업 */
+    .mobile.popup-wrap{display: none;}
     .popup-wrap .popup-search-pop{position: absolute; bottom: 0; left: 0; width: 100%; margin: 0; background-color: #fff; padding: 24px 24px 0 24px; box-sizing: border-box;}
     .popup-wrap .popup-search-pop .pop-header{height: auto; padding: 0; border-radius: 6px 6px 0 0; background: none; justify-content: flex-start; padding-bottom: 12px; border-bottom: 1px solid #2b2b2b;}
     .popup-wrap .popup-search-pop .pop-header .pop-title{font-size: 16px; background: none; color: #2b2b2b; font-size: 16px; font-weight: 700;}
-    .popup-wrap .popup-search-pop .pop-close button{width: 16px; height: 16px; background-size: 16px;}
+    .popup-wrap .popup-search-pop .pop-close button{width: 16px; height: 16px; background-size: 16px; background-image: url(../images/new/close.svg);}
     .popup-wrap .popup-search-pop .pop-close{height: 16px; top: 15px; right: 12px;}
+    .popup-wrap .popup-search-pop .pop-close{top: 24px; right: 24px;}
+    .popup-wrap .popup-search-pop .pop-close button.close{background-image: url(../images/new/close.svg);}
     .popup-wrap .popup-search-pop .pop-body{padding: 0; border-radius: 0;}
     .pop-body-contents-inner .record-search-filter{display: flex;}
     .record-depth-type{background-color: #F8F8F8; width: 115px;}
@@ -409,7 +420,6 @@ h4.md-title:before{content: none;}
     .record-depth-type li.active button{background-color: #fff; color: #2B2B2B; font-weight: 500; background-image: url(../images/new/arrow_right.svg); background-size: 14px; background-repeat: no-repeat; background-position: right 12px center;}
     .record-depth-type li.active button.back-btn{background: none; background-image: none;}
     .record-depth-list{flex: 1;}
-    .record-depth-list ul{}
     .record-depth-list ul li{display: block;}
     .record-depth-list ul li input[type="radio"]{display: none;}
     .record-depth-list ul li label{display: flex; align-items: center; gap: 8px; font-size: 14px; color: #5E5E5E; font-weight: 400; padding: 16px 12px;}
@@ -428,7 +438,7 @@ h4.md-title:before{content: none;}
     .history-list ul li span::after{content: ''; display: inline-block; width: 16px; height: 16px; background-image: url(../images/new/close.svg); background-repeat: no-repeat; background-position: center; background-size: 8px; vertical-align: sub;}
     .history-list ul li span:hover{background-color: #F9F6F4; color: #4A2E26; font-weight: 500;}
 
-    .popup-wrap .popup-search-pop .btn-section{display: flex; justify-content: center; gap: 8px; padding: 16px 12px; background-color: #fff; border-top: 1px solid #DEDEDE;}
+    .popup-wrap .popup-search-pop .btn-section{display: flex; justify-content: center; gap: 8px; padding: 16px 12px; background-color: #fff;}
     .popup-wrap .popup-search-pop .btn{width: 100%; max-width: 88px; height: 36px;}
 
     /* 하단 플러팅 메뉴 */
