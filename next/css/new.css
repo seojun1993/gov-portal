@@ -407,6 +407,7 @@ h4.md-title:before{content: none;}
     .record-depth-type li button{width:100%; padding: 16px 12px; background-color: #F8F8F8; text-align: left; font-size: 14px;}
     .record-depth-type li button.back-btn::before{content: ''; display: inline-block; width: 14px; height: 14px; background-image: url(../images/new/arrow_left.svg); background-repeat: no-repeat; background-position: center; background-size: 14px; vertical-align: sub;}
     .record-depth-type li.active button{background-color: #fff; color: #2B2B2B; font-weight: 500; background-image: url(../images/new/arrow_right.svg); background-size: 14px; background-repeat: no-repeat; background-position: right 12px center;}
+    .record-depth-type li.active button.back-btn{background: none; background-image: none;}
     .record-depth-list{flex: 1;}
     .record-depth-list ul{}
     .record-depth-list ul li{display: block;}
