@@ -378,9 +378,10 @@ h4.md-title:before{content: none;}
     .search-result-filter .views select{width: 100%;}
     .record-list-title{font-size: 16px;}
     .search-result-list .result-row .result-row-inner{flex-wrap: wrap;}
-    .search-result-list .result-row .result-row-inner .select{ width: 100%; margin-bottom: 16px;}
+    .search-result-list .result-row .result-row-inner .select{ width: 100%; margin-bottom: 16px; margin-right: 0;}
     .search-result-list .category{margin-bottom: 8px;}
     .search-result-list .result-row .result-row-inner .list-contents{width: calc(100% - 102px);}
+    .search-result-list .rfile .result-row-inner .list-contents{position: relative; width: 100%;}
     .search-result-list .list-contents .action-box{position: relative; margin-bottom: 8px;}
 
     .search-result-list .expand-viewer{padding: 0;}
