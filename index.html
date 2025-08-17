@@ -35,6 +35,14 @@
 						<form name="totalSearchForm" onSubmit="return onSearch();" method="post">
 							<fieldset>
 								<legend>통합검색</legend>
+                <!-- <div class="mobile-search-type">
+                  <input type="radio" name="search-type" id="search-type-1" value="1">
+                  <label for="search-type-1">전체</label>
+                  <input type="radio" name="search-type" id="search-type-2" value="2">
+                  <label for="search-type-2">기록물 검색</label>
+                  <input type="radio" name="search-type" id="search-type-2" value="2">
+                  <label for="search-type-2">업무자료 검색</label>
+                </div> -->
 								<div class="inputs">
 									<input type="hidden" name="query_type" value="keyword">
 									<input type="hidden" name="is_detail" value="yes">
@@ -782,16 +790,20 @@
 									<input type="button" value="상세검색" class="btn-submit" onclick="totalSearch(); return false;">
                   <div class="help-wrap">
                     <button type="button" class="btn-help icon">도움말</button>
-                    <div class="help-box" style="width:350px;">
-                      <div class="arr-left"></div>
-                      <ul class="list-dot">
-                        <li>텍스트 수정 필요</li>
-                      </ul>
-                    </div>
+                      <div class="help-box a-top" style="width:500px;">
+                        <div class="arr-left"></div>
+                        <ul class="list-dot">
+                          <li>
+                            <span class="txt-bold">키워드 검색</span> : 문장 내 형태적 의미가 있는 단어만 검색
+                          </li>
+                          <li>
+                            <span class="txt-bold">전후방일치검색</span> : 형태적 의미와 상관없이 모두 검색
+                          </li>
+                        </ul>
+                      </div>
                   </div>
 								</div>
               </div>
-
               
               <div class="search-wrap-inner">
                 <div class="related-keywords-search">

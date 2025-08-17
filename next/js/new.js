@@ -6,7 +6,6 @@ const deleteItem = (btn) => {
     }
 }
 
-// 요약정보 show/hide 함수
 const showDetail = (detailId) => {
     // 해당 detailId를 가진 expand-viewer detail_box 찾기
     const targetViewer = document.querySelector(`.expand-viewer.detail_box#${detailId}`);
@@ -206,13 +205,20 @@ const closeAllRecordDepthLists = () => {
     const allLists = document.querySelectorAll('.record-depth-list');
     const tabContents = document.querySelector('.record-depth-institution-tab-contents');
     
+    const workDepthFilter = document.querySelector('.work-depth-filter');
+    const workDepthLists = workDepthFilter ? workDepthFilter.querySelectorAll('.work-depth-list') : [];
+    
     const isTabOpen = (tabContents && tabContents.classList.contains('active')) || 
                      document.querySelector('.record-depth-title.active') ||
-                     Array.from(allLists).some(list => list.style.display !== 'none');
+                     Array.from(allLists).some(list => list.style.display !== 'none') ||
+                     Array.from(workDepthLists).some(list => list.style.display !== 'none');
     
     if (isTabOpen) {
-        // 전역 닫기: 모든 것을 닫고 초기화
         allLists.forEach(list => {
+            list.style.display = 'none';
+        });
+        
+        workDepthLists.forEach(list => {
             list.style.display = 'none';
         });
         
@@ -230,9 +236,24 @@ const closeAllRecordDepthLists = () => {
         allLists.forEach(list => {
             const parentTitle = list.closest('.record-depth-col').querySelector('.record-depth-title');
             if (parentTitle.classList.contains('active')) {
-            list.style.display = 'none';
+                list.style.display = 'none';
             } else {
                 list.style.display = 'block';
+            }
+        });
+        
+        workDepthLists.forEach(list => {
+            const parentTitle = list.closest('.work-depth-col').querySelector('.work-depth-title');
+            if (parentTitle.classList.contains('active')) {
+                list.style.display = 'none';
+            } else {
+                // 카테고리4의 경우 grid로, 나머지는 block으로 설정
+                const workDepthCol = list.closest('.work-depth-col');
+                if (workDepthCol.classList.contains('work-depth-category4')) {
+                    list.style.display = 'grid';
+                } else {
+                    list.style.display = 'block';
+                }
             }
         });
         
@@ -347,10 +368,15 @@ const updateGlobalButtonState = () => {
     const activeTitle = document.querySelector('.record-depth-title.active');
     const allLists = document.querySelectorAll('.record-depth-list');
     
+    // 업무자료 검색의 카테고리 필터도 포함
+    const workDepthFilter = document.querySelector('.work-depth-filter');
+    const workDepthLists = workDepthFilter ? workDepthFilter.querySelectorAll('.work-depth-list') : [];
+    
     // 현재 열린 상태인지 확인 (ul들의 display 상태도 포함)
     const isCurrentlyOpen = (tabContents && tabContents.classList.contains('active')) || 
                            activeTitle || 
-                           Array.from(allLists).some(list => list.style.display !== 'none');
+                           Array.from(allLists).some(list => list.style.display !== 'none') ||
+                           Array.from(workDepthLists).some(list => list.style.display !== 'none');
     
     if (isCurrentlyOpen) {
         // 열린 상태면 "닫기" 버튼
@@ -374,11 +400,6 @@ const downloadEvent = (type, event) => {
             const btn = event;  // event.target 대신 event 직접 사용
             // const li = btn.closest('li');
             const li = btn.parentElement;
-            
-            console.log('btn:', btn);
-            console.log('btn.parentElement:', btn.parentElement);
-            console.log('btn.closest("li"):', btn.closest('li'));
-            console.log('li:', li);
             
             let isOpen = false;
             if (li) {
@@ -963,8 +984,6 @@ const addCategory2 = () => {
         if (category2Element) {
             category2Element.classList.add('last');
         }
-        
-        console.log('카테고리 2 추가됨 (last 클래스 적용)');
     }
 };
 
@@ -985,8 +1004,6 @@ const addCategory3 = () => {
         if (category3Element) {
             category3Element.classList.add('last');
         }
-        
-        console.log('카테고리 3 추가됨 (last 클래스 적용)');
     }
 };
 
@@ -1757,6 +1774,33 @@ document.addEventListener('change', (event) => {
                         ul.style.display = '';
                     }
                 });
+                
+                // 전역 버튼 상태 업데이트
+                updateGlobalButtonState();
+            }
+        }
+        
+        // 업무자료 검색의 카테고리 제목 클릭 이벤트 처리
+        if (e.target.classList.contains('work-depth-title')) {
+            const workDepthCol = e.target.closest('.work-depth-col');
+            const workDepthList = workDepthCol.querySelector('.work-depth-list');
+            
+            if (workDepthList) {
+                const wasActive = e.target.classList.contains('active');
+                e.target.classList.toggle('active');
+                
+                if (!wasActive) {
+                    // active가 되었으므로 list를 감추기
+                    workDepthList.style.display = 'none';
+                } else {
+                    // active가 해제되었으므로 list를 보이기
+                    // 카테고리4의 경우 grid로, 나머지는 block으로 설정
+                    if (workDepthCol.classList.contains('work-depth-category4')) {
+                        workDepthList.style.display = 'grid';
+                    } else {
+                        workDepthList.style.display = 'block';
+                    }
+                }
                 
                 // 전역 버튼 상태 업데이트
                 updateGlobalButtonState();
