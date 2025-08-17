@@ -54,6 +54,24 @@ const showList = () => {
     }
 }
 
+    // 각 record-depth-type 버튼 클릭 시 해당 li에만 active 클래스 부여, 나머지는 제거
+    document.addEventListener('DOMContentLoaded', function() {
+        const recordDepthType = document.querySelector('.record-depth-type');
+        if (recordDepthType) {
+            recordDepthType.addEventListener('click', function(e) {
+                if (e.target && e.target.tagName === 'BUTTON') {
+                    const lis = recordDepthType.querySelectorAll('li');
+                    lis.forEach(li => li.classList.remove('active'));
+                    const clickedLi = e.target.closest('li');
+                    if (clickedLi) {
+                        clickedLi.classList.add('active');
+                    }
+                }
+            });
+        }
+    });
+
+
     const detailTemplate = (data) => { 
         return `      
 			<div class="md-wrap">

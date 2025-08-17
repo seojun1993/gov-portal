@@ -686,6 +686,112 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="mobile popup-wrap">
+		<div class="popup-box popup-container popup-search-pop">
+			<div class="pop-header">
+				<h3 class="pop-title">기록물 상세검색</h3>
+			</div>
+			<div class="pop-body">
+				<div class="pop-body-contents">
+					<div class="pop-body-contents-inner">
+						<div class="record-search-filter">
+							<ul class="record-depth-type">
+								<li class="active">
+									<button type="button">
+										기록물 형태
+									</button>
+								</li>
+								<li>
+									<button type="button">
+										공개 구분
+									</button>
+								</li>
+								<li>
+									<button type="button">
+										원문서비스
+									</button>
+								</li>
+								<li>
+									<button type="button">
+										생산연도
+									</button>
+								</li>
+								<li>
+									<button type="button">
+										생산기관
+									</button>
+								</li>
+								<li>
+									<button type="button" class="back-btn">
+										이전으로
+									</button>
+								</li>
+							</ul>
+							<div class="record-depth-list">
+								<ul>
+									<li class="institution-input">
+										<div class="search-institution-input">
+											<input type="text">
+											<input type="submit" value="검색" class="btn-submit" onclick="return onSearch();">
+										</div>
+									</li>
+									<li>
+										<input type="radio" id="m-record-type-1" name="m-record-type" />
+										<label for="m-record-type-1">일반문서류 <span class="record-depth-count">(532)</span></label>
+									</li>
+									<li>
+										<input type="radio" id="m-record-type-2" name="m-record-type" />
+										<label for="m-record-type-2">도면류 <span class="record-depth-count">(33)</span></label>
+									</li>
+									<li>
+										<input type="radio" id="m-record-type-3" name="m-record-type" />
+										<label for="m-record-type-3">사진,필름류 <span class="record-depth-count">(24)</span></label>
+									</li>
+									<li>
+										<input type="radio" id="m-record-type-4" name="m-record-type" />
+										<label for="m-record-type-4">녹음,동영상류 <span class="record-depth-count">(12)</span></label>
+									</li>
+									<li>
+										<input type="radio" id="m-record-type-5" name="m-record-type" />
+										<label for="m-record-type-5">마이크로필름류 <span class="record-depth-count">(14)</span></label>
+									</li>
+									<li>
+										<input type="radio" id="m-record-type-6" name="m-record-type" />
+										<label for="m-record-type-6">전자기록류 <span class="record-depth-count">(21)</span></label>
+									</li>
+									<li>
+										<input type="radio" id="m-record-type-7" name="m-record-type" />
+										<label for="m-record-type-7">간행물 <span class="record-depth-count">(9)</span></label>
+									</li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="history-list">
+							<span>선택(3)</span>
+							<ul>
+								<li>
+									<span onclick="deleteItem(this)">공개</span>
+								</li>
+								<li>
+									<span onclick="deleteItem(this)">온라인 제공</span>
+								</li>
+								<li>
+									<span onclick="deleteItem(this)">면류</span>
+								</li>
+							</ul>
+						</div>
+
+						<div class="btn-section">
+							<button class="btn new_brown_border big i-reset" onClick="document.getElementById('detailSearchForm').reset();return false;">초기화</button>
+							<input type="submit" class="btn new_brown big" value="검색">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<!-- //상세검색 팝업 -->
 
 	<!--상단 메뉴 끝-->
