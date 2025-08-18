@@ -191,10 +191,12 @@
 .work-depth-col.work-depth-category4 .work-depth-title{background-color: #4A2E26; color: #fff;}
 .work-depth-col.work-depth-category4 input[type="checkbox"]{display: none;}
 .work-depth-col.work-depth-category4 .work-depth-list{ display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; box-sizing: border-box; max-height: none;}
-.work-depth-col.work-depth-category4 .work-depth-list li{ width: 100%; display: flex; align-items: stretch; box-sizing: border-box; border-right: 1px solid #DEDEDE; border-top: 1px solid #DEDEDE;}
+.work-depth-col.work-depth-category4 .work-depth-list li{ width: 100%; display: flex; align-items: stretch; box-sizing: border-box; border-right: 1px solid #DEDEDE;}
 .work-depth-col.work-depth-category4 .work-depth-list li:nth-child(-n+3) {border-top: none;}
-.work-depth-col.work-depth-category4 .work-depth-list li label{ width: 100%; display: flex; align-items: center; box-sizing: border-box; padding: 22px 25px; word-break: break-all;}
-.work-depth-col.work-depth-category4 .work-depth-list li input[type="checkbox"]:checked + label{font-weight: 500;background-color: #F9F6F4;}
+.work-depth-col.work-depth-category4 .work-depth-list li:nth-child(-n+3) {border-bottom: 1px solid #DEDEDE;}
+.work-depth-col.work-depth-category4 .work-depth-list li:nth-child(n+4):nth-child(-n+6) {border-bottom: 1px solid #DEDEDE;}
+.work-depth-col.work-depth-category4 .work-depth-list li label{ width: 100%; display: flex; align-items: center; box-sizing: border-box; padding:20px; word-break: break-all;}
+.work-depth-col.work-depth-category4 .work-depth-list li input[type="checkbox"]:checked + label{font-weight: 500;background-color: #F9F6F4; background-image: none;}
 
 /* 검색결과 상단 */
 .search-result-filter{border: none; padding: 0; margin: 16px 0 8px; border-bottom: 1px solid #000;}

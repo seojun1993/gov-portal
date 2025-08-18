@@ -872,11 +872,43 @@ const categoryStructure = {
                 terminal: false,
                 children: {
                     '전체': { label: '전체', terminal: true },
-                    '표준지침매뉴얼': { label: '표준·지침·매뉴얼', terminal: false },
-                    '기록물분류기준': { label: '기록물분류기준', terminal: false },
+                    '표준지침매뉴얼': { 
+                        label: '표준·지침·매뉴얼', 
+                        terminal: false,
+                        children: {
+                            '전체': { label: '전체', terminal: true },
+                            '한국산업표준KS': { label: '한국산업표준(KS)', terminal: true },
+                            '기록물관리표준': { label: '기록물관리 표준', terminal: true },
+                            '지침': { label: '지침', terminal: true },
+                            '메뉴얼': { label: '메뉴얼', terminal: true },
+                            '규격서식': { label: '규격·서식', terminal: true },
+                            '해외표준': { label: '해외표준', terminal: true }
+                        }
+                    },
+                    '기록물분류기준': { 
+                        label: '기록물분류기준', 
+                        terminal: false,
+                        children: {
+                            '전체': { label: '전체', terminal: true },
+                            '보존기간 책정기준': { label: '보존기간 책정기준', terminal: true },
+                            '기록물분류기준표': { label: '기록물분류기준', terminal: true },
+                            '공문서분류 및 보존기간표': { label: '공문서분류 및 보존기간표', terminal: true }
+                        }
+                    },
                     '행정정보데이터세트': { label: '행정정보데이터세트', terminal: true },
                     '기록관리평가': { label: '기록관리평가', terminal: true },
-                    '발간자료': { label: '발간자료', terminal: false }
+                    '발간자료': { 
+                        label: '발간자료', 
+                        terminal: false,
+                        children: {
+                            '전체': { label: '전체', terminal: true },
+                            '정책간행물': { label: '정책간행물', terminal: true },
+                            'R&D 연구보고서': { label: 'R&D 연구보고서', terminal: true },
+                            '기록관리 이슈페이퍼': { label: '기록관리 이슈페이퍼', terminal: true },
+                            '통계집': { label: '통계집', terminal: true },
+                            '각종자료': { label: '각종자료', terminal: true }
+                        }
+                    }
                 }
             },
             '법령정보': { 
@@ -884,8 +916,22 @@ const categoryStructure = {
                 terminal: false,
                 children: {
                     '전체': { label: '전체', terminal: true },
-                    '소관법령': { label: '소관법령', terminal: false },
-                    '관련법령': { label: '관련법령', terminal: false }
+                    '소관법령': { 
+                        label: '소관법령', 
+                        terminal: false,
+                        children: {
+                            '전체': { label: '전체', terminal: true },
+                            '훈령·예규': { label: '훈령·예규', terminal: true },
+                        }
+                    },
+                    '관련법령': { 
+                        label: '관련법령', 
+                        terminal: false,
+                        children: {
+                            '전체': { label: '전체', terminal: true },
+                            '해외법령': { label: '해외법령', terminal: true },
+                        }
+                    }
                 }
             },
             '업무계획': { label: '업무계획', terminal: true }
@@ -971,50 +1017,32 @@ const createCategory3 = (category1Value, category2Value) => {
     `;
 }
 
-const createCategory4 = () => {
-    // 카테고리4는 항상 체크박스로 처리 (현재 목업 데이터 유지)
+const createCategory4 = (category1Value, category2Value, category3Value) => {
+    if (!category1Value || !category2Value || !category3Value ||
+        !categoryStructure[category1Value] || 
+        !categoryStructure[category1Value].children[category2Value] ||
+        !categoryStructure[category1Value].children[category2Value].children[category3Value] ||
+        !categoryStructure[category1Value].children[category2Value].children[category3Value].children) {
+        return '';
+    }
+    
+    const category4Options = categoryStructure[category1Value].children[category2Value].children[category3Value].children;
+    const items = Object.entries(category4Options).map(([value, config], index) => {
+        return `
+            <li>
+                <input type="checkbox" id="category-4-${index + 1}" name="category4" value="${value}" />
+                <label for="category-4-${index + 1}">${config.label}</label>
+            </li>
+        `;
+    }).join('');
+    
     return `
         <div class="work-depth-col work-depth-category4">
             <div class="work-depth-title">
                 <span>카테고리4</span>
             </div>
             <ul class="work-depth-list">
-                <li>
-                    <input type="checkbox" id="category-4-1" name="category4" value="전체" />
-                    <label for="category-4-1">test1</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="category-4-2" name="category4" value="한국산업표준KS" />
-                    <label for="category-4-2">test2</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="category-4-3" name="category4" value="기록물관리표준" />
-                    <label for="category-4-3">test3</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="category-4-4" name="category4" value="지침" />
-                    <label for="category-4-4">test4</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="category-4-5" name="category4" value="메뉴얼" />
-                    <label for="category-4-5">test5</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="category-4-6" name="category4" value="규격서식" />
-                    <label for="category-4-6">test6</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="category-4-7" name="category4" value="해외표준" />
-                    <label for="category-4-7">test7</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="category-4-8" name="category4" value="기록관리SW" />
-                    <label for="category-4-8">test8</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="category-4-9" name="category4" value="관련사이트소개" />
-                    <label for="category-4-9">test9</label>
-                </li>
+                ${items}
             </ul>
         </div>
     `;
@@ -1209,7 +1237,7 @@ const handleCategoryChange = (categoryLevel, value) => {
         const category3Config = categoryStructure[category1Value]?.children[category2Value]?.children[value];
         
         if (category3Config && !category3Config.terminal) {
-            addCategory4();
+            addCategory4(category1Value, category2Value, value);
             
             // 카테고리3에서 "전체" 선택하거나 카테고리4로 진행하는 경우 모두 메시지 숨김
             setTimeout(() => {
@@ -1334,7 +1362,7 @@ const addCategory3 = (category1Value, category2Value) => {
 };
 
 // 카테고리 4 동적 추가 함수
-const addCategory4 = () => {
+const addCategory4 = (category1Value, category2Value, category3Value) => {
     const workDepthFilter = document.querySelector('.work-depth-filter');
     if (workDepthFilter) {
         // 기존 카테고리4가 있으면 먼저 제거
@@ -1343,7 +1371,7 @@ const addCategory4 = () => {
             existingCategory4.remove();
         }
         
-        const category4HTML = createCategory4();
+        const category4HTML = createCategory4(category1Value, category2Value, category3Value);
         if (category4HTML) {
             workDepthFilter.insertAdjacentHTML('beforeend', category4HTML);
             
