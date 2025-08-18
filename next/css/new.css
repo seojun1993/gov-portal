@@ -179,8 +179,10 @@
 .work-depth-filter .work-depth-col .work-depth-list{width:100%; min-height: 216px; max-height: 252px; overflow-y: auto; border-top: 1px solid #DEDEDE;}
 .work-depth-filter .work-depth-col .work-depth-list li{display: flex; justify-content: space-between; align-items: center; gap: 8px;}
 .work-depth-filter .work-depth-col .work-depth-list li input[type="radio"]{display: none;}
+.work-depth-filter .work-depth-col .work-depth-list li input[type="checkbox"]{display: none;}
 .work-depth-filter .work-depth-col .work-depth-list li label{width:100%; font-size: 15px; color: #5E5E5E; font-weight: 400; cursor: pointer; padding: 7px 14px;}
 .work-depth-filter .work-depth-col .work-depth-list li input[type="radio"]:checked + label{ background-color: #F9F6F4; color: #4A2E26; font-weight: 500; background-image: url(../images/new/arrow_right.svg); background-repeat: no-repeat; background-position: calc(100% - 12px) center; background-size: 16px;}
+.work-depth-filter .work-depth-col .work-depth-list li input[type="checkbox"]:checked + label{ background-color: #F9F6F4; color: #4A2E26; font-weight: 500; background-image: url(../images/new/record_chk.svg); background-repeat: no-repeat; background-position: calc(100% - 12px) center; background-size: 14px;}
 .work-depth-close-wrap{text-align: right; border-top: 1px solid #DEDEDE; background-color: #FAFAFA; padding: 10px;}
 .work-depth-close-btn{ display:flex; align-items: center; margin-left: auto; background-image: url(../images/new/arrow_up.svg); background-repeat: no-repeat; background-position: right center; background-size: 14px; padding-right: 16px; color: #5E5E5E;}
 .work-depth-close-btn.open {background-image: url(../images/new/arrow_down.svg);}

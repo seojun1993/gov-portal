@@ -861,71 +861,118 @@ const createCategory1 = () => {
     `;
 }
 
-const createCategory2 = () => {
+// 카테고리 구조 정의
+const categoryStructure = {
+    '업무안내자료': {
+        label: '업무안내·자료',
+        children: {
+            '전체': { label: '전체', terminal: true },
+            '기록관리자료실': { 
+                label: '기록관리자료실', 
+                terminal: false,
+                children: {
+                    '전체': { label: '전체', terminal: true },
+                    '표준지침매뉴얼': { label: '표준·지침·매뉴얼', terminal: false },
+                    '기록물분류기준': { label: '기록물분류기준', terminal: false },
+                    '행정정보데이터세트': { label: '행정정보데이터세트', terminal: true },
+                    '기록관리평가': { label: '기록관리평가', terminal: true },
+                    '발간자료': { label: '발간자료', terminal: false }
+                }
+            },
+            '법령정보': { 
+                label: '법령정보', 
+                terminal: false,
+                children: {
+                    '전체': { label: '전체', terminal: true },
+                    '소관법령': { label: '소관법령', terminal: false },
+                    '관련법령': { label: '관련법령', terminal: false }
+                }
+            },
+            '업무계획': { label: '업무계획', terminal: true }
+        }
+    },
+    '뉴스소식': {
+        label: '뉴스·소식',
+        children: {
+            '전체': { label: '전체', terminal: true },
+            '알립니다': { label: '알립니다', terminal: true },
+            '보도자료': { label: '보도자료', terminal: true },
+            '채용공고': { label: '채용공고', terminal: true },
+            '고시': { label: '고시', terminal: true }
+        }
+    }
+};
+
+const createCategory2 = (category1Value) => {
+    if (!category1Value || !categoryStructure[category1Value]) return '';
+    
+    const category2Options = categoryStructure[category1Value].children;
+    const items = Object.entries(category2Options).map(([value, config], index) => {
+        const inputType = config.terminal ? 'checkbox' : 'radio';
+        const inputName = config.terminal ? 'category2' : 'category2';
+        
+        return `
+            <li>
+                <input type="${inputType}" id="category-2-${index + 1}" name="${inputName}" value="${value}" />
+                <label for="category-2-${index + 1}">${config.label}</label>
+            </li>
+        `;
+    }).join('');
+    
+    // 종료 depth인 경우에만 특별한 스타일 적용 (카테고리4 스타일은 실제 카테고리4에만 적용)
+    const isTerminal = Object.values(category2Options).every(config => config.terminal);
+    const colClass = 'work-depth-col';
+    
     return `
-        <div class="work-depth-col">
+        <div class="${colClass}">
             <div class="work-depth-title">
                 <span>카테고리2</span>
             </div>
             <ul class="work-depth-list">
-                <li>
-                    <input type="radio" id="category-2-1" name="category2" value="전체" />
-                    <label for="category-2-1">전체</label>
-                </li>
-                <li>
-                    <input type="radio" id="category-2-2" name="category2" value="기록관리자료실" />
-                    <label for="category-2-2">기록관리자료실</label>
-                </li>
-                <li>
-                    <input type="radio" id="category-2-3" name="category2" value="법령정보" />
-                    <label for="category-2-3">법령정보</label>
-                </li>
-                <li>
-                    <input type="radio" id="category-2-4" name="category2" value="업무계획" />
-                    <label for="category-2-4">업무계획</label>
-                </li>
+                ${items}
             </ul>
         </div>
     `;
 }
 
-const createCategory3 = () => {
+const createCategory3 = (category1Value, category2Value) => {
+    if (!category1Value || !category2Value || 
+        !categoryStructure[category1Value] || 
+        !categoryStructure[category1Value].children[category2Value] ||
+        !categoryStructure[category1Value].children[category2Value].children) {
+        return '';
+    }
+    
+    const category3Options = categoryStructure[category1Value].children[category2Value].children;
+    const items = Object.entries(category3Options).map(([value, config], index) => {
+        const inputType = config.terminal ? 'checkbox' : 'radio';
+        const inputName = config.terminal ? 'category3' : 'category3';
+        
+        return `
+            <li>
+                <input type="${inputType}" id="category-3-${index + 1}" name="${inputName}" value="${value}" />
+                <label for="category-3-${index + 1}">${config.label}</label>
+            </li>
+        `;
+    }).join('');
+    
+    // 카테고리3는 일반 레이아웃 유지 (카테고리4 스타일은 실제 카테고리4에만 적용)
+    const colClass = 'work-depth-col';
+    
     return `
-        <div class="work-depth-col">
+        <div class="${colClass}">
             <div class="work-depth-title">
                 <span>카테고리3</span>
             </div>
             <ul class="work-depth-list">
-                <li>
-                    <input type="radio" id="category-3-1" name="category3" value="전체" />
-                    <label for="category-3-1">전체</label>
-                </li>
-                <li>
-                    <input type="radio" id="category-3-2" name="category3" value="표준지침매뉴얼" />
-                    <label for="category-3-2">표준·지침·매뉴얼</label>
-                </li>
-                <li>
-                    <input type="radio" id="category-3-3" name="category3" value="기록물분류기준" />
-                    <label for="category-3-3">기록물분류기준</label>
-                </li>
-                <li>
-                    <input type="radio" id="category-3-4" name="category3" value="행정정보데이터세트" />
-                    <label for="category-3-4">행정정보데이터세트</label>
-                </li>
-                <li>
-                    <input type="radio" id="category-3-5" name="category3" value="기록관리평가" />
-                    <label for="category-3-5">기록관리평가</label>
-                </li>
-                <li>
-                    <input type="radio" id="category-3-6" name="category3" value="발간자료" />
-                    <label for="category-3-6">발간자료</label>
-                </li>
+                ${items}
             </ul>
         </div>
     `;
 }
 
 const createCategory4 = () => {
+    // 카테고리4는 항상 체크박스로 처리 (현재 목업 데이터 유지)
     return `
         <div class="work-depth-col work-depth-category4">
             <div class="work-depth-title">
@@ -934,39 +981,39 @@ const createCategory4 = () => {
             <ul class="work-depth-list">
                 <li>
                     <input type="checkbox" id="category-4-1" name="category4" value="전체" />
-                    <label for="category-4-1">전체</label>
+                    <label for="category-4-1">test1</label>
                 </li>
                 <li>
                     <input type="checkbox" id="category-4-2" name="category4" value="한국산업표준KS" />
-                    <label for="category-4-2">한국산업표준(KS)</label>
+                    <label for="category-4-2">test2</label>
                 </li>
                 <li>
                     <input type="checkbox" id="category-4-3" name="category4" value="기록물관리표준" />
-                    <label for="category-4-3">기록물관리 표준</label>
+                    <label for="category-4-3">test3</label>
                 </li>
                 <li>
                     <input type="checkbox" id="category-4-4" name="category4" value="지침" />
-                    <label for="category-4-4">지침</label>
+                    <label for="category-4-4">test4</label>
                 </li>
                 <li>
                     <input type="checkbox" id="category-4-5" name="category4" value="메뉴얼" />
-                    <label for="category-4-5">메뉴얼</label>
+                    <label for="category-4-5">test5</label>
                 </li>
                 <li>
                     <input type="checkbox" id="category-4-6" name="category4" value="규격서식" />
-                    <label for="category-4-6">규격·서식</label>
+                    <label for="category-4-6">test6</label>
                 </li>
                 <li>
                     <input type="checkbox" id="category-4-7" name="category4" value="해외표준" />
-                    <label for="category-4-7">해외표준</label>
+                    <label for="category-4-7">test7</label>
                 </li>
                 <li>
                     <input type="checkbox" id="category-4-8" name="category4" value="기록관리SW" />
-                    <label for="category-4-8">기록관리 SW</label>
+                    <label for="category-4-8">test8</label>
                 </li>
                 <li>
                     <input type="checkbox" id="category-4-9" name="category4" value="관련사이트소개" />
-                    <label for="category-4-9">관련사이트 소개</label>
+                    <label for="category-4-9">test9</label>
                 </li>
             </ul>
         </div>
@@ -990,88 +1037,298 @@ const updateCategoryStates = () => {
 
 // 카테고리 변경 이벤트 핸들러 (전역 스코프)
 const handleCategoryChange = (categoryLevel, value) => {
-    // 해당 카테고리 선택
-    if (categoryLevel === 'category4') {
-        // 카테고리4는 체크박스이므로 배열로 관리
+    const event = window.event || arguments.callee.caller.arguments[0];
+    const input = event.target;
+    
+    // 라디오 버튼 클릭 시 동일한 뎁스의 체크박스들 해제
+    if (input.type === 'radio') {
+        const sameLevelCheckboxes = document.querySelectorAll(`input[name="${categoryLevel}"][type="checkbox"]`);
+        sameLevelCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        
+        // 상태에서도 체크박스 선택 해제
+        if (Array.isArray(categoryState[categoryLevel].selected)) {
+            categoryState[categoryLevel].selected = [];
+        }
+    }
+    
+    // 체크박스 클릭 시 동일한 뎁스의 라디오 버튼들 해제
+    if (input.type === 'checkbox' && input.checked) {
+        const sameLevelRadios = document.querySelectorAll(`input[name="${categoryLevel}"][type="radio"]`);
+        sameLevelRadios.forEach(radio => {
+            radio.checked = false;
+        });
+        
+        // 상태에서도 라디오 선택 해제
+        if (!Array.isArray(categoryState[categoryLevel].selected)) {
+            categoryState[categoryLevel].selected = [];
+        }
+        
+        // "전체"가 아닌 다른 체크박스 선택 시 "전체" 해제
+        if (value !== '전체') {
+            const wholeCheckbox = document.querySelector(`input[name="${categoryLevel}"][type="checkbox"][value="전체"]`);
+            if (wholeCheckbox) {
+                wholeCheckbox.checked = false;
+            }
+            
+            // 상태에서도 "전체" 제거
+            if (Array.isArray(categoryState[categoryLevel].selected)) {
+                categoryState[categoryLevel].selected = categoryState[categoryLevel].selected.filter(item => item !== '전체');
+            }
+        }
+    }
+    
+    // 선택된 값 업데이트
+    if (input.type === 'checkbox') {
+        // 체크박스의 경우 배열로 관리
         if (!categoryState[categoryLevel].selected) {
             categoryState[categoryLevel].selected = [];
         }
         
         const index = categoryState[categoryLevel].selected.indexOf(value);
-        if (index > -1) {
-            // 이미 선택된 값이면 제거
-            categoryState[categoryLevel].selected.splice(index, 1);
-        } else {
-            // 선택되지 않은 값이면 추가
+        if (input.checked && index === -1) {
             categoryState[categoryLevel].selected.push(value);
+        } else if (!input.checked && index > -1) {
+            categoryState[categoryLevel].selected.splice(index, 1);
         }
     } else {
-        // 카테고리1, 2, 3은 라디오 버튼이므로 단일 값으로 관리
+        // 라디오 버튼의 경우 단일 값으로 관리
         categoryState[categoryLevel].selected = value;
     }
 
+    // 하위 카테고리 처리
     if (categoryLevel === 'category1') {
         categoryState.category2.selected = null;
         categoryState.category3.selected = null;
         categoryState.category4.selected = [];
     
+        removeCategory2();
         removeCategory3();
         removeCategory4();
-        addCategory2();
+        addCategory2(value);
+        
+        // 카테고리1 선택 후 카테고리2에 last 클래스 추가 (메시지 표시)
+        setTimeout(() => {
+            const category2Element = document.querySelector('.work-depth-col:has(input[name="category2"])');
+            if (category2Element) {
+                const workDepthFilter = document.querySelector('.work-depth-filter');
+                if (workDepthFilter) {
+                    workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
+                        col.classList.remove('last');
+                    });
+                    category2Element.classList.add('last');
+                }
+            }
+        }, 0);
         
     } else if (categoryLevel === 'category2') {
         categoryState.category3.selected = null;
         categoryState.category4.selected = [];
-        removeCategory4();
-        addCategory3();
+        
+        // 카테고리2에서 종료되는 경우 확인
+        const category1Value = categoryState.category1.selected;
+        const category2Config = categoryStructure[category1Value]?.children[value];
+        
+        if (category2Config && !category2Config.terminal && category2Config.children) {
+            removeCategory4();
+            addCategory3(category1Value, value);
+            
+            // "전체" 선택 시 메시지 숨김 및 동일 뎁스 체크박스 해제
+            if (value === '전체') {
+                const workDepthFilter = document.querySelector('.work-depth-filter');
+                if (workDepthFilter) {
+                    workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
+                        col.classList.remove('last');
+                    });
+                }
+                
+                // 동일한 뎁스의 다른 체크박스들 해제
+                const sameLevelCheckboxes = document.querySelectorAll(`input[name="${categoryLevel}"][type="checkbox"]`);
+                sameLevelCheckboxes.forEach(checkbox => {
+                    if (checkbox.value !== '전체') {
+                        checkbox.checked = false;
+                    }
+                });
+                
+                // 상태에서도 다른 체크박스 선택 해제
+                if (Array.isArray(categoryState[categoryLevel].selected)) {
+                    categoryState[categoryLevel].selected = categoryState[categoryLevel].selected.filter(item => item === '전체');
+                }
+            } else {
+                // 비종료 뎁스이므로 카테고리3에 last 클래스 추가 (메시지 표시)
+                setTimeout(() => {
+                    const category3Element = document.querySelector('.work-depth-col:has(input[name="category3"])');
+                    if (category3Element) {
+                        const workDepthFilter = document.querySelector('.work-depth-filter');
+                        if (workDepthFilter) {
+                            workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
+                                col.classList.remove('last');
+                            });
+                            category3Element.classList.add('last');
+                        }
+                    }
+                }, 0);
+            }
+        } else {
+            removeCategory3();
+            removeCategory4();
+            
+            // 종료 뎁스인 경우 last 클래스 제거 (메시지 숨김)
+            if (category2Config && category2Config.terminal) {
+                const workDepthFilter = document.querySelector('.work-depth-filter');
+                if (workDepthFilter) {
+                    workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
+                        col.classList.remove('last');
+                    });
+                }
+                
+                // "전체" 선택 시 동일한 뎁스의 다른 체크박스들 해제
+                if (value === '전체') {
+                    const sameLevelCheckboxes = document.querySelectorAll(`input[name="${categoryLevel}"][type="checkbox"]`);
+                    sameLevelCheckboxes.forEach(checkbox => {
+                        if (checkbox.value !== '전체') {
+                            checkbox.checked = false;
+                        }
+                    });
+                    
+                    // 상태에서도 다른 체크박스 선택 해제
+                    if (Array.isArray(categoryState[categoryLevel].selected)) {
+                        categoryState[categoryLevel].selected = categoryState[categoryLevel].selected.filter(item => item === '전체');
+                    }
+                }
+            }
+        }
         
     } else if (categoryLevel === 'category3') {
         categoryState.category4.selected = [];
-        addCategory4();
+        
+        // 카테고리3에서 종료되는 경우 확인
+        const category1Value = categoryState.category1.selected;
+        const category2Value = categoryState.category2.selected;
+        const category3Config = categoryStructure[category1Value]?.children[category2Value]?.children[value];
+        
+        if (category3Config && !category3Config.terminal) {
+            addCategory4();
+            
+            // 카테고리3에서 "전체" 선택하거나 카테고리4로 진행하는 경우 모두 메시지 숨김
+            setTimeout(() => {
+                const workDepthFilter = document.querySelector('.work-depth-filter');
+                if (workDepthFilter) {
+                    workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
+                        col.classList.remove('last');
+                    });
+                }
+            }, 0);
+        } else {
+            removeCategory4();
+            
+            // 종료 뎁스인 경우 last 클래스 제거 (메시지 숨김)
+            if (category3Config && category3Config.terminal) {
+                const workDepthFilter = document.querySelector('.work-depth-filter');
+                if (workDepthFilter) {
+                    workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
+                        col.classList.remove('last');
+                    });
+                }
+                
+                // "전체" 선택 시 동일한 뎁스의 다른 체크박스들 해제
+                if (value === '전체') {
+                    const sameLevelCheckboxes = document.querySelectorAll(`input[name="${categoryLevel}"][type="checkbox"]`);
+                    sameLevelCheckboxes.forEach(checkbox => {
+                        if (checkbox.value !== '전체') {
+                            checkbox.checked = false;
+                        }
+                    });
+                    
+                    // 상태에서도 다른 체크박스 선택 해제
+                    if (Array.isArray(categoryState[categoryLevel].selected)) {
+                        categoryState[categoryLevel].selected = categoryState[categoryLevel].selected.filter(item => item === '전체');
+                    }
+                }
+            }
+        }
+    } else if (categoryLevel === 'category4') {
+        // 카테고리4는 항상 종료 뎁스이므로 last 클래스 제거
+        const workDepthFilter = document.querySelector('.work-depth-filter');
+        if (workDepthFilter) {
+            workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
+                col.classList.remove('last');
+            });
+        }
+        
+        // "전체" 선택 시 동일한 뎁스의 다른 체크박스들 해제
+        if (value === '전체') {
+            const sameLevelCheckboxes = document.querySelectorAll(`input[name="${categoryLevel}"][type="checkbox"]`);
+            sameLevelCheckboxes.forEach(checkbox => {
+                if (checkbox.value !== '전체') {
+                    checkbox.checked = false;
+                }
+            });
+            
+            // 상태에서도 다른 체크박스 선택 해제
+            if (Array.isArray(categoryState[categoryLevel].selected)) {
+                categoryState[categoryLevel].selected = categoryState[categoryLevel].selected.filter(item => item === '전체');
+            }
+        }
     }
     
     // 상태 업데이트
     updateCategoryStates();
-    // UI 업데이트
-    renderCategories();
 };
 
 // 카테고리 2 동적 추가 함수 (전역 스코프)
-const addCategory2 = () => {
+const addCategory2 = (category1Value) => {
     const workDepthFilter = document.querySelector('.work-depth-filter');
-    if (workDepthFilter && !document.querySelector('.work-depth-col:has(input[name="category2"])')) {
-        const category2HTML = createCategory2();
-        workDepthFilter.insertAdjacentHTML('beforeend', category2HTML);
+    if (workDepthFilter) {
+        // 기존 카테고리2가 있으면 먼저 제거
+        const existingCategory2 = workDepthFilter.querySelector('.work-depth-col:has(input[name="category2"])');
+        if (existingCategory2) {
+            existingCategory2.remove();
+        }
         
-        // 기존 last 클래스 제거
-        workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
-            col.classList.remove('last');
-        });
-        
-        // 새로 추가된 카테고리 2에 last 클래스 추가
-        const category2Element = workDepthFilter.querySelector('.work-depth-col:has(input[name="category2"])');
-        if (category2Element) {
-            category2Element.classList.add('last');
+        const category2HTML = createCategory2(category1Value);
+        if (category2HTML) {
+            workDepthFilter.insertAdjacentHTML('beforeend', category2HTML);
+            
+            // 기존 last 클래스 제거
+            workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
+                col.classList.remove('last');
+            });
+            
+            // 새로 추가된 카테고리 2에 last 클래스 추가
+            const category2Element = workDepthFilter.querySelector('.work-depth-col:has(input[name="category2"])');
+            if (category2Element) {
+                category2Element.classList.add('last');
+            }
         }
     }
 };
 
 // 카테고리 3 동적 추가 함수 (전역 스코프)
-const addCategory3 = () => {
+const addCategory3 = (category1Value, category2Value) => {
     const workDepthFilter = document.querySelector('.work-depth-filter');
-    if (workDepthFilter && !document.querySelector('.work-depth-col:has(input[name="category3"])')) {
-        const category3HTML = createCategory3();
-        workDepthFilter.insertAdjacentHTML('beforeend', category3HTML);
+    if (workDepthFilter) {
+        // 기존 카테고리3이 있으면 먼저 제거
+        const existingCategory3 = workDepthFilter.querySelector('.work-depth-col:has(input[name="category3"])');
+        if (existingCategory3) {
+            existingCategory3.remove();
+        }
         
-        // 기존 last 클래스 제거
-        workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
-            col.classList.remove('last');
-        });
-        
-        // 새로 추가된 카테고리 3에 last 클래스 추가
-        const category3Element = workDepthFilter.querySelector('.work-depth-col:has(input[name="category3"])');
-        if (category3Element) {
-            category3Element.classList.add('last');
+        const category3HTML = createCategory3(category1Value, category2Value);
+        if (category3HTML) {
+            workDepthFilter.insertAdjacentHTML('beforeend', category3HTML);
+            
+            // 기존 last 클래스 제거
+            workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
+                col.classList.remove('last');
+            });
+            
+            // 새로 추가된 카테고리 3에 last 클래스 추가
+            const category3Element = workDepthFilter.querySelector('.work-depth-col:has(input[name="category3"])');
+            if (category3Element) {
+                category3Element.classList.add('last');
+            }
         }
     }
 };
@@ -1079,13 +1336,22 @@ const addCategory3 = () => {
 // 카테고리 4 동적 추가 함수
 const addCategory4 = () => {
     const workDepthFilter = document.querySelector('.work-depth-filter');
-    if (workDepthFilter && !document.querySelector('.work-depth-col:has(input[name="category4"])')) {
-        const category4HTML = createCategory4();
-        workDepthFilter.insertAdjacentHTML('beforeend', category4HTML);
+    if (workDepthFilter) {
+        // 기존 카테고리4가 있으면 먼저 제거
+        const existingCategory4 = workDepthFilter.querySelector('.work-depth-col:has(input[name="category4"])');
+        if (existingCategory4) {
+            existingCategory4.remove();
+        }
         
-        workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
-            col.classList.remove('last');
-        });
+        const category4HTML = createCategory4();
+        if (category4HTML) {
+            workDepthFilter.insertAdjacentHTML('beforeend', category4HTML);
+            
+            // 카테고리4는 last 클래스를 제거 (마지막 뎁스이므로)
+            workDepthFilter.querySelectorAll('.work-depth-col').forEach(col => {
+                col.classList.remove('last');
+            });
+        }
     }
 };
 
