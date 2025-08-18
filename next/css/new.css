@@ -118,7 +118,7 @@
 .record-tab-contents{width: 100%; border: 1px solid #4A2E26;}
 .record-depth-filter{display: flex;}
 .record-depth-filter .record-depth-col{min-width: 200px;}
-.record-depth-filter .record-depth-col.record-depth-institution{flex: 1;}
+.record-depth-filter .record-depth-col.record-depth-institution{flex: 1; cursor: pointer;}
 .record-depth-filter .record-depth-col.record-depth-institution .more_view{width: 20px; height: 20px; background-image: url(../images/new/plus.svg); background-repeat: no-repeat; background-position: right center; background-size: 18px; color: #5E5E5E; margin-right: 12px; padding: 0;}
 .record-depth-filter .record-depth-col:not(:last-child){border-right: 1px solid #DEDEDE;}
 .record-depth-filter .record-depth-col .record-depth-title{display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #DEDEDE; border-bottom: none; background-color: #fafafa; }

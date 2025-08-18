@@ -1884,14 +1884,13 @@ document.addEventListener('change', (event) => {
         }
         
         // more_view 버튼 클릭 이벤트 처리
-        if (e.target.classList.contains('more_view')) {
-            const institutionCol = e.target.closest('.record-depth-institution');
+        if (e.target.classList.contains('record-depth-institution') || e.target.closest('.record-depth-institution')) {
+            const institutionCol = e.target.classList.contains('record-depth-institution') ? e.target : e.target.closest('.record-depth-institution');
             const recordDepthFilter = institutionCol.closest('.record-depth-filter');
             const tabContents = recordDepthFilter.parentElement.querySelector('.record-depth-institution-tab-contents');
             
-            // more_view 버튼 토글
-            // more_view 버튼이 아니라 부모의 record-depth-title에 active 클래스를 토글합니다.
-            const recordDepthTitle = e.target.closest('.record-depth-title');
+            // record-depth-institution 클릭 시 record-depth-title에 active 클래스를 토글합니다.
+            const recordDepthTitle = institutionCol.querySelector('.record-depth-title');
             if (recordDepthTitle) {
                 const wasActive = recordDepthTitle.classList.contains('active');
                 recordDepthTitle.classList.toggle('active');
