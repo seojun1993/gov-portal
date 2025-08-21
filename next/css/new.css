@@ -195,7 +195,7 @@
 .work-depth-col.work-depth-category4 .work-depth-list li:nth-child(-n+3) {border-top: none;}
 .work-depth-col.work-depth-category4 .work-depth-list li:nth-child(-n+3) {border-bottom: 1px solid #DEDEDE;}
 .work-depth-col.work-depth-category4 .work-depth-list li:nth-child(n+4):nth-child(-n+6) {border-bottom: 1px solid #DEDEDE;}
-.work-depth-col.work-depth-category4 .work-depth-list li label{ width: 100%; display: flex; align-items: center; box-sizing: border-box; padding:20px; word-break: break-all;}
+.work-depth-col.work-depth-category4 .work-depth-list li label{ width: 100%; display: flex; align-items: center; box-sizing: border-box; padding:20px; word-break: keep-all;}
 .work-depth-col.work-depth-category4 .work-depth-list li input[type="checkbox"]:checked + label{font-weight: 500;background-color: #F9F6F4; background-image: none;}
 
 /* 검색결과 상단 */
@@ -352,7 +352,18 @@ h4.md-title:before{content: none;}
     .record-list-top{padding-bottom: 6px;}
     .search-result-list .image-box{width: 90px; min-width: 90px; max-height:max-content; margin-right: 12px;}
     .search-result-list .image-box img{object-fit: cover;}
-    .search-result-list .info > p{display: none;}
+    /* 모바일에서 .info > p 태그 두 줄만 보이고 나머지는 ... 처리 */
+    @media (max-width: 768px) {
+        .search-result-list .info > p {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            white-space: normal;
+        }
+    }
     .search-result-list .category{display: flex; flex-wrap: nowrap; overflow-x: auto;}
     .search-result-list .category .cate-lb{width: max-content;}
     .search-result-list .expand a, .search-result-list .expand span{height: 36px;}

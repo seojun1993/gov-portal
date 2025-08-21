@@ -920,7 +920,6 @@ const categoryStructure = {
                         label: '소관법령', 
                         terminal: false,
                         children: {
-                            '전체': { label: '전체', terminal: true },
                             '훈령·예규': { label: '훈령·예규', terminal: true },
                         }
                     },
@@ -928,7 +927,6 @@ const categoryStructure = {
                         label: '관련법령', 
                         terminal: false,
                         children: {
-                            '전체': { label: '전체', terminal: true },
                             '해외법령': { label: '해외법령', terminal: true },
                         }
                     }
@@ -952,8 +950,8 @@ const categoryStructure = {
 const createCategory2 = (category1Value) => {
     if (!category1Value || !categoryStructure[category1Value]) return '';
     
-    const category2Options = categoryStructure[category1Value].children;
-    const items = Object.entries(category2Options).map(([value, config], index) => {
+    const categoryOptions = categoryStructure[category1Value].children;
+    const items = Object.entries(categoryOptions).map(([value, config], index) => {
         const inputType = config.terminal ? 'checkbox' : 'radio';
         const inputName = config.terminal ? 'category2' : 'category2';
         
@@ -966,7 +964,7 @@ const createCategory2 = (category1Value) => {
     }).join('');
     
     // 종료 depth인 경우에만 특별한 스타일 적용 (카테고리4 스타일은 실제 카테고리4에만 적용)
-    const isTerminal = Object.values(category2Options).every(config => config.terminal);
+    const isTerminal = Object.values(categoryOptions).every(config => config.terminal);
     const colClass = 'work-depth-col';
     
     return `
@@ -989,8 +987,8 @@ const createCategory3 = (category1Value, category2Value) => {
         return '';
     }
     
-    const category3Options = categoryStructure[category1Value].children[category2Value].children;
-    const items = Object.entries(category3Options).map(([value, config], index) => {
+    const categoryOptions = categoryStructure[category1Value].children[category2Value].children;
+    const items = Object.entries(categoryOptions).map(([value, config], index) => {
         const inputType = config.terminal ? 'checkbox' : 'radio';
         const inputName = config.terminal ? 'category3' : 'category3';
         
@@ -1026,8 +1024,8 @@ const createCategory4 = (category1Value, category2Value, category3Value) => {
         return '';
     }
     
-    const category4Options = categoryStructure[category1Value].children[category2Value].children[category3Value].children;
-    const items = Object.entries(category4Options).map(([value, config], index) => {
+    const categoryOptions = categoryStructure[category1Value].children[category2Value].children[category3Value].children;
+    const items = Object.entries(categoryOptions).map(([value, config], index) => {
         return `
             <li>
                 <input type="checkbox" id="category-4-${index + 1}" name="category4" value="${value}" />
